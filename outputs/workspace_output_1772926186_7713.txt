@@ -1,0 +1,151 @@
+        
+        # Check for anomalies
+        await self._check_anomalies(twin_id, metric)
+        
+        logger.debug(f"Updated metric {metric_name} for twin {twin_id}")
+        return metric
+    
+    async def sync_with_physical(self,
+                                twin_id: str,
+                                physical_data: Dict[str, Any]) -> bool:
+        """
+        Synchronize twin with physical system data.
+        
+        Args:
+            twin_id: ID of the twin
+            physical_data: Data from physical system
+            
+        Returns:
+            Success status
+        """
+        if twin_id not in self.twins:
+            raise ValueError(f"Twin {twin_id} not found")
+        
+        self.twins[twin_id]["state"] = TwinState.SYNCHRONIZING.value
+        
+        try:
+            # Update metrics from physical data
+            for key, value in physical_data.items():
+                if isinstance(value, dict):
+                    # Handle nested data
+                    unit = value.get("unit", "")
+                    val = value.get("value", value)
+                    metadata = {k: v for k, v in value.items() if k not in ["unit", "value"]}
+                else:
+                    unit = ""
+                    val = value
+                    metadata = {}
+                
+                await self.update_metric(twin_id, key, val, unit, metadata)
+            
+            self.twins[twin_id]["last_sync"] = datetime.now().isoformat()
+            self.twins[twin_id]["state"] = TwinState.ACTIVE.value
+            
+            logger.info(f"Synchronized twin {twin_id} with physical system")
+            return True
+            
+        except Exception as e:
+            self.twins[twin_id]["state"] = TwinState.ERROR.value
+            logger.error(f"Sync error for twin {twin_id}: {e}")
+            return False
+    
+    async def create_event(self,
+                          twin_id: str,
+                          event_type: str,
+                          data: Dict[str, Any],
+                          severity: str = "info") -> TwinEvent:
+        """
+        Create an event for a digital twin.
+        
+        Args:
+            twin_id: ID of the twin
+            event_type: Type of event
+            data: Event data
+            severity: Event severity (info, warning, error, critical)
+            
+        Returns:
+            TwinEvent object
+        """
+        event_id = f"event_{len(self.events)}"
+        
+        event = TwinEvent(
+            id=event_id,
+            event_type=event_type,
+            source=twin_id,
+            data=data,
+            timestamp=datetime.now(),
+            severity=severity
+        )
+        
+        self.events.append(event)
+        
+        # Trigger event callbacks
+        for callback in self.event_callbacks:
+            try:
+                await callback(event)
+            except Exception as e:
+                logger.error(f"Event callback error: {e}")
+        
+        logger.info(f"Created event {event_type} for twin {twin_id}")
+        return event
+    
+    async def create_alert(self,
+                          twin_id: str,
+                          alert_type: str,
+                          message: str,
+                          data: Dict[str, Any],
+                          severity: str = "warning") -> TwinAlert:
+        """
+        Create an alert for a digital twin.
+        
+        Args:
+            twin_id: ID of the twin
+            alert_type: Type of alert
+            message: Alert message
+            data: Alert data
+            severity: Alert severity (info, warning, error, critical)
+            
+        Returns:
+            TwinAlert object
+        """
+        alert_id = f"alert_{len(self.alerts)}"
+        
+        alert = TwinAlert(
+            id=alert_id,
+            alert_type=alert_type,
+            severity=severity,
+            message=message,
+            data=data,
+            timestamp=datetime.now()
+        )
+        
+        self.alerts.append(alert)
+        
+        # Trigger alert callbacks
+        for callback in self.alert_callbacks:
+            try:
+                await callback(alert)
+            except Exception as e:
+                logger.error(f"Alert callback error: {e}")
+        
+        logger.warning(f"Created alert {alert_type} for twin {twin_id}: {message}")
+        return alert
+    
+    async def predict_metrics(self,
+                            twin_id: str,
+                            metric_name: str,
+                            horizon: int = 10) -> List[Dict[str, Any]]:
+        """
+        Predict future values of a metric using predictive models.
+        
+        Args:
+            twin_id: ID of the twin
+            metric_name: Name of the metric to predict
+            horizon: Number of time steps to predict
+            
+        Returns:
+            List of predicted values with timestamps
+        """
+        if twin_id not in self.twins:
+            raise ValueError(f"Twin {twin_id} not found")
+        
