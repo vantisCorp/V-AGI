@@ -1,0 +1,21 @@
+        ))
+        return agent
+    
+    @pytest.fixture
+    def mock_capabilities(self):
+        """Create mock capabilities."""
+        return AgentCapabilities(
+            name="test-agent",
+            description="Test agent",
+            skills=["analysis", "processing"],
+            tools=["tool1", "tool2"]
+        )
+    
+    def test_init(self, orchestrator):
+        """Test initialization."""
+        assert orchestrator.max_concurrent_agents == 5
+        assert len(orchestrator.agents) == 0
+        assert len(orchestrator.tasks) == 0
+        assert orchestrator.is_running is False
+    
+    @pytest.mark.asyncio

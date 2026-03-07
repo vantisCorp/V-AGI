@@ -1,0 +1,100 @@
+"""
+AEGIS Guardian Layer for OMNI-AI
+
+Provides comprehensive security including:
+- Input/output filtering and sanitization
+- Content censorship and policy enforcement
+- Intent analysis and threat detection
+- Compliance checking and auditing
+"""
+
+from typing import Dict, List, Any, Optional, Tuple
+from dataclasses import dataclass, field
+from datetime import datetime
+from enum import Enum
+import re
+import asyncio
+from loguru import logger
+
+try:
+    from transformers import pipeline
+    TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    TRANSFORMERS_AVAILABLE = False
+    logger.warning("Transformers not available. Content analysis will be limited.")
+
+
+class SecurityLevel(Enum):
+    """Security clearance levels."""
+    LEVEL_1 = 1  # Safe Mode / Guest
+    LEVEL_2 = 2  # Specialist / 2FA + Biometrics
+    LEVEL_3 = 3  # Root Mode / Golden Key Protocol
+
+
+class ThreatType(Enum):
+    """Types of security threats."""
+    MALICIOUS_CONTENT = "malicious_content"
+    SENSITIVE_INFO_LEAK = "sensitive_info_leak"
+    UNAUTHORIZED_ACCESS = "unauthorized_access"
+    CODE_INJECTION = "code_injection"
+    POLICY_VIOLATION = "policy_violation"
+    BIASED_OUTPUT = "biased_output"
+
+
+@dataclass
+class SecurityEvent:
+    """Security event record."""
+    id: str
+    event_type: ThreatType
+    severity: str  # "low", "medium", "high", "critical"
+    description: str
+    timestamp: datetime = field(default_factory=datetime.utcnow)
+    source: str = ""
+    metadata: Dict[str, Any] = field(default_factory=dict)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert event to dictionary."""
+        return {
+            "id": self.id,
+            "event_type": self.event_type.value,
+            "severity": self.severity,
+            "description": self.description,
+            "timestamp": self.timestamp.isoformat(),
+            "source": self.source,
+            "metadata": self.metadata
+        }
+
+
+@dataclass
+class FilterResult:
+    """Result of content filtering."""
+    is_safe: bool
+    filtered_content: Optional[str] = None
+    threats: List[ThreatType] = field(default_factory=list)
+    confidence: float = 0.0
+    action_taken: str = ""
+
+
+class AegisGuardian:
+    """
+    AEGIS Guardian Layer - Comprehensive security system.
+    
+    Features:
+    - Real-time content filtering
+    - Intent analysis
+    - Policy enforcement
+    - Threat detection
+    - Audit logging
+    """
+    
+    # Regex patterns for detecting threats
+    MALICIOUS_PATTERNS = [
+        r'<script[^>]*>.*?</script>',  # Script tags
+        r'javascript:',  # JavaScript URLs
+        r'on\w+\s*=',  # Event handlers
+        r'eval\s*\(',  # eval() calls
+        r'document\.',  # DOM manipulation
+        r'window\.',  # Window object access
+    ]
+    
+    SENSITIVE_PATTERNS = [

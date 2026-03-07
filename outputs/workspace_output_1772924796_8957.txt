@@ -1,0 +1,41 @@
+    def __init__(
+        self,
+        max_concurrent_agents: int = 10,
+        working_memory: Optional[WorkingMemory] = None,
+        long_term_memory: Optional[LongTermMemory] = None
+    ):
+        """
+        Initialize NEXUS orchestrator.
+        
+        Args:
+            max_concurrent_agents: Maximum number of concurrent agent operations
+            working_memory: Working memory instance
+            long_term_memory: Long-term memory instance
+        """
+        self.max_concurrent_agents = max_concurrent_agents
+        self.working_memory = working_memory or WorkingMemory()
+        self.long_term_memory = long_term_memory
+        
+        # Agent registry
+        self.agents: Dict[str, BaseAgent] = {}
+        self.agent_capabilities: Dict[str, AgentCapabilities] = {}
+        
+        # Task management
+        self.tasks: Dict[str, OrchestratedTask] = {}
+        self.task_queue: asyncio.Queue = asyncio.Queue()
+        self.active_assignments: List[AgentAssignment] = []
+        
+        # Runtime state
+        self.is_running = False
+        self.worker_tasks: List[asyncio.Task] = []
+        self._lock = asyncio.Lock()
+        
+        logger.info("NEXUS Orchestrator initialized")
+    
+    async def register_agent(
+        self,
+        agent: BaseAgent,
+        capabilities: AgentCapabilities
+    ) -> None:
+        """
+        Register an agent with the orchestrator.

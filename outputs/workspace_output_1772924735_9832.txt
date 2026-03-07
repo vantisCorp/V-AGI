@@ -1,0 +1,10 @@
+ create mode 100644 outputs/workspace_output_1772924247_8311.txt
+ create mode 100644 outputs/workspace_output_1772924291_4748.txt
+ create mode 100644 outputs/workspace_output_1772924483_1675.txt
+ create mode 100644 outputs/workspace_output_1772924488_3883.txt
+ create mode 100644 outputs/workspace_output_1772924502_1684.txt
+ create mode 100644 outputs/workspace_output_1772924640_8902.txt
+ create mode 100644 outputs/workspace_output_1772924646_8327.txt
+ create mode 100644 outputs/workspace_output_1772924658_7124.txt
+ create mode 100644 outputs/workspace_output_1772924735_9832.txt
+ create mode 100644 tests/test_memory.py

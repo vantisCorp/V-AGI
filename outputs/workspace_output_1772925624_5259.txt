@@ -1,0 +1,101 @@
+            confidence=0.8 if threats else 0.9,
+            action_taken="filtered" if threats else "passed"
+        )
+    
+    async def filter_output(
+        self,
+        content: str,
+        user_clearance: SecurityLevel = SecurityLevel.LEVEL_1
+    ) -> FilterResult:
+        """
+        Filter and sanitize output content.
+        
+        Args:
+            content: Output content to filter
+            user_clearance: User's security clearance level
+            
+        Returns:
+            FilterResult with filtering outcome
+        """
+        threats = []
+        filtered_content = content
+        
+        # Check for policy violations
+        policy_violations = await self._check_policy_violations(content)
+        if policy_violations:
+            threats.extend(policy_violations)
+        
+        # Check for biased content
+        if await self._detect_bias(content):
+            threats.append(ThreatType.BIASED_OUTPUT)
+        
+        # Determine if content is safe
+        is_safe = len(threats) == 0
+        
+        # Log security event if threats found
+        if threats:
+            await self._log_security_event(
+                event_type=threats[0],
+                severity="medium",
+                description=f"Threats detected in output: {[t.value for t in threats]}",
+                metadata={"content_length": len(content)}
+            )
+        
+        return FilterResult(
+            is_safe=is_safe,
+            filtered_content=filtered_content if not is_safe else content,
+            threats=threats,
+            confidence=0.7 if threats else 0.95,
+            action_taken="filtered" if threats else "passed"
+        )
+    
+    async def _check_policy_violations(self, content: str) -> List[ThreatType]:
+        """
+        Check content against security policies.
+        
+        Args:
+            content: Content to check
+            
+        Returns:
+            List of policy violation threats
+        """
+        violations = []
+        
+        # Define prohibited content patterns
+        prohibited_patterns = [
+            (r'\bhow\s+to\s+(make|create|build)\s+(bomb|explosive|weapon|poison)', "dangerous content"),
+            (r'\b(illegal|criminal|fraud)\b.*\b(instructions|how\s+to)', "illegal instructions"),
+            (r'\b(hack|crack|bypass)\s+(security|authentication|password)', "security bypass"),
+        ]
+        
+        for pattern, description in prohibited_patterns:
+            if re.search(pattern, content, re.IGNORECASE):
+                violations.append(ThreatType.POLICY_VIOLATION)
+                logger.debug(f"Policy violation detected: {description}")
+        
+        return violations
+    
+    async def _detect_bias(self, content: str) -> bool:
+        """
+        Detect biased or discriminatory content.
+        
+        Args:
+            content: Content to analyze
+            
+        Returns:
+            True if bias detected, False otherwise
+        """
+        # Simplified bias detection - in production, use more sophisticated models
+        biased_keywords = [
+            "inferior", "superior", "subhuman", "degenerate",
+            "parasite", "vermin", "animalistic"
+        ]
+        
+        for keyword in biased_keywords:
+            if keyword.lower() in content.lower():
+                logger.debug(f"Potential bias detected: {keyword}")
+                return True
+        
+        return False
+    
+    async def _log_security_event(

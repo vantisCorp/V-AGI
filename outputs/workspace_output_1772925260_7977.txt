@@ -1,0 +1,60 @@
+"""
+Tests for NEXUS Orchestrator.
+"""
+
+import pytest
+import asyncio
+from unittest.mock import Mock, patch, MagicMock, AsyncMock
+
+from src.nexus.orchestrator import NexusOrchestrator, OrchestratedTask, AgentAssignment, TaskStatus
+from src.agents.base_agent import BaseAgent, AgentCapabilities, AgentResponse, Task, TaskPriority
+
+
+class TestOrchestratedTask:
+    """Test suite for OrchestratedTask dataclass."""
+    
+    def test_orchestrated_task_creation(self):
+        """Test creating an orchestrated task."""
+        task = Task(id="test-1", description="Test task")
+        orchestrated = OrchestratedTask(
+            task=task,
+            status=TaskStatus.PENDING
+        )
+        assert orchestrated.task.id == "test-1"
+        assert orchestrated.status == TaskStatus.PENDING
+
+
+class TestAgentAssignment:
+    """Test suite for AgentAssignment dataclass."""
+    
+    def test_agent_assignment_creation(self):
+        """Test creating an agent assignment."""
+        assignment = AgentAssignment(
+            agent_id="agent-1",
+            task_id="task-1",
+            started_at="2024-01-01T00:00:00"
+        )
+        assert assignment.agent_id == "agent-1"
+        assert assignment.task_id == "task-1"
+
+
+class TestNexusOrchestrator:
+    """Test suite for NEXUS Orchestrator."""
+    
+    @pytest.fixture
+    def orchestrator(self):
+        """Create orchestrator instance."""
+        return NexusOrchestrator(max_concurrent_agents=5)
+    
+    @pytest.fixture
+    def mock_agent(self):
+        """Create mock agent."""
+        agent = AsyncMock(spec=BaseAgent)
+        agent.agent_id = "test-agent"
+        agent.execute_task = AsyncMock(return_value=AgentResponse(
+            agent_id="test-agent",
+            task_id="test-task",
+            status="idle",
+            result={"success": True}
+        ))
+        return agent

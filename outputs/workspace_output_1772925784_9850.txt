@@ -1,0 +1,17 @@
+264:        prohibited_patterns = [
+265-            (r'\bhow\s+to\s+(make|create|build)\s+(bomb|explosive|weapon|poison)', "dangerous content"),
+266-            (r'\b(illegal|criminal|fraud)\b.*\b(instructions|how\s+to)', "illegal instructions"),
+267-            (r'\b(hack|crack|bypass)\s+(security|authentication|password)', "security bypass"),
+268-        ]
+269-        
+270:        for pattern, description in prohibited_patterns:
+271-            if re.search(pattern, content, re.IGNORECASE):
+272-                violations.append(ThreatType.POLICY_VIOLATION)
+273-                logger.debug(f"Policy violation detected: {description}")
+274-        
+275-        return violations
+276-    
+277-    async def _detect_bias(self, content: str) -> bool:
+278-        """
+279-        Detect biased or discriminatory content.
+280-        

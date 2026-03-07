@@ -1,0 +1,82 @@
+class TestNexusOrchestrator:
+    """Test suite for NEXUS Orchestrator."""
+    
+    @pytest.fixture
+    def orchestrator(self):
+        """Create orchestrator instance for testing."""
+        return NexusOrchestrator()
+    
+    @pytest.mark.asyncio
+    async def test_orchestrator_initialization(self, orchestrator):
+        """Test orchestrator initialization."""
+        assert orchestrator is not None
+        assert hasattr(orchestrator, 'agents')
+    
+    @pytest.mark.asyncio
+    async def test_register_agent(self, orchestrator):
+        """Test agent registration."""
+        mock_agent = AsyncMock()
+        mock_agent.agent_id = "test_agent"
+        mock_agent.initialize = AsyncMock()
+        capabilities = AgentCapabilities(
+            name="test_agent",
+            description="Test agent",
+            skills=["test_capability"],
+            tools=[]
+        )
+        
+        await orchestrator.register_agent(mock_agent, capabilities)
+        
+        assert "test_agent" in orchestrator.agents
+    
+    @pytest.mark.asyncio
+    async def test_distribute_task(self, orchestrator):
+        """Test task distribution."""
+        # Register mock agent
+        mock_agent = AsyncMock()
+        mock_agent.agent_id = "test_agent"
+        capabilities = AgentCapabilities(
+            name="test_agent",
+            description="Test agent",
+            skills=["test_capability"],
+            tools=[]
+        )
+        
+        await orchestrator.register_agent(mock_agent, capabilities)
+        
+        # Check agent was registered
+        assert "test_agent" in orchestrator.agents
+
+
+class TestWorkingMemory:
+    """Test suite for Working Memory."""
+    
+    @pytest.fixture
+    def working_memory(self):
+        """Create working memory instance."""
+        return WorkingMemory()
+    
+    @pytest.mark.asyncio
+    async def test_store_retrieve(self, working_memory):
+        """Test storing and retrieving items."""
+        key = "test_key"
+        value = {"data": "test_value"}
+        
+        await working_memory.set(key, value)
+        retrieved = await working_memory.get(key)
+        
+        assert retrieved == value
+    
+    @pytest.mark.asyncio
+    async def test_expiry(self, working_memory):
+        """Test item expiry."""
+        key = "test_key"
+        value = {"data": "test_value"}
+        
+        # Store with 1 second TTL
+        await working_memory.set(key, value, ttl=1)
+        
+        # Retrieve immediately
+        retrieved = await working_memory.get(key)
+        assert retrieved == value
+        

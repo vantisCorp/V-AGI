@@ -1,0 +1,41 @@
+    
+    @pytest.mark.asyncio
+    async def test_stop_when_not_running(self, orchestrator):
+        """Test stopping when not running."""
+        # Should not raise
+        await orchestrator.stop()
+    
+    @pytest.mark.asyncio
+    async def test_select_agent(self, orchestrator, mock_agent, mock_capabilities):
+        """Test agent selection."""
+        await orchestrator.register_agent(mock_agent, mock_capabilities)
+        
+        task = Task(
+            id="test-task-3",
+            description="Test task",
+            parameters={"task_type": "analysis"},
+            priority=TaskPriority.MEDIUM
+        )
+        
+        selected = await orchestrator._select_agent(task)
+        # May or may not select depending on implementation
+        assert selected is None or hasattr(selected, 'agent_id')
+
+
+class TestOrchestratorIntegration:
+    """Integration tests for orchestrator."""
+    
+    @pytest.mark.asyncio
+    async def test_full_task_lifecycle(self):
+        """Test full task lifecycle."""
+        orchestrator = NexusOrchestrator(max_concurrent_agents=2)
+        
+        # Create and register mock agent
+        mock_agent = AsyncMock(spec=BaseAgent)
+        mock_agent.agent_id = "worker-1"
+        mock_agent.execute_task = AsyncMock(return_value=AgentResponse(
+            agent_id="worker-1",
+            task_id="lifecycle-task",
+            status="idle",
+            result={"processed": True}
+        ))

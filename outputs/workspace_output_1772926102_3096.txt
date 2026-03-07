@@ -1,0 +1,60 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace
+configfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)
+plugins: anyio-4.12.1, cov-7.0.0, asyncio-1.3.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 30 items
+
+tests/test_aegis.py::TestSecurityLevel::test_security_level_values PASSED [  3%]
+tests/test_aegis.py::TestThreatType::test_threat_type_values PASSED      [  6%]
+tests/test_aegis.py::TestSecurityEvent::test_security_event_creation PASSED [ 10%]
+tests/test_aegis.py::TestSecurityEvent::test_security_event_to_dict PASSED [ 13%]
+tests/test_aegis.py::TestFilterResult::test_filter_result_safe PASSED    [ 16%]
+tests/test_aegis.py::TestFilterResult::test_filter_result_unsafe PASSED  [ 20%]
+tests/test_aegis.py::TestAegisGuardian::test_init PASSED                 [ 23%]
+tests/test_aegis.py::TestAegisGuardian::test_init_with_different_security_level PASSED [ 26%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_input_safe PASSED    [ 30%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_input_script_injection PASSED [ 33%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_input_javascript_url PASSED [ 36%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_input_eval PASSED    [ 40%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_input_event_handler PASSED [ 43%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_input_sensitive_info_ssn PASSED [ 46%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_input_sensitive_info_email PASSED [ 50%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_input_sensitive_info_credit_card PASSED [ 53%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_output_safe PASSED   [ 56%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_output_policy_violation_dangerous PASSED [ 60%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_output_policy_violation_illegal PASSED [ 63%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_output_policy_violation_bypass PASSED [ 66%]
+tests/test_aegis.py::TestAegisGuardian::test_filter_output_bias_detection PASSED [ 70%]
+tests/test_aegis.py::TestAegisGuardian::test_security_event_logging PASSED [ 73%]
+tests/test_aegis.py::TestAegisGuardian::test_get_security_events_with_filter PASSED [ 76%]
+tests/test_aegis.py::TestAegisGuardian::test_get_security_events_with_severity_filter PASSED [ 80%]
+tests/test_aegis.py::TestAegisGuardian::test_get_stats PASSED            [ 83%]
+tests/test_aegis.py::TestAegisGuardian::test_get_stats_empty PASSED      [ 86%]
+tests/test_aegis.py::TestAegisGuardianIntegration::test_full_filtering_workflow PASSED [ 90%]
+tests/test_aegis.py::TestAegisGuardianIntegration::test_multiple_threats PASSED [ 93%]
+tests/test_aegis.py::TestAegisGuardianIntegration::test_high_security_level PASSED [ 96%]
+tests/test_aegis.py::TestAegisGuardianIntegration::test_event_limit PASSED [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.11.14-final-0 _______________
+
+Name                                   Stmts   Miss  Cover   Missing
+--------------------------------------------------------------------
+src/__init__.py                            4      0   100%
+src/agents/__init__.py                     2      2     0%   16-25
+src/agents/ares.py                       185    185     0%   15-789
+src/agents/argus.py                      299    299     0%   1-1295
+src/agents/base_agent.py                  95     95     0%   5-216
+src/agents/cerberus.py                   149    149     0%   13-579
+src/agents/forge.py                      209    209     0%   14-792
+src/agents/lex_core.py                   179    179     0%   1-1182
+src/agents/ludus.py                      214    214     0%   1-1148
+src/agents/muse.py                       220    220     0%   13-821
+src/agents/veritas.py                    170    170     0%   12-532
+src/agents/vita.py                       282    282     0%   15-846
+src/api/__init__.py                        4      4     0%   5-9
+src/api/communication_protocol.py        139    139     0%   5-481
+src/api/message_queue_integration.py     161    161     0%   5-393
