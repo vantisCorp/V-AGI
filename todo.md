@@ -1,17 +1,34 @@
 # V-AGI Test Coverage Improvement Plan
 
-## Completed Agents
-- [x] ARGUS agent: 90% coverage
+## Completed Agents (All 73%+)
+- [x] ARGUS agent: 89% coverage
 - [x] LUDUS agent: 95% coverage
 - [x] VITA agent: 73% coverage
 - [x] VERITAS agent: 82% coverage
 - [x] FORGE agent: 87% coverage
-- [x] ARES agent: 89% coverage (was 46%)
-- [x] MUSE agent: 90% coverage (was 40%)
-- [x] LEX-Core agent: 89% coverage (was 39%)
-- [x] CERBERUS agent: 85% coverage (was 52%)
+- [x] ARES agent: 89% coverage
+- [x] MUSE agent: 90% coverage
+- [x] LEX-Core agent: 89% coverage
+- [x] CERBERUS agent: 85% coverage
 
-## Final Status
-- Total tests: 221 passing, 1 skipped
-- Overall coverage: 69% (up from 62%)
-- All specialized agents now have 73%+ coverage
+## Remaining Modules to Improve
+- [ ] API modules:
+  - websocket_handler.py: 52%
+  - message_queue_integration.py: 56%
+  - rest_api.py: 58%
+  - communication_protocol.py: 63%
+- [ ] Memory modules:
+  - long_term_memory.py: 38%
+  - vector_store.py: 45%
+- [ ] Tools modules:
+  - digital_twin.py: 48%
+  - cad_integration.py: 49%
+  - physics_engine.py: 57%
+  - code_sandbox.py: 61%
+- [ ] Other:
+  - nexus/orchestrator.py: 51%
+  - security/aegis.py: 64%
+
+## Current Status
+- Total tests: 221 passing
+- Overall coverage: 69%

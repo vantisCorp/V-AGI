@@ -1,0 +1,52 @@
+@dataclass
+class VectorDocument:
+    """Document stored in vector store."""
+    id: str
+    text: str
+    embedding: Optional[np.ndarray] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.utcnow)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert document to dictionary."""
+        return {
+            "id": self.id,
+            "text": self.text,
+            "embedding": self.embedding.tolist() if self.embedding is not None else None,
+            "metadata": self.metadata,
+            "created_at": self.created_at.isoformat()
+        }
+
+
+class VectorStore:
+    """
+    Vector store implementation using Pinecone for similarity search.
+    
+    Provides:
+    - Semantic similarity search
+    - Embedding generation
+    - Efficient retrieval of related documents
+    - Metadata filtering
+    """
+    
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        environment: Optional[str] = None,
+        index_name: str = "omni-ai-vectors",
+        dimension: int = 1536,
+        enabled: bool = True
+    ):
+        """
+        Initialize vector store.
+        
+        Args:
+            api_key: Pinecone API key
+            environment: Pinecone environment
+            index_name: Name of the vector index
+            dimension: Dimension of embeddings
+            enabled: Enable or disable vector store
+        """
+        self.api_key = api_key
+        self.environment = environment
+        self.index_name = index_name
