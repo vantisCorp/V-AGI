@@ -1,0 +1,13 @@
+On branch main
+Your branch is ahead of 'origin/main' by 13 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   src/api/websocket_handler.py
+	modified:   src/config.py
+	modified:   tests/test_message_queue.py
+	modified:   tests/test_rest_api.py
+
+no changes added to commit (use "git add" and/or "git commit -a")

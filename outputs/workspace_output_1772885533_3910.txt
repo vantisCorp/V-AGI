@@ -1,0 +1,68 @@
+    def __init__(self):
+        capabilities = AgentCapabilities(
+            name="LEX-Core",
+            description="Legal and compliance analysis specialist",
+            skills=[
+                "legal_document_analysis",
+                "compliance_assessment",
+                "contract_review",
+                "regulatory_interpretation",
+                "risk_assessment",
+                "policy_generation",
+                "audit_preparation",
+                "intellectual_property_analysis"
+            ],
+            tools=["document_analyzer", "compliance_checker", "legal_database"]
+        )
+        super().__init__(
+            agent_id="lex_core",
+            capabilities=capabilities,
+            clearance_level=2
+        )
+        
+        # Initialize metrics
+        self.metrics = type('Metrics', (), {'tasks_received': 0, 'tasks_completed': 0, 'tasks_failed': 0})()
+        
+        # Legal frameworks database
+        self.legal_frameworks = {
+            LegalFramework.GDPR: {
+                "name": "General Data Protection Regulation",
+                "jurisdiction": "European Union",
+                "key_principles": [
+                    "Lawfulness, fairness, and transparency",
+                    "Purpose limitation",
+                    "Data minimization",
+                    "Accuracy",
+                    "Storage limitation",
+                    "Integrity and confidentiality",
+                    "Accountability"
+                ],
+                "rights": [
+                    "Right to be informed",
+                    "Right of access",
+                    "Right to rectification",
+                    "Right to erasure",
+                    "Right to restrict processing",
+                    "Right to data portability",
+                    "Right to object",
+                    "Rights regarding automated decision making"
+                ]
+            },
+            LegalFramework.CCPA: {
+                "name": "California Consumer Privacy Act",
+                "jurisdiction": "California, USA",
+                "key_principles": [
+                    "Right to know",
+                    "Right to delete",
+                    "Right to opt-out",
+                    "Right to non-discrimination"
+                ],
+                "rights": [
+                    "Right to know what personal information is collected",
+                    "Right to know if personal information is sold",
+                    "Right to say no to sale of personal information",
+                    "Right to access personal information",
+                    "Right to equal service and price"
+                ]
+            },
+            LegalFramework.HIPAA: {

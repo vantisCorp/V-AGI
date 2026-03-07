@@ -1,0 +1,71 @@
+        assert "risks" in result
+        assert "probability" in result
+        assert "mitigation_strategies" in result
+
+
+class TestLEXCoreAgent:
+    """Test suite for LEX-Core Agent (Legal & Compliance)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create LEX-Core agent instance."""
+        return LEXCoreAgent()
+    
+    @pytest.mark.asyncio
+    async def test_analyze_document(self, agent):
+        """Test legal document analysis."""
+        document = {
+            "type": "contract",
+            "parties": ["Company A", "Company B"],
+            "content": "sample contract text"
+        }
+        
+        result = await agent._analyze_legal_document(document)
+        
+        assert "clauses" in result
+        assert "obligations" in result
+        assert "risks" in result
+    
+    @pytest.mark.asyncio
+    async def test_assess_compliance(self, agent):
+        """Test compliance assessment."""
+        policy = {
+            "type": "privacy_policy",
+            "data_collection": "user data",
+            "jurisdiction": "EU"
+        }
+        
+        result = await agent._assess_compliance(policy, ["GDPR"])
+        
+        assert "compliant" in result
+        assert "gaps" in result
+        assert "recommendations" in result
+
+
+class TestLUDUSAgent:
+    """Test suite for LUDUS Agent (Simulation & Gaming)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create LUDUS agent instance."""
+        return LUDUSAgent()
+    
+    @pytest.mark.asyncio
+    async def test_run_physics_simulation(self, agent):
+        """Test physics simulation."""
+        scenario = {
+            "type": "projectile_motion",
+            "initial_velocity": 50,
+            "angle": 45,
+            "gravity": 9.81
+        }
+        
+        result = await agent._run_physics_simulation(scenario)
+        
+        assert "trajectory" in result
+        assert "max_height" in result
+        assert "range" in result
+    
+    @pytest.mark.asyncio
+    async def test_design_game_mechanics(self, agent):
+        """Test game mechanics design."""

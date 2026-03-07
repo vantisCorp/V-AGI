@@ -1,0 +1,7 @@
+135:        self.conditions_database = {
+169:        self.drug_interactions = {
+318:        for condition_id, condition in self.conditions_database.items():
+341:            condition = next(c for c in self.conditions_database.values() if c.name == condition_data["condition"])
+390:                interaction = self.drug_interactions.get((key1, key2)) or self.drug_interactions.get((key2, key1))
+847:            "conditions_database_size": len(self.conditions_database),
+848:            "drug_interactions_database_size": len(self.drug_interactions),

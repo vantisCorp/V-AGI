@@ -1,0 +1,3 @@
+completed	failure	test: Minimal CI workflow for debugging	CI	main	push	22800064337	4s	2026-03-07T13:38:02Z
+completed	success	github_actions in / for actions/setup-python - Update #1271748728	Dependabot Updates	main	dynamic	22800056757	37s	2026-03-07T13:37:33Z
+completed	failure	fix: Simplify CI workflow with compact step format	CI	main	push	22800052345	4s	2026-03-07T13:37:12Z

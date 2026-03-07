@@ -1,0 +1,10 @@
+24:    def is_expired(self) -> bool:
+39:    def __init__(self, max_size: int = 1000, default_ttl: Optional[int] = None):
+52:    async def set(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
+82:    async def get(self, key: str) -> Optional[Any]:
+108:    async def delete(self, key: str) -> bool:
+125:    async def clear(self) -> None:
+131:    async def cleanup_expired(self) -> int:
+152:    async def get_keys(self) -> List[str]:
+162:    async def get_size(self) -> int:
+172:    async def get_stats(self) -> Dict[str, Any]:

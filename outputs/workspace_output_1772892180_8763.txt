@@ -1,0 +1,14 @@
+On branch main
+Your branch is ahead of 'origin/main' by 6 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   todo.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+---
+4f4f1b2 test: Minimal CI workflow for debugging
+54e6cd5 fix: Simplify CI workflow with compact step format
+0bcb530 fix: Simplify CI workflow and remove test workflow

@@ -1,0 +1,80 @@
+src/nexus/orchestrator.py                179     88    51%   129-133, 177-188, 192-206, 215-230, 240-270, 283-297, 311-327, 341-357, 370-384, 396-403, 418, 443-456, 475
+src/security/__init__.py                   2      0   100%
+src/security/aegis.py                    148     53    64%   21, 57, 127, 133-142, 170-173, 177-182, 219-243, 261-275, 288-298, 333, 335, 339, 363, 366-368, 388-389, 394-395
+src/tools/__init__.py                      5      0   100%
+src/tools/cad_integration.py             206    102    50%   152-190, 207-228, 242, 283-310, 325-372, 389-429, 435-442, 469-476, 481, 485, 493-502, 515, 519, 523, 527, 531, 536-565, 569
+src/tools/code_sandbox.py                237     90    62%   167, 198-217, 230, 242-249, 254-255, 271-272, 288-295, 299-300, 303-309, 332-363, 371-374, 398-403, 452-461, 496, 498-499, 506-511, 525, 529, 533-538, 543-566, 570
+src/tools/digital_twin.py                251    165    34%   145-164, 185-205, 220-249, 268-289, 310-331, 348-392, 407-465, 477-504, 508-512, 530-548, 569-609, 613, 617, 622-656, 660
+src/tools/physics_engine.py              237     81    66%   185-203, 213-219, 229-235, 245-254, 263-264, 374, 385-400, 405-431, 441-443, 467, 495-499, 512-523, 528-558, 562
+--------------------------------------------------------------------
+TOTAL                                   4396   2703    39%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ============================
+FAILED tests/test_core_components.py::TestNexusOrchestrator::test_orchestrator_initialization - AttributeError: 'NexusOrchestrator' object has no attribute 'active_tasks'
+FAILED tests/test_core_components.py::TestNexusOrchestrator::test_register_agent - TypeError: NexusOrchestrator.register_agent() missing 1 required positional argument: 'capabilities'
+FAILED tests/test_core_components.py::TestNexusOrchestrator::test_distribute_task - TypeError: NexusOrchestrator.register_agent() missing 1 required positional argument: 'capabilities'
+FAILED tests/test_core_components.py::TestNexusOrchestrator::test_get_status - AttributeError: 'NexusOrchestrator' object has no attribute 'get_status'
+FAILED tests/test_core_components.py::TestWorkingMemory::test_store_retrieve - AttributeError: 'WorkingMemory' object has no attribute 'store'
+FAILED tests/test_core_components.py::TestWorkingMemory::test_expiry - AttributeError: 'WorkingMemory' object has no attribute 'store'
+FAILED tests/test_core_components.py::TestWorkingMemory::test_clear - AttributeError: 'WorkingMemory' object has no attribute 'store'
+FAILED tests/test_core_components.py::TestLongTermMemory::test_store_retrieve - AttributeError: 'LongTermMemory' object has no attribute 'store'
+FAILED tests/test_core_components.py::TestLongTermMemory::test_search - AttributeError: 'LongTermMemory' object has no attribute 'store'
+FAILED tests/test_core_components.py::TestLongTermMemory::test_update - AttributeError: 'LongTermMemory' object has no attribute 'store'
+FAILED tests/test_core_components.py::TestVectorStore::test_add_search - AttributeError: 'VectorStore' object has no attribute 'add'
+FAILED tests/test_core_components.py::TestVectorStore::test_delete - AttributeError: 'VectorStore' object has no attribute 'add'
+FAILED tests/test_core_components.py::TestAegisGuardian::test_threat_detection - AttributeError: 'AegisGuardian' object has no attribute 'analyze_request'
+FAILED tests/test_core_components.py::TestAegisGuardian::test_access_control - AttributeError: 'AegisGuardian' object has no attribute 'check_access'
+FAILED tests/test_core_components.py::TestAegisGuardian::test_audit_log - AttributeError: 'AegisGuardian' object has no attribute 'log_event'
+FAILED tests/test_integration.py::TestOrchestratorIntegration::test_orchestrator_memory_integration - AttributeError: 'WorkingMemory' object has no attribute 'store'
+FAILED tests/test_integration.py::TestOrchestratorIntegration::test_orchestrator_agent_coordination - TypeError: NexusOrchestrator.register_agent() missing 1 required positional argument: 'capabilities'
+FAILED tests/test_integration.py::TestAPIIntegration::test_rest_api_agents_list - assert 503 == 200
+ +  where 503 = <WrapperTestResponse streamed [503 SERVICE UNAVAILABLE]>.status_code
+FAILED tests/test_integration.py::TestAPIIntegration::test_rest_api_task_submission - assert 503 == 200
+ +  where 503 = <WrapperTestResponse streamed [503 SERVICE UNAVAILABLE]>.status_code
+FAILED tests/test_integration.py::TestWebSocketIntegration::test_websocket_connection - TypeError: 'async for' requires an object with __aiter__ method, got Mock
+FAILED tests/test_integration.py::TestWebSocketIntegration::test_websocket_message_handling - TypeError: WebSocketHandler.handle_message() missing 2 required positional arguments: 'client_id' and 'raw_message'
+FAILED tests/test_integration.py::TestMessageProtocolIntegration::test_message_creation - TypeError: MessageProtocol.create_message() got an unexpected keyword argument 'sender'
+FAILED tests/test_integration.py::TestMessageProtocolIntegration::test_message_validation - TypeError: MessageProtocol.create_message() got an unexpected keyword argument 'sender'
+FAILED tests/test_integration.py::TestMessageProtocolIntegration::test_priority_queue - AttributeError: 'MessageProtocol' object has no attribute 'MessageQueue'
+FAILED tests/test_integration.py::TestCADIntegration::test_cad_boolean_operations - AttributeError: 'CADIntegration' object has no attribute 'CADOperation'
+FAILED tests/test_integration.py::TestPhysicsEngineIntegration::test_physics_simulation - AssertionError: assert 0.850000000000001 == 1.0
+ +  where 0.850000000000001 = SimulationState(time=0.850000000000001, bodies={'body_0': PhysicsBody(id='body_0', name='floor', mass=0.0, position=array([0., 0., 0.]), velocity=array([0., 0., 0.]), acceleration=array([0., 0., 0.]), rotation=array([0., 0., 0.]), angular_velocity=array([0., 0., 0.]), shape='box', dimensions={'length': 10, 'width': 10, 'height': 1}, material_properties={'restitution': 0.5, 'friction': 0.5, 'density': 1000.0}, is_static=True), 'body_1': PhysicsBody(id='body_1', name='ball', mass=1.0, position=array([0.     , 0.01325, 0.     ]), velocity=array([ 0.  , -9.81,  0.  ]), acceleration=array([ 0.  , -9.81,  0.  ]), rotation=array([0., 0., 0.]), angular_velocity=array([0., 0., 0.]), shape='sphere', dimensions={'radius': 0.5}, material_properties={'restitution': 0.5, 'friction': 0.5, 'density': 1000.0}, is_static=False)}, constraints={}, forces={'body_0': array([0., 0., 0.]), 'body_1': array([0., 0., 0.])}, torques={'body_0': array([0., 0., 0.]), 'body_1': array([0., 0., 0.])}).time
+FAILED tests/test_integration.py::TestDigitalTwinIntegration::test_digital_twin_creation - AttributeError: 'DigitalTwin' object has no attribute 'TwinType'
+FAILED tests/test_integration.py::TestDigitalTwinIntegration::test_digital_twin_sync - AttributeError: 'DigitalTwin' object has no attribute 'TwinType'
+FAILED tests/test_integration.py::TestDigitalTwinIntegration::test_digital_twin_prediction - AttributeError: 'DigitalTwin' object has no attribute 'TwinType'
+FAILED tests/test_performance.py::TestMemoryPerformance::test_working_memory_throughput - AttributeError: 'WorkingMemory' object has no attribute 'store'
+FAILED tests/test_performance.py::TestMemoryPerformance::test_working_memory_concurrent_access - AttributeError: 'WorkingMemory' object has no attribute 'store'
+FAILED tests/test_performance.py::TestMemoryPerformance::test_vector_store_search_performance - AttributeError: 'VectorStore' object has no attribute 'add'
+FAILED tests/test_performance.py::TestOrchestratorPerformance::test_task_distribution_latency - TypeError: NexusOrchestrator.register_agent() missing 1 required positional argument: 'capabilities'
+FAILED tests/test_performance.py::TestOrchestratorPerformance::test_multi_agent_concurrency - TypeError: NexusOrchestrator.register_agent() missing 1 required positional argument: 'capabilities'
+FAILED tests/test_performance.py::TestMessageProtocolPerformance::test_message_creation_performance - TypeError: MessageProtocol.create_message() got an unexpected keyword argument 'sender'
+FAILED tests/test_performance.py::TestMessageProtocolPerformance::test_priority_queue_performance - AttributeError: 'MessageProtocol' object has no attribute 'MessageQueue'
+FAILED tests/test_performance.py::TestAdvancedToolsPerformance::test_cad_operation_performance - AttributeError: 'CADIntegration' object has no attribute 'CADOperation'
+FAILED tests/test_performance.py::TestAdvancedToolsPerformance::test_digital_twin_sync_performance - AttributeError: 'DigitalTwin' object has no attribute 'TwinType'
+FAILED tests/test_performance.py::TestScalability::test_memory_scalability - AttributeError: 'WorkingMemory' object has no attribute 'store'
+FAILED tests/test_performance.py::TestScalability::test_vector_store_scalability - AttributeError: 'VectorStore' object has no attribute 'add'
+FAILED tests/test_specialized_agents.py::TestVeritasAgent::test_verify_fact - AttributeError: 'VeritasAgent' object has no attribute 'verify_fact'
+FAILED tests/test_specialized_agents.py::TestVeritasAgent::test_check_consistency - AttributeError: 'VeritasAgent' object has no attribute 'check_consistency'
+FAILED tests/test_specialized_agents.py::TestCerberusAgent::test_monitor_threats - AttributeError: 'CerberusAgent' object has no attribute 'monitor_threats'
+FAILED tests/test_specialized_agents.py::TestCerberusAgent::test_detect_anomalies - AttributeError: 'CerberusAgent' object has no attribute 'detect_anomalies'
+FAILED tests/test_specialized_agents.py::TestCerberusAgent::test_assess_vulnerability - AttributeError: 'CerberusAgent' object has no attribute 'assess_vulnerability'
+FAILED tests/test_specialized_agents.py::TestMuseAgent::test_generate_story - AttributeError: 'MuseAgent' object has no attribute 'generate_story'
+FAILED tests/test_specialized_agents.py::TestMuseAgent::test_write_poetry - AttributeError: 'MuseAgent' object has no attribute 'write_poetry'
+FAILED tests/test_specialized_agents.py::TestMuseAgent::test_create_article - AttributeError: 'MuseAgent' object has no attribute 'create_article'
+FAILED tests/test_specialized_agents.py::TestForgeAgent::test_generate_blueprint - AttributeError: 'ForgeAgent' object has no attribute 'generate_blueprint'
+FAILED tests/test_specialized_agents.py::TestForgeAgent::test_analyze_structure - AttributeError: 'ForgeAgent' object has no attribute 'analyze_structure'
+FAILED tests/test_specialized_agents.py::TestVitaAgent::test_analyze_symptoms - AttributeError: 'VitaAgent' object has no attribute 'analyze_symptoms'
+FAILED tests/test_specialized_agents.py::TestVitaAgent::test_check_drug_interactions - AttributeError: 'VitaAgent' object has no attribute 'check_drug_interactions'
+FAILED tests/test_specialized_agents.py::TestAresAgent::test_create_strategic_plan - AttributeError: 'AresAgent' object has no attribute 'create_strategic_plan'
+FAILED tests/test_specialized_agents.py::TestAresAgent::test_assess_risk - AttributeError: 'AresAgent' object has no attribute 'assess_risk'
+FAILED tests/test_specialized_agents.py::TestLEXCoreAgent::test_analyze_document - AttributeError: 'dict' object has no attribute 'parameters'
+FAILED tests/test_specialized_agents.py::TestLEXCoreAgent::test_assess_compliance - TypeError: LEXCoreAgent._assess_compliance() takes 2 positional arguments but 3 were given
+FAILED tests/test_specialized_agents.py::TestLUDUSAgent::test_run_physics_simulation - AttributeError: 'dict' object has no attribute 'parameters'
+FAILED tests/test_specialized_agents.py::TestLUDUSAgent::test_design_game_mechanics - AttributeError: 'dict' object has no attribute 'parameters'
+FAILED tests/test_specialized_agents.py::TestARGUSAgent::test_monitor_real_time - AttributeError: 'dict' object has no attribute 'parameters'
+FAILED tests/test_specialized_agents.py::TestARGUSAgent::test_analyze_performance - AttributeError: 'dict' object has no attribute 'parameters'
+ERROR tests/test_core_components.py::TestNexusOrchestrator::test_orchestrator_initialization - AttributeError: 'NexusOrchestrator' object has no attribute 'shutdown'
+ERROR tests/test_core_components.py::TestNexusOrchestrator::test_register_agent - AttributeError: 'NexusOrchestrator' object has no attribute 'shutdown'
+ERROR tests/test_core_components.py::TestNexusOrchestrator::test_distribute_task - AttributeError: 'NexusOrchestrator' object has no attribute 'shutdown'
+ERROR tests/test_core_components.py::TestNexusOrchestrator::test_get_status - AttributeError: 'NexusOrchestrator' object has no attribute 'shutdown'
+============= 60 failed, 28 passed, 3 warnings, 4 errors in 2.23s ==============

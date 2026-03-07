@@ -1,0 +1,20 @@
+49:    def to_dict(self) -> Dict[str, Any]:
+103:    def __init__(self, agent_id: str = "vita"):
+201:    async def validate_task(self, task: Task) -> bool:
+225:    async def execute_task(self, task: Task) -> AgentResponse:
+300:    async def _analyze_symptoms(self, task: Task) -> Dict[str, Any]:
+353:    def _assess_urgency(self, conditions: List[Dict[str, Any]]) -> str:
+367:    async def _check_drug_interactions(self, task: Task) -> Dict[str, Any]:
+422:    def _generate_interaction_recommendations(self, interactions: List[Dict[str, Any]]) -> List[str]:
+444:    async def _analyze_patient_data(self, task: Task) -> Dict[str, Any]:
+497:    def _analyze_vitals(self, vitals: Dict[str, Any]) -> List[str]:
+535:    def _analyze_lab_results(self, lab_results: Dict[str, Any]) -> List[str]:
+561:    def _assess_health_status(self, vital_anomalies: List[str], lab_anomalies: List[str]) -> Dict[str, Any]:
+586:    def _generate_health_recommendations(
+612:    def _generate_follow_up_actions(self, health_status: Dict[str, Any]) -> List[str]:
+628:    async def _medical_research(self, task: Task) -> Dict[str, Any]:
+674:    async def _clinical_trial_analysis(self, task: Task) -> Dict[str, Any]:
+716:    async def _epidemiology_study(self, task: Task) -> Dict[str, Any]:
+754:    async def _personalized_medicine(self, task: Task) -> Dict[str, Any]:
+799:    async def _health_monitoring(self, task: Task) -> Dict[str, Any]:
+839:    async def get_stats(self) -> Dict[str, Any]:

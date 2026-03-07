@@ -1,0 +1,2 @@
+12:class MessageType(Enum):
+479:    def get_stats(self) -> Dict[str, Any]:

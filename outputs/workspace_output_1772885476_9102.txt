@@ -1,0 +1,46 @@
+                result = await self._analyze_intellectual_property(task)
+            else:
+                raise ValueError(f"Unknown task type: {task_type}")
+            
+            # Validate result
+            if await self.validate_task(task, result):
+                self.metrics.tasks_completed += 1
+                return AgentResponse(
+                    agent_id=self.agent_id,
+                    task_id=task.id,
+                    status=AgentStatus.COMPLETED,
+                    result=result,
+                    timestamp=datetime.utcnow()
+                )
+            else:
+                self.metrics.tasks_failed += 1
+                return AgentResponse(
+                    agent_id=self.agent_id,
+                    task_id=task.id,
+                    status=AgentStatus.FAILED,
+                    error="Task validation failed",
+                    timestamp=datetime.utcnow()
+                )
+                
+        except Exception as e:
+            self.metrics.tasks_failed += 1
+            self.task_history[task.id] = {
+                "status": "failed",
+                "error": str(e),
+                "timestamp": datetime.utcnow()
+            }
+            return AgentResponse(
+                agent_id=self.agent_id,
+                task_id=task.id,
+                status=AgentStatus.FAILED,
+                error=str(e),
+                timestamp=datetime.utcnow()
+            )
+    
+    async def validate_task(self, task: Task, result: Dict[str, Any]) -> bool:
+        """
+        Validate task execution result.
+        
+        Args:
+            task: Original task
+            result: Result to validate

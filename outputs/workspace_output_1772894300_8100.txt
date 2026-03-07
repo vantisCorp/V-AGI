@@ -1,0 +1,3 @@
+13:class AgentStatus(Enum):
+15:    IDLE = "idle"
+116:        self.status = AgentStatus.IDLE

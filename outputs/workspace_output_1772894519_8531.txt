@@ -1,0 +1,10 @@
+src/tools/cad_integration.py             206    206     0%   7-569
+src/tools/code_sandbox.py                237    237     0%   7-570
+src/tools/digital_twin.py                251    251     0%   7-660
+src/tools/physics_engine.py              237    237     0%   7-562
+--------------------------------------------------------------------
+TOTAL                                   4399   3910    11%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ============================
+FAILED tests/test_rest_api.py::TestAgentsEndpoint::test_list_agents_with_agent - AttributeError: 'MockAgent' object has no attribute 'metrics'
+========================= 1 failed, 14 passed in 1.64s =========================

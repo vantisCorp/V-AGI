@@ -1,0 +1,15 @@
+53:            "design_id": self.design_id,
+54:            "domain": self.domain.value,
+55:            "name": self.name,
+56:            "description": self.description,
+57:            "specifications": self.specifications,
+58:            "materials": self.materials,
+59:            "dimensions": self.dimensions,
+60:            "tolerances": self.tolerances,
+61:            "created_at": self.created_at.isoformat(),
+62:            "metadata": self.metadata
+137:        self.material_database = {
+197:        self.engineering_standards = {
+241:        await self.set_status(AgentStatus.PROCESSING)
+242:        await self.add_task(task.id)
+248:                result = await self._generate_blueprint(task)

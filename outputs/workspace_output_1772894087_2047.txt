@@ -1,0 +1,11 @@
+class MessagePriority(Enum):
+    """Message priority enumeration."""
+    LOW = 0
+    MEDIUM = 1
+    HIGH = 2
+    CRITICAL = 3
+
+
+class MessageProtocol:
+    """
+    Message protocol for OMNI-AI communication.

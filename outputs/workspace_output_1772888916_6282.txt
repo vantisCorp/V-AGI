@@ -1,0 +1,19 @@
+[feature/ci-cd-setup 93328a2] feat: Add CI/CD pipeline and GitHub templates
+ Committer: root <root@172.21.239.21>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 5 files changed, 216 insertions(+)
+ create mode 100644 .github/ISSUE_TEMPLATE/bug_report.md
+ create mode 100644 .github/ISSUE_TEMPLATE/feature_request.md
+ create mode 100644 .github/PULL_REQUEST_TEMPLATE.md
+ create mode 100644 .github/dependabot.yml
+ create mode 100644 .github/workflows/ci.yml

@@ -1,0 +1,22 @@
+# V-AGI Multi-Agent System - Test Coverage Improvement
+
+## Current Status
+- Tests: 116 passing, 1 skipped
+- Coverage: 47%
+- Warnings: 0
+
+## In Progress
+- [ ] Add tests for websocket_handler.py (16% coverage)
+- [ ] Add tests for argus.py (25% coverage)
+- [ ] Add tests for ludus.py (33% coverage)
+
+## Completed Tasks
+- [x] Fix deprecation warnings (Pydantic, WebSockets)
+- [x] Add tests for message_queue_integration.py (56% coverage)
+- [x] Add tests for REST API endpoints (58% coverage)
+- [x] Push changes to GitHub
+
+## Next Steps
+1. Create tests/test_websocket_handler.py
+2. Add more tests to test_specialized_agents.py for ARGUS
+3. Add more tests for LUDUS agent

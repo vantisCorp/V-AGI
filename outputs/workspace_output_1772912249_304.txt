@@ -1,0 +1,16 @@
+50:    def to_dict(self) -> Dict[str, Any]:
+105:    def __init__(self, agent_id: str = "forge"):
+206:    async def validate_task(self, task: Task) -> bool:
+230:    async def execute_task(self, task: Task) -> AgentResponse:
+305:    async def _generate_blueprint(self, task: Task) -> Dict[str, Any]:
+369:    async def _analyze_structure(self, task: Task) -> Dict[str, Any]:
+412:    def _calculate_safety_factor(
+424:    def _calculate_deflection(
+434:    async def _select_materials(self, task: Task) -> Dict[str, Any]:
+485:    def _evaluate_material(
+526:    async def _create_design(self, task: Task) -> Dict[str, Any]:
+576:    async def _optimize_design(self, task: Task) -> Dict[str, Any]:
+624:    async def _quality_assurance(self, task: Task) -> Dict[str, Any]:
+680:    async def _prototype_recommendation(self, task: Task) -> Dict[str, Any]:
+740:    async def _calculate_stress(self, task: Task) -> Dict[str, Any]:
+785:    async def get_stats(self) -> Dict[str, Any]:

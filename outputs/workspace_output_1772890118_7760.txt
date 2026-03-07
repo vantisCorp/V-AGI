@@ -1,0 +1,5 @@
+github.com
+  ✓ Logged in to github.com account superninja-app[bot] (GITHUB_TOKEN)
+  - Active account: true
+  - Git operations protocol: https
+  - Token: ghs_************************************

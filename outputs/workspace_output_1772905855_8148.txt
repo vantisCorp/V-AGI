@@ -1,0 +1,28 @@
+    """Test suite for VITA Agent (Healthcare)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create VITA agent instance."""
+        return VitaAgent()
+    
+    @pytest.mark.asyncio
+    async def test_agent_initialization(self, agent):
+        """Test agent initializes correctly."""
+        assert agent is not None
+        assert agent.agent_id == "vita"
+    
+    @pytest.mark.asyncio
+    async def test_execute_task(self, agent):
+        """Test healthcare task execution."""
+        task = Task(
+            id="test_task",
+            description="Analyze symptoms",
+            parameters={"symptoms": ["fever", "cough"], "task_type": "analyze_symptoms"},
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'status')
+
+
+class TestAresAgent:

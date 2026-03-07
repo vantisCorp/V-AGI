@@ -1,0 +1,30 @@
+153:        valid_task_types = [
+164:        task_type = task.parameters.get("task_type", "")
+165:        return task_type in valid_task_types
+182:            task_type = task.parameters.get("task_type", "")
+184:            if task_type == "create_strategic_plan":
+185:                result = await self._create_strategic_plan(task)
+186:            elif task_type == "optimize_resources":
+187:                result = await self._optimize_resources(task)
+188:            elif task_type == "assess_risk":
+189:                result = await self._assess_risk(task)
+190:            elif task_type == "analyze_performance":
+191:                result = await self._analyze_performance(task)
+192:            elif task_type == "optimize_supply_chain":
+193:                result = await self._optimize_supply_chain(task)
+194:            elif task_type == "decision_support":
+195:                result = await self._decision_support(task)
+196:            elif task_type == "business_intelligence":
+197:                result = await self._business_intelligence(task)
+198:            elif task_type == "forecast_demand":
+199:                result = await self._forecast_demand(task)
+202:                    "error": f"Unknown task type: {task_type}",
+214:                metadata={"task_type": task_type}
+242:    async def _create_strategic_plan(self, task: Task) -> Dict[str, Any]:
+352:    async def _optimize_resources(self, task: Task) -> Dict[str, Any]:
+441:    async def _assess_risk(self, task: Task) -> Dict[str, Any]:
+526:    async def _analyze_performance(self, task: Task) -> Dict[str, Any]:
+579:    async def _optimize_supply_chain(self, task: Task) -> Dict[str, Any]:
+629:    async def _decision_support(self, task: Task) -> Dict[str, Any]:
+677:    async def _business_intelligence(self, task: Task) -> Dict[str, Any]:
+727:    async def _forecast_demand(self, task: Task) -> Dict[str, Any]:

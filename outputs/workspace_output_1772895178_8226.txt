@@ -1,0 +1,3 @@
+collecting ... collected 64 items / 1 error
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+=============================== 1 error in 0.61s ===============================

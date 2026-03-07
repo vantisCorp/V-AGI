@@ -1,0 +1,3 @@
+in_progress		github_actions in / for actions/setup-python - Update #1271748728	Dependabot Updates	main	dynamic	22800056757	14s	2026-03-07T13:37:33Z
+completed	failure	fix: Simplify CI workflow with compact step format	CI	main	push	22800052345	4s	2026-03-07T13:37:12Z
+completed	failure	build(deps): Bump actions/setup-python from 5 to 6	CI	dependabot/github_actions/actions/setup-python-6	pull_request	22800039399	5s	2026-03-07T13:36:22Z

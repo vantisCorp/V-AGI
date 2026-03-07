@@ -1,0 +1,75 @@
+On branch feature/omni-ai-implementation
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   .env.example
+	new file:   .gitignore
+	new file:   ADVANCED_TOOLS_COMPLETION_REPORT.md
+	new file:   ADVANCED_TOOLS_SUMMARY.md
+	new file:   API_INTEGRATION_SUMMARY.md
+	new file:   Dockerfile
+	new file:   IMPLEMENTATION_STATUS.md
+	new file:   IMPLEMENTATION_SUMMARY.md
+	new file:   QUICK_START_GUIDE.md
+	modified:   README.md
+	new file:   SPECIALIZED_AGENTS_SUMMARY.md
+	new file:   TESTING_GUIDE.md
+	new file:   TESTING_SUITE_COMPLETION_REPORT.md
+	new file:   docker-compose.yml
+	new file:   docs/agents-implementation.md
+	new file:   docs/architecture-overview.md
+	new file:   docs/security-implementation.md
+	new file:   docs/simulation-tools-implementation.md
+	new file:   examples/advanced_tools_demo.py
+	new file:   project-structure.md
+	new file:   pyproject.toml
+	new file:   pytest.ini
+	new file:   requirements.txt
+	new file:   scripts/run_tests.py
+	new file:   scripts/setup.sh
+	new file:   src/__init__.py
+	new file:   src/agents/__init__.py
+	new file:   src/agents/ares.py
+	new file:   src/agents/argus.py
+	new file:   src/agents/base_agent.py
+	new file:   src/agents/cerberus.py
+	new file:   src/agents/forge.py
+	new file:   src/agents/lex_core.py
+	new file:   src/agents/ludus.py
+	new file:   src/agents/muse.py
+	new file:   src/agents/veritas.py
+	new file:   src/agents/vita.py
+	new file:   src/api/__init__.py
+	new file:   src/api/communication_protocol.py
+	new file:   src/api/message_queue_integration.py
+	new file:   src/api/rest_api.py
+	new file:   src/api/websocket_handler.py
+	new file:   src/config.py
+	new file:   src/main.py
+	new file:   src/memory/__init__.py
+	new file:   src/memory/long_term_memory.py
+	new file:   src/memory/vector_store.py
+	new file:   src/memory/working_memory.py
+	new file:   src/nexus/__init__.py
+	new file:   src/nexus/orchestrator.py
+	new file:   src/security/__init__.py
+	new file:   src/security/aegis.py
+	new file:   src/tools/__init__.py
+	new file:   src/tools/cad_integration.py
+	new file:   src/tools/code_sandbox.py
+	new file:   src/tools/digital_twin.py
+	new file:   src/tools/physics_engine.py
+	new file:   tests/__init__.py
+	new file:   tests/conftest.py
+	new file:   tests/test_basic.py
+	new file:   tests/test_core_components.py
+	new file:   tests/test_integration.py
+	new file:   tests/test_performance.py
+	new file:   tests/test_specialized_agents.py
+	new file:   todo.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.agent_hooks/
+	outputs/
+	summarized_conversations/
+

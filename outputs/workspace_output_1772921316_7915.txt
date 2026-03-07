@@ -1,0 +1,16 @@
+48:    def to_dict(self) -> Dict[str, Any]:
+100:    def __init__(self, agent_id: str = "ares"):
+143:    async def validate_task(self, task: Task) -> bool:
+167:    async def execute_task(self, task: Task) -> AgentResponse:
+242:    async def _create_strategic_plan(self, task: Task) -> Dict[str, Any]:
+352:    async def _optimize_resources(self, task: Task) -> Dict[str, Any]:
+401:    def _optimize_personnel(self, personnel: Dict[str, Any]) -> Dict[str, Any]:
+414:    def _optimize_equipment(self, equipment: Dict[str, Any]) -> Dict[str, Any]:
+427:    def _optimize_budget(self, budget: Dict[str, Any]) -> Dict[str, Any]:
+441:    async def _assess_risk(self, task: Task) -> Dict[str, Any]:
+526:    async def _analyze_performance(self, task: Task) -> Dict[str, Any]:
+579:    async def _optimize_supply_chain(self, task: Task) -> Dict[str, Any]:
+629:    async def _decision_support(self, task: Task) -> Dict[str, Any]:
+677:    async def _business_intelligence(self, task: Task) -> Dict[str, Any]:
+727:    async def _forecast_demand(self, task: Task) -> Dict[str, Any]:
+782:    async def get_stats(self) -> Dict[str, Any]:

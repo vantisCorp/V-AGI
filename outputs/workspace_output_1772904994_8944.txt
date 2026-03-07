@@ -1,0 +1,9 @@
+unknown flag: --depth
+Separate git clone flags with '--'.
+
+Usage:  gh repo clone <repository> [<directory>] [-- <gitflags>...]
+
+Flags:
+  -u, --upstream-remote-name string   Upstream remote name when cloning a fork (default "upstream")
+  
+Cloning for reference

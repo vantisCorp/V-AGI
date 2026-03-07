@@ -1,0 +1,46 @@
+    def __init__(self, agent_id: str = "ares"):
+        """Initialize ARES agent."""
+        capabilities = AgentCapabilities(
+            name="ARES",
+            description="Strategic planning and optimization agent",
+            skills=[
+                "strategic_planning",
+                "resource_optimization",
+                "decision_support",
+                "risk_assessment",
+                "operations_research",
+                "supply_chain_optimization",
+                "business_intelligence",
+                "performance_optimization"
+            ],
+            tools=[
+                "optimization_solver",
+                "decision_analyzer",
+                "risk_calculator",
+                "simulation_engine"
+            ],
+            max_concurrent_tasks=5,
+            specialization="strategic"
+        )
+        
+        super().__init__(
+            agent_id=agent_id,
+            capabilities=capabilities,
+            clearance_level=2
+        )
+        
+        # Optimization algorithms database
+        self.optimization_methods = {
+            OptimizationType.LINEAR: ["simplex", "interior_point"],
+            OptimizationType.NONLINEAR: ["gradient_descent", "newton", "quasi_newton"],
+            OptimizationType.INTEGER: ["branch_and_bound", "cutting_plane"],
+            OptimizationType.DYNAMIC: ["dynamic_programming", "bellman"],
+            OptimizationType.STOCHASTIC: ["monte_carlo", "stochastic_gradient"],
+            OptimizationType.MULTIOBJECTIVE: ["pareto_optimization", "weighted_sum"]
+        }
+        
+        logger.info(f"ARES agent initialized: {agent_id}")
+    
+    async def validate_task(self, task: Task) -> bool:
+        """
+        Validate if this agent can handle the task.

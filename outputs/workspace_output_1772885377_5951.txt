@@ -1,0 +1,16 @@
+    async def test_code_validation(self, sandbox):
+        """Test code validation."""
+        code = """
+x = 1 + 1
+print(x)
+"""
+        result = await sandbox.validate_code(code, CodeLanguage.PYTHON)
+        assert result is not None
+        assert "is_valid" in result
+    
+    @pytest.mark.asyncio
+    async def test_code_analysis(self, sandbox):
+        """Test code analysis."""
+        code = """
+def add(a, b):
+    return a + b

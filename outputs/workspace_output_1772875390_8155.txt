@@ -1,0 +1,71 @@
+    def agent(self):
+        """Create VITA agent instance."""
+        return VITAAgent()
+    
+    @pytest.mark.asyncio
+    async def test_analyze_symptoms(self, agent):
+        """Test symptom analysis."""
+        symptoms = {
+            "patient": "John Doe",
+            "symptoms": ["fever", "headache", "fatigue"],
+            "duration": "3 days"
+        }
+        
+        result = await agent.analyze_symptoms(symptoms)
+        
+        assert "possible_conditions" in result
+        assert "urgency" in result
+        assert "recommendations" in result
+    
+    @pytest.mark.asyncio
+    async def test_check_drug_interactions(self, agent):
+        """Test drug interaction checking."""
+        medications = [
+            {"name": "Aspirin", "dosage": "100mg"},
+            {"name": "Ibuprofen", "dosage": "200mg"}
+        ]
+        
+        result = await agent.check_drug_interactions(medications)
+        
+        assert "interactions" in result
+        assert "severity" in result
+
+
+class TestARESAgent:
+    """Test suite for ARES Agent (Strategic Planning)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create ARES agent instance."""
+        return ARESAgent()
+    
+    @pytest.mark.asyncio
+    async def test_create_strategic_plan(self, agent):
+        """Test strategic plan creation."""
+        objectives = [
+            "Increase market share by 20%",
+            "Launch new product line"
+        ]
+        constraints = {
+            "budget": 1000000,
+            "timeline": "12 months"
+        }
+        
+        result = await agent.create_strategic_plan(objectives, constraints)
+        
+        assert "plan" in result
+        assert "milestones" in result
+        assert "resource_allocation" in result
+    
+    @pytest.mark.asyncio
+    async def test_assess_risk(self, agent):
+        """Test risk assessment."""
+        scenario = {
+            "type": "market_entry",
+            "market": "emerging",
+            "investment": 500000
+        }
+        
+        result = await agent.assess_risk(scenario)
+        
+        assert "risks" in result

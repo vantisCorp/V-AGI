@@ -1,0 +1,16 @@
+13:    from websockets.server import WebSocketServerProtocol
+17:    WebSocketServerProtocol = None
+49:        self.clients: Set[WebSocketServerProtocol] = set()
+59:    async def handle_client(self, websocket: WebSocketServerProtocol, path: str):
+110:    async def handle_message(self, websocket: WebSocketServerProtocol,
+164:    async def handle_task_submit(self, websocket: WebSocketServerProtocol,
+233:    async def handle_task_cancel(self, websocket: WebSocketServerProtocol,
+268:    async def handle_task_status(self, websocket: WebSocketServerProtocol,
+323:    async def handle_agent_list(self, websocket: WebSocketServerProtocol,
+362:    async def handle_stream_start(self, websocket: WebSocketServerProtocol,
+400:    async def handle_stream_stop(self, websocket: WebSocketServerProtocol,
+421:    async def handle_subscribe(self, websocket: WebSocketServerProtocol,
+446:    async def handle_unsubscribe(self, websocket: WebSocketServerProtocol,
+469:    async def handle_ping(self, websocket: WebSocketServerProtocol,
+488:    async def stream_metrics(self, websocket: WebSocketServerProtocol):
+530:    async def stream_events(self, websocket: WebSocketServerProtocol):

@@ -1,0 +1,20 @@
+91:        self.trusted_sources: Dict[str, float] = {
+136:        await self.set_status(AgentStatus.PROCESSING)
+137:        await self.add_task(task.id)
+143:                result = await self._verify_fact(task)
+145:                result = await self._check_consistency(task)
+147:                result = await self._validate_sources(task)
+149:                result = await self._generate_citations(task)
+151:                result = await self._fact_check_content(task)
+162:                agent_id=self.agent_id,
+169:            await self.set_status(AgentStatus.IDLE)
+170:            await self.remove_task(task.id)
+171:            self.record_response(response)
+182:                agent_id=self.agent_id,
+188:            await self.set_status(AgentStatus.ERROR)
+189:            await self.remove_task(task.id)
+190:            self.record_response(response)
+217:        verification = await self._verify_against_sources(fact_claim)
+280:        consistency = await self._analyze_logical_consistency(content)
+307:        contradictions = self._detect_contradictions(sentences)
+311:        if self._detect_circular_reasoning(content):

@@ -1,0 +1,21 @@
+    async def test_cad_mass_properties(self, cad):
+        """Test CAD mass properties calculation."""
+        box = await cad.create_primitive(
+            primitive_type="box",
+            dimensions={"length": 10, "width": 10, "height": 10},
+            name="test_box"
+        )
+        
+        # Use get_component_properties instead of calculate_mass_properties
+        result = await cad.get_component_properties(box.id)
+        assert result is not None
+
+
+class TestPhysicsEngineIntegration:
+    """Test suite for Physics Engine integration."""
+    
+    @pytest.fixture
+    def physics(self):
+        """Create physics engine instance."""
+        return PhysicsEngine()
+    

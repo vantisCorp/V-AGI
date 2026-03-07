@@ -1,0 +1,24 @@
+271:            task_type = task.parameters.get("task_type", "legal_document_analysis")
+273:            if task_type == "legal_document_analysis":
+274:                result = await self._analyze_legal_document(task)
+275:            elif task_type == "compliance_assessment":
+276:                result = await self._assess_compliance(task)
+277:            elif task_type == "contract_review":
+278:                result = await self._review_contract(task)
+279:            elif task_type == "regulatory_interpretation":
+280:                result = await self._interpret_regulations(task)
+281:            elif task_type == "risk_assessment":
+282:                result = await self._assess_legal_risks(task)
+283:            elif task_type == "policy_generation":
+284:                result = await self._generate_policy(task)
+285:            elif task_type == "audit_preparation":
+286:                result = await self._prepare_audit(task)
+287:            elif task_type == "intellectual_property_analysis":
+290:                raise ValueError(f"Unknown task type: {task_type}")
+344:    async def _analyze_legal_document(self, task: Task) -> Dict[str, Any]:
+403:    async def _assess_compliance(self, task: Task) -> Dict[str, Any]:
+471:    async def _review_contract(self, task: Task) -> Dict[str, Any]:
+567:    async def _interpret_regulations(self, task: Task) -> Dict[str, Any]:
+655:    async def _assess_legal_risks(self, task: Task) -> Dict[str, Any]:
+738:    async def _generate_policy(self, task: Task) -> Dict[str, Any]:
+866:    async def _prepare_audit(self, task: Task) -> Dict[str, Any]:

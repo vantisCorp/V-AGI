@@ -1,0 +1,29 @@
+    async def handle_agent_list(self, websocket: Any,
+                               client_id: str, message_id: str):
+        """
+        Handle agent list request.
+        
+        Args:
+            websocket: WebSocket connection
+            client_id: Client identifier
+            message_id: Message identifier
+        """
+        if not self.orchestrator:
+            error_msg = self.protocol.create_message(
+---
+    async def handle_ping(self, websocket: Any,
+                        client_id: str, message_id: str):
+        """
+        Handle ping message.
+        
+        Args:
+            websocket: WebSocket connection
+            client_id: Client identifier
+            message_id: Message identifier
+        """
+        pong_msg = self.protocol.create_message(
+            message_type=MessageType.PONG,
+            data={
+                "timestamp": datetime.utcnow().isoformat()
+            },
+            reply_to=message_id

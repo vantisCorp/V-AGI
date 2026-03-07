@@ -1,0 +1,23 @@
+    async def validate_task(self, task: Task, result: Dict[str, Any]) -> bool:
+        """
+        Validate task execution result.
+        
+        Args:
+            task: Original task
+            result: Result to validate
+            
+        Returns:
+            True if valid, False otherwise
+        """
+        if not isinstance(result, dict):
+            return False
+        
+        required_keys = ["status", "monitoring_results"]
+        return all(key in result for key in required_keys)
+    
+    async def _monitor_real_time(self, task: Task) -> Dict[str, Any]:
+        """
+        Monitor systems and applications in real-time.
+        
+        Args:
+            task: Real-time monitoring task

@@ -1,0 +1,7 @@
+56:    def __init__(self):
+79:        self.metrics = type('Metrics', (), {'tasks_received': 0, 'tasks_completed': 0, 'tasks_failed': 0})()
+256:            self.metrics.tasks_received += 1
+282:                self.metrics.tasks_completed += 1
+291:                self.metrics.tasks_failed += 1
+301:            self.metrics.tasks_failed += 1
+302:            self.task_history[task.id] = {

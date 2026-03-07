@@ -1,0 +1,12 @@
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       8.8G  6.2G  2.2G  75% /
+5.5M	/workspace/v-agi
+4.4M	/workspace/htmlcov
+2.9M	/workspace/summarized_conversations
+2.3M	/workspace/outputs
+656K	/workspace/src
+176K	/workspace/tests
+132K	/workspace/docs
+20K	/workspace/API_INTEGRATION_SUMMARY.md
+20K	/workspace/ADVANCED_TOOLS_SUMMARY.md
+16K	/workspace/scripts

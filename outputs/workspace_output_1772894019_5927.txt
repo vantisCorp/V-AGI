@@ -1,0 +1,96 @@
+    async def publish(self,
+                     topic: str,
+                     message: Dict[str, Any],
+                     priority: MessagePriority = MessagePriority.MEDIUM):
+        """
+        Publish a message to a topic/queue.
+        
+        Args:
+            topic: Topic or queue name
+            message: Message dictionary
+            priority: Message priority
+        """
+        if not self.is_connected:
+            raise ConnectionError("Not connected to message queue")
+        
+        # Create protocol message
+        protocol_message = self.protocol.create_message(
+            message_type=MessageType(message.get("type", "agent_message")),
+            data=message.get("data", {}),
+            priority=priority
+        )
+        
+        try:
+            if self.provider == QueueProvider.REDIS:
+                await self._publish_redis(topic, protocol_message)
+            elif self.provider == QueueProvider.RABBITMQ:
+                await self._publish_rabbitmq(topic, protocol_message)
+            
+            logger.debug(f"Published message to topic: {topic}")
+        
+        except Exception as e:
+            logger.error(f"Failed to publish message: {str(e)}")
+            raise
+    
+    async def _publish_redis(self, topic: str, message: str):
+        """Publish message to Redis."""
+        await self.connection.publish(topic, message)
+    
+    async def _publish_rabbitmq(self, topic: str, message: str):
+        """Publish message to RabbitMQ."""
+---
+    async def subscribe(self,
+                       topic: str,
+                       handler: Callable[[Dict[str, Any]], None]):
+        """
+        Subscribe to a topic/queue and register a message handler.
+        
+        Args:
+            topic: Topic or queue name
+            handler: Async callback function to handle messages
+        """
+        if not self.is_connected:
+            raise ConnectionError("Not connected to message queue")
+        
+        try:
+            if self.provider == QueueProvider.REDIS:
+                await self._subscribe_redis(topic, handler)
+            elif self.provider == QueueProvider.RABBITMQ:
+                await self._subscribe_rabbitmq(topic, handler)
+            
+            logger.info(f"Subscribed to topic: {topic}")
+        
+        except Exception as e:
+            logger.error(f"Failed to subscribe to topic: {str(e)}")
+            raise
+    
+    async def _subscribe_redis(self, topic: str, handler: Callable):
+        """Subscribe to Redis channel."""
+---
+    async def register_handler(self, message_type: MessageType, handler: Callable):
+        """
+        Register a handler for a specific message type.
+        
+        Args:
+            message_type: Type of message to handle
+            handler: Handler function
+        """
+        self.message_handlers[message_type] = handler
+        logger.debug(f"Registered handler for message type: {message_type.value}")
+    
+    async def handle_message(self, message: Dict[str, Any]):
+        """
+        Route a message to the appropriate handler.
+        
+        Args:
+            message: Parsed message dictionary
+        """
+        message_type = message.get("message_type_enum")
+        
+        if message_type in self.message_handlers:
+            handler = self.message_handlers[message_type]
+            try:
+                await handler(message)
+            except Exception as e:
+                logger.error(f"Error in message handler: {str(e)}")
+        else:

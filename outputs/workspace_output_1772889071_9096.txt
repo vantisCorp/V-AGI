@@ -1,0 +1,16 @@
+
+X dependabot/docker/python-3.14-slim CI/CD Pipeline vantisCorp/V-AGI#8 · 22799651716
+Triggered via pull_request about 1 minute ago
+
+JOBS
+X test (3.12) in 3s (ID 66139380143)
+X lint in 3s (ID 66139380147)
+X security in 3s (ID 66139380154)
+X test (3.11) in 3s (ID 66139380179)
+- build in 0s (ID 66139381975)
+
+ANNOTATIONS
+requesting annotations returned 403 Forbidden as the token does not have sufficient permissions. Note that it is not currently possible to create a fine-grained PAT with the `checks:read` permission.
+
+To see what failed, try: gh run view 22799651716 --log-failed
+View this run on GitHub: https://github.com/vantisCorp/V-AGI/actions/runs/22799651716

@@ -1,0 +1,8 @@
+270:            if task_type == "legal_document_analysis":
+272:            elif task_type == "compliance_assessment":
+274:            elif task_type == "contract_review":
+276:            elif task_type == "regulatory_interpretation":
+278:            elif task_type == "risk_assessment":
+280:            elif task_type == "policy_generation":
+282:            elif task_type == "audit_preparation":
+284:            elif task_type == "intellectual_property_analysis":

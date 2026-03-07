@@ -1,0 +1,80 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace
+configfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)
+plugins: anyio-4.12.1, cov-7.0.0, asyncio-1.3.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 18 items
+
+tests/test_websocket_handler.py::TestWebSocketHandlerInit::test_init_default_values PASSED [  5%]
+tests/test_websocket_handler.py::TestWebSocketHandlerInit::test_init_custom_values PASSED [ 11%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMethods::test_handle_client_connect PASSED [ 16%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMethods::test_register_handler FAILED [ 22%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMethods::test_broadcast_message PASSED [ 27%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMethods::test_broadcast_message_no_clients PASSED [ 33%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMethods::test_handle_ping PASSED [ 38%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMethods::test_handle_agent_list FAILED [ 44%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMethods::test_handle_task_status_not_found FAILED [ 50%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStartStop::test_start_server FAILED [ 55%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStartStop::test_stop_server PASSED [ 61%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStartStop::test_stop_server_no_server PASSED [ 66%]
+tests/test_websocket_handler.py::TestWebSocketHandlerClientManagement::test_client_add_remove PASSED [ 72%]
+tests/test_websocket_handler.py::TestWebSocketHandlerClientManagement::test_multiple_clients PASSED [ 77%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMessageTypes::test_handle_subscribe FAILED [ 83%]
+tests/test_websocket_handler.py::TestWebSocketHandlerMessageTypes::test_handle_unsubscribe FAILED [ 88%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_stream_metrics PASSED [ 94%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_stream_events PASSED [100%]
+
+=================================== FAILURES ===================================
+______________ TestWebSocketHandlerMethods.test_register_handler _______________
+tests/test_websocket_handler.py:148: in test_register_handler
+    handler.register_handler(MessageType.TASK_SUBMIT, custom_handler)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'WebSocketHandler' object has no attribute 'register_handler'
+______________ TestWebSocketHandlerMethods.test_handle_agent_list ______________
+tests/test_websocket_handler.py:194: in test_handle_agent_list
+    await handler.handle_agent_list(websocket, "client-1", {})
+src/api/websocket_handler.py:348: in handle_agent_list
+    "description": agent.description,
+                   ^^^^^^^^^^^^^^^^^
+E   AttributeError: 'MockAgent' object has no attribute 'description'
+________ TestWebSocketHandlerMethods.test_handle_task_status_not_found _________
+tests/test_websocket_handler.py:206: in test_handle_task_status_not_found
+    await handler.handle_task_status(
+E   TypeError: WebSocketHandler.handle_task_status() missing 1 required positional argument: 'data'
+_______________ TestWebSocketHandlerStartStop.test_start_server ________________
+tests/test_websocket_handler.py:229: in test_start_server
+    if not handler.WEBSOCKETS_AVAILABLE:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'WebSocketHandler' object has no attribute 'WEBSOCKETS_AVAILABLE'
+____________ TestWebSocketHandlerMessageTypes.test_handle_subscribe ____________
+tests/test_websocket_handler.py:295: in test_handle_subscribe
+    await handler.handle_subscribe(
+E   TypeError: WebSocketHandler.handle_subscribe() missing 1 required positional argument: 'data'
+___________ TestWebSocketHandlerMessageTypes.test_handle_unsubscribe ___________
+tests/test_websocket_handler.py:309: in test_handle_unsubscribe
+    await handler.handle_unsubscribe(
+E   TypeError: WebSocketHandler.handle_unsubscribe() missing 1 required positional argument: 'data'
+=============================== warnings summary ===============================
+tests/test_websocket_handler.py::TestWebSocketHandlerStartStop::test_stop_server
+  /workspace/src/api/websocket_handler.py:608: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    self.server.close()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.11.14-final-0 _______________
+
+Name                                   Stmts   Miss  Cover   Missing
+--------------------------------------------------------------------
+src/__init__.py                            4      0   100%
+src/agents/__init__.py                     2      0   100%
+src/agents/ares.py                       185    185     0%   15-789
+src/agents/argus.py                      299    299     0%   1-1295
+src/agents/base_agent.py                  95     33    65%   43, 68, 113-119, 132, 145, 149, 153, 157-158, 162-163, 167-168, 172-174, 178-179, 183-187, 196-202, 216
+src/agents/cerberus.py                   149    149     0%   13-579
+src/agents/forge.py                      209    209     0%   14-792
+src/agents/lex_core.py                   179    179     0%   1-1182
+src/agents/ludus.py                      214    214     0%   1-1148

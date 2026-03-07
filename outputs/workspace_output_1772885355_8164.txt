@@ -1,0 +1,3 @@
+tests/test_integration.py:145:    async def test_cad_mass_properties(self, cad):
+tests/test_integration.py:153:        # Use get_component_properties instead of calculate_mass_properties
+tests/test_integration.py:154:        result = await cad.get_component_properties(box.id)

@@ -1,0 +1,27 @@
+============================= test session starts ==============================
+collected 80 items
+        <Function test_agent_initialization>
+        <Function test_validate_task>
+        <Function test_verify_fact>
+        <Function test_initialization>
+        <Function test_filter_input_safe>
+        <Function test_filter_input_malicious>
+        <Function test_get_security_events>
+        <Function test_get_stats>
+        <Function test_set_and_get>
+        <Function test_get_nonexistent>
+        <Function test_delete>
+        <Function test_size_limit>
+        <Function test_get_stats>
+        <Function test_initialization>
+        <Function test_register_agent>
+        <Function test_submit_task>
+        <Function test_get_task_status>
+        <Function test_get_stats>
+        <Function test_initialization>
+        <Function test_message_protocol_creation>
+        <Function test_message_validation>
+        <Function test_priority_queue>
+        <Function test_message_creation_performance>
+        <Function test_priority_queue_performance>
+========================= 80 tests collected in 2.07s ==========================

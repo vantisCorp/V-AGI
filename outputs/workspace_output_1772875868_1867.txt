@@ -1,0 +1,20 @@
+73:    def __init__(self):
+77:    def create_message(self,
+110:    def parse_message(self, raw_message: str) -> Dict[str, Any]:
+144:    def validate_message(self, message: Dict[str, Any]) -> bool:
+178:    def create_error_message(self,
+208:    def create_task_message(self,
+241:    def create_agent_message(self,
+272:    def create_notification(self,
+303:    def create_event(self,
+331:    def get_message_type(self, raw_message: str) -> Optional[MessageType]:
+348:    def is_error_message(self, raw_message: str) -> bool:
+360:    def is_task_message(self, raw_message: str) -> bool:
+380:    def extract_message_id(self, raw_message: str) -> Optional[str]:
+403:    def __init__(self, max_size: int = 1000):
+420:    def enqueue(self, message: Dict[str, Any], priority: MessagePriority) -> bool:
+440:    def dequeue(self) -> Optional[Dict[str, Any]]:
+456:    def peek(self) -> Optional[Dict[str, Any]]:
+469:    def size(self) -> int:
+473:    def clear(self):
+479:    def get_stats(self) -> Dict[str, Any]:

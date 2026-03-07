@@ -165,6 +165,143 @@ class TestCerberusAgent:
         assert response is not None
         assert hasattr(response, 'status')
 
+    @pytest.mark.asyncio
+    async def test_execute_detect_anomalies(self, agent):
+        """Test anomaly detection task."""
+        task = Task(
+            id="test_anomaly_1",
+            description="Detect anomalies",
+            parameters={
+                "task_type": "detect_anomalies",
+                "data_sources": ["network_logs", "system_logs"],
+                "sensitivity": "high"
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_respond_incident(self, agent):
+        """Test incident response task."""
+        task = Task(
+            id="test_incident_1",
+            description="Respond to incident",
+            parameters={
+                "task_type": "respond_incident",
+                "incident_type": "malware_detection",
+                "severity": "high",
+                "affected_systems": ["server-1", "workstation-5"]
+            },
+            priority=TaskPriority.CRITICAL
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_scan_vulnerabilities(self, agent):
+        """Test vulnerability scanning task."""
+        task = Task(
+            id="test_vuln_1",
+            description="Scan vulnerabilities",
+            parameters={
+                "task_type": "scan_vulnerabilities",
+                "target_systems": ["web-server", "database-server"],
+                "scan_depth": "deep"
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_check_compliance(self, agent):
+        """Test compliance check task."""
+        task = Task(
+            id="test_compliance_1",
+            description="Check compliance",
+            parameters={
+                "task_type": "check_compliance",
+                "framework": "ISO27001",
+                "scope": ["access_control", "encryption", "incident_management"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_generate_security_report(self, agent):
+        """Test security report generation task."""
+        task = Task(
+            id="test_report_1",
+            description="Generate security report",
+            parameters={
+                "task_type": "generate_security_report",
+                "report_type": "executive_summary",
+                "period": "Q1 2024"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_unknown_task_type(self, agent):
+        """Test unknown task type handling."""
+        task = Task(
+            id="test_unknown_sec_1",
+            description="Unknown task",
+            parameters={"task_type": "unknown_security_type"},
+            priority=TaskPriority.LOW
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "error" in response.result
+
+    @pytest.mark.asyncio
+    async def test_validate_task_success(self, agent):
+        """Test task validation with valid task type."""
+        task = Task(
+            id="test_validate_sec_1",
+            description="Valid task",
+            parameters={"task_type": "monitor_threats"},
+            priority=TaskPriority.HIGH
+        )
+        is_valid = await agent.validate_task(task)
+        assert is_valid is True
+
+    @pytest.mark.asyncio
+    async def test_validate_task_invalid(self, agent):
+        """Test task validation with invalid task type."""
+        task = Task(
+            id="test_validate_sec_2",
+            description="Invalid task",
+            parameters={"task_type": "invalid_type"},
+            priority=TaskPriority.MEDIUM
+        )
+        is_valid = await agent.validate_task(task)
+        assert is_valid is False
+
+    @pytest.mark.asyncio
+    async def test_get_stats(self, agent):
+        """Test get_stats method."""
+        stats = await agent.get_stats()
+        assert stats is not None
+        assert "total_incidents" in stats
+        assert "threat_indicators_configured" in stats
+
+    @pytest.mark.asyncio
+    async def test_threat_indicators_initialized(self, agent):
+        """Test threat indicators are initialized."""
+        assert agent.threat_indicators is not None
+        assert len(agent.threat_indicators) > 0
+
 
 class TestMuseAgent:
     """Test suite for MUSE Agent (Creative)."""
@@ -192,6 +329,195 @@ class TestMuseAgent:
         response = await agent.execute_task(task)
         assert response is not None
         assert hasattr(response, 'status')
+
+    @pytest.mark.asyncio
+    async def test_execute_generate_story(self, agent):
+        """Test story generation task."""
+        task = Task(
+            id="test_story_1",
+            description="Generate a story",
+            parameters={
+                "task_type": "generate_story",
+                "genre": "science fiction",
+                "length": "short",
+                "characters": ["hero", "villain"]
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_generate_poem(self, agent):
+        """Test poem generation task."""
+        task = Task(
+            id="test_poem_1",
+            description="Generate a poem",
+            parameters={
+                "task_type": "generate_poem",
+                "topic": "nature",
+                "style": "haiku",
+                "stanzas": 3
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_write_article(self, agent):
+        """Test article writing task."""
+        task = Task(
+            id="test_article_1",
+            description="Write an article",
+            parameters={
+                "task_type": "write_article",
+                "topic": "Artificial Intelligence",
+                "tone": "informative",
+                "word_count": 500
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_create_marketing_copy(self, agent):
+        """Test marketing copy creation task."""
+        task = Task(
+            id="test_marketing_1",
+            description="Create marketing copy",
+            parameters={
+                "task_type": "create_marketing_copy",
+                "product": "Smart Watch",
+                "target_audience": "young professionals",
+                "key_benefits": ["fitness tracking", "notifications", "style"]
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_design_brand_identity(self, agent):
+        """Test brand identity design task."""
+        task = Task(
+            id="test_brand_1",
+            description="Design brand identity",
+            parameters={
+                "task_type": "design_brand_identity",
+                "brand_name": "TechCorp",
+                "industry": "technology",
+                "values": ["innovation", "reliability", "sustainability"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_generate_social_media(self, agent):
+        """Test social media content generation task."""
+        task = Task(
+            id="test_social_1",
+            description="Generate social media content",
+            parameters={
+                "task_type": "generate_social_media",
+                "platform": "twitter",
+                "content_type": "promotional",
+                "campaign_theme": "Summer Sale"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_write_script(self, agent):
+        """Test script writing task."""
+        task = Task(
+            id="test_script_1",
+            description="Write a script",
+            parameters={
+                "task_type": "write_script",
+                "format": "video",
+                "duration": "60 seconds",
+                "topic": "Product demonstration"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_describe_art(self, agent):
+        """Test art description task."""
+        task = Task(
+            id="test_art_1",
+            description="Describe art",
+            parameters={
+                "task_type": "describe_art",
+                "style": "impressionist",
+                "subject": "landscape",
+                "mood": "peaceful"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_unknown_task_type(self, agent):
+        """Test unknown task type handling."""
+        task = Task(
+            id="test_unknown_1",
+            description="Unknown task",
+            parameters={"task_type": "unknown_creative_type"},
+            priority=TaskPriority.LOW
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "error" in response.result
+
+    @pytest.mark.asyncio
+    async def test_validate_task_success(self, agent):
+        """Test task validation with valid task type."""
+        task = Task(
+            id="test_validate_1",
+            description="Valid task",
+            parameters={"task_type": "generate_story"},
+            priority=TaskPriority.MEDIUM
+        )
+        is_valid = await agent.validate_task(task)
+        assert is_valid is True
+
+    @pytest.mark.asyncio
+    async def test_validate_task_invalid(self, agent):
+        """Test task validation with invalid task type."""
+        task = Task(
+            id="test_validate_2",
+            description="Invalid task",
+            parameters={"task_type": "invalid_type"},
+            priority=TaskPriority.MEDIUM
+        )
+        is_valid = await agent.validate_task(task)
+        assert is_valid is False
+
+    @pytest.mark.asyncio
+    async def test_get_stats(self, agent):
+        """Test get_stats method."""
+        stats = await agent.get_stats()
+        assert stats is not None
+        assert "content_types_supported" in stats
+        assert "specialization" in stats
 
 
 class TestForgeAgent:
@@ -508,6 +834,192 @@ class TestAresAgent:
         assert response is not None
         assert hasattr(response, 'status')
 
+    @pytest.mark.asyncio
+    async def test_execute_optimize_resources(self, agent):
+        """Test resource optimization task."""
+        task = Task(
+            id="test_opt_res_1",
+            description="Optimize resources",
+            parameters={
+                "task_type": "optimize_resources",
+                "resources": {
+                    "personnel": [{"id": "p1", "skills": ["analysis"], "availability": 0.8}],
+                    "equipment": [{"id": "e1", "type": "computer", "utilization": 0.5}],
+                    "budget": {"total": 100000, "allocated": 60000}
+                }
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_assess_risk(self, agent):
+        """Test risk assessment task."""
+        task = Task(
+            id="test_risk_1",
+            description="Assess project risk",
+            parameters={
+                "task_type": "assess_risk",
+                "project_details": {
+                    "name": "Test Project",
+                    "timeline": "6 months",
+                    "budget": 500000
+                },
+                "risk_factors": ["market_volatility", "resource_availability"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_analyze_performance(self, agent):
+        """Test performance analysis task."""
+        task = Task(
+            id="test_perf_1",
+            description="Analyze performance",
+            parameters={
+                "task_type": "analyze_performance",
+                "metrics": ["revenue", "efficiency", "customer_satisfaction"],
+                "time_period": "Q1 2024"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_optimize_supply_chain(self, agent):
+        """Test supply chain optimization task."""
+        task = Task(
+            id="test_supply_1",
+            description="Optimize supply chain",
+            parameters={
+                "task_type": "optimize_supply_chain",
+                "supply_chain": {
+                    "suppliers": [{"id": "s1", "reliability": 0.9, "cost": 100}],
+                    "distribution_centers": [{"id": "d1", "capacity": 1000}],
+                    "demand_forecast": {"product_a": 500, "product_b": 300}
+                }
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_decision_support(self, agent):
+        """Test decision support task."""
+        task = Task(
+            id="test_decision_1",
+            description="Provide decision support",
+            parameters={
+                "task_type": "decision_support",
+                "decision_context": {
+                    "type": "investment",
+                    "options": ["option_a", "option_b", "option_c"],
+                    "criteria": ["roi", "risk", "timeline"]
+                }
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_business_intelligence(self, agent):
+        """Test business intelligence task."""
+        task = Task(
+            id="test_bi_1",
+            description="Generate business intelligence",
+            parameters={
+                "task_type": "business_intelligence",
+                "data_sources": ["sales", "marketing", "operations"],
+                "analysis_type": "trend_analysis"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_forecast_demand(self, agent):
+        """Test demand forecasting task."""
+        task = Task(
+            id="test_forecast_1",
+            description="Forecast demand",
+            parameters={
+                "task_type": "forecast_demand",
+                "historical_data": {
+                    "product_a": [100, 120, 115, 130, 125],
+                    "product_b": [50, 55, 60, 58, 62]
+                },
+                "forecast_period": "3_months"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_unknown_task_type(self, agent):
+        """Test unknown task type handling."""
+        task = Task(
+            id="test_unknown_1",
+            description="Unknown task",
+            parameters={"task_type": "unknown_type"},
+            priority=TaskPriority.LOW
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "error" in response.result
+
+    @pytest.mark.asyncio
+    async def test_validate_task_success(self, agent):
+        """Test task validation with valid task type."""
+        task = Task(
+            id="test_validate_1",
+            description="Valid task",
+            parameters={"task_type": "create_strategic_plan"},
+            priority=TaskPriority.MEDIUM
+        )
+        is_valid = await agent.validate_task(task)
+        assert is_valid is True
+
+    @pytest.mark.asyncio
+    async def test_validate_task_invalid(self, agent):
+        """Test task validation with invalid task type."""
+        task = Task(
+            id="test_validate_2",
+            description="Invalid task",
+            parameters={"task_type": "invalid_type"},
+            priority=TaskPriority.MEDIUM
+        )
+        is_valid = await agent.validate_task(task)
+        assert is_valid is False
+
+    @pytest.mark.asyncio
+    async def test_optimization_methods(self, agent):
+        """Test optimization methods are initialized."""
+        assert agent.optimization_methods is not None
+        assert len(agent.optimization_methods) > 0
+
+    @pytest.mark.asyncio
+    async def test_get_stats(self, agent):
+        """Test get_stats method."""
+        stats = await agent.get_stats()
+        assert stats is not None
+        assert "optimization_methods" in stats
+        assert "specialization" in stats
+
 
 class TestLEXCoreAgent:
     """Test suite for LEX-Core Agent (Legal & Compliance)."""
@@ -535,6 +1047,153 @@ class TestLEXCoreAgent:
         response = await agent.execute_task(task)
         assert response is not None
         assert hasattr(response, 'status')
+
+    @pytest.mark.asyncio
+    async def test_execute_compliance_assessment(self, agent):
+        """Test compliance assessment task."""
+        task = Task(
+            id="test_compliance_1",
+            description="Assess compliance",
+            parameters={
+                "task_type": "compliance_assessment",
+                "framework": "GDPR",
+                "organization_data": {
+                    "data_processing_activities": ["collection", "storage"],
+                    "data_subjects": ["customers", "employees"]
+                }
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_contract_review(self, agent):
+        """Test contract review task."""
+        task = Task(
+            id="test_contract_1",
+            description="Review contract",
+            parameters={
+                "task_type": "contract_review",
+                "contract_type": "service_agreement",
+                "parties": ["Company A", "Company B"],
+                "key_terms": ["payment", "termination", "liability"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_regulatory_interpretation(self, agent):
+        """Test regulatory interpretation task."""
+        task = Task(
+            id="test_regulatory_1",
+            description="Interpret regulations",
+            parameters={
+                "task_type": "regulatory_interpretation",
+                "regulation": "SOX",
+                "query": "What are the key compliance requirements?",
+                "industry": "financial_services"
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_risk_assessment(self, agent):
+        """Test legal risk assessment task."""
+        task = Task(
+            id="test_legal_risk_1",
+            description="Assess legal risks",
+            parameters={
+                "task_type": "risk_assessment",
+                "business_activity": "merger_acquisition",
+                "jurisdiction": "US",
+                "risk_factors": ["regulatory_approval", "antitrust"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_policy_generation(self, agent):
+        """Test policy generation task."""
+        task = Task(
+            id="test_policy_1",
+            description="Generate policy",
+            parameters={
+                "task_type": "policy_generation",
+                "policy_type": "data_privacy",
+                "organization": "TechCorp",
+                "scope": ["employee_data", "customer_data"]
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_audit_preparation(self, agent):
+        """Test audit preparation task."""
+        task = Task(
+            id="test_audit_1",
+            description="Prepare for audit",
+            parameters={
+                "task_type": "audit_preparation",
+                "audit_type": "financial",
+                "period": "Q1 2024",
+                "requirements": ["documentation", "controls_evidence"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_intellectual_property_analysis(self, agent):
+        """Test IP analysis task."""
+        task = Task(
+            id="test_ip_1",
+            description="Analyze intellectual property",
+            parameters={
+                "task_type": "intellectual_property_analysis",
+                "ip_type": "patent",
+                "invention_description": "AI-powered data processing system",
+                "prior_art": ["existing_patent_1", "existing_patent_2"]
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_unknown_task_type(self, agent):
+        """Test unknown task type handling."""
+        task = Task(
+            id="test_unknown_legal_1",
+            description="Unknown task",
+            parameters={"task_type": "unknown_legal_type"},
+            priority=TaskPriority.LOW
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert response.error is not None or "error" in str(response.result).lower()
+
+    @pytest.mark.asyncio
+    async def test_legal_frameworks_initialized(self, agent):
+        """Test legal frameworks are initialized."""
+        assert agent.legal_frameworks is not None
+        assert len(agent.legal_frameworks) > 0
 
 
 class TestLUDUSAgent:

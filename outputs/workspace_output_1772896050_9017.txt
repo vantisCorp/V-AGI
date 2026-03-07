@@ -1,0 +1,31 @@
+            if filtered_data.get("blocked"):
+                return jsonify({
+                    "error": "Input blocked by AEGIS security layer",
+                    "reason": filtered_data.get("reason")
+                }), 403
+        
+        # Create task
+        try:
+            task = Task(
+                task_id=data.get('task_id'),
+                description=data['description'],
+                parameters=data['parameters'],
+                priority=TaskPriority(data.get('priority', 'medium').lower()),
+                agent_id=data.get('agent_id'),
+                clearance_level=data.get('clearance_level', 1)
+            )
+        except ValueError as e:
+            return jsonify({"error": f"Invalid task data: {str(e)}"}), 400
+        
+        # Submit task to orchestrator
+        try:
+            future = app.orchestrator.submit_task(task)
+            result = asyncio.run(future)
+            
+            return jsonify({
+                "task_id": result.task_id,
+                "agent_id": result.agent_id,
+                "status": result.status.value,
+                "result": result.result,
+                "timestamp": result.timestamp.isoformat()
+            })

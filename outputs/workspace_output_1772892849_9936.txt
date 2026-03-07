@@ -1,0 +1,4 @@
+  File "<string>", line 7
+    content = content.replace(': WebSocketServerProtocol', ': 'WebSocketServerProtocol'')
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?

@@ -1,0 +1,14 @@
+44:    def to_dict(self) -> Dict[str, Any]:
+86:    def __init__(self, agent_id: str = "cerberus"):
+128:    async def validate_task(self, task: Task) -> bool:
+150:    async def execute_task(self, task: Task) -> AgentResponse:
+221:    async def _monitor_threats(self, task: Task) -> Dict[str, Any]:
+264:    def _detect_malware_indicators(self) -> bool:
+270:    def _detect_network_anomalies(self) -> bool:
+276:    async def _detect_anomalies(self, task: Task) -> Dict[str, Any]:
+314:    async def _respond_incident(self, task: Task) -> Dict[str, Any]:
+373:    async def _scan_vulnerabilities(self, task: Task) -> Dict[str, Any]:
+433:    async def _check_compliance(self, task: Task) -> Dict[str, Any]:
+485:    async def _generate_security_report(self, task: Task) -> Dict[str, Any]:
+539:    async def get_incidents(
+569:    async def get_stats(self) -> Dict[str, Any]:

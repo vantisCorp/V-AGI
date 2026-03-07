@@ -1,0 +1,21 @@
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'status')
+
+
+class TestAresAgent:
+    """Test suite for ARES Agent (Strategic Planning)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create ARES agent instance."""
+        return AresAgent()
+    
+    @pytest.mark.asyncio
+    async def test_agent_initialization(self, agent):
+        """Test agent initializes correctly."""
+        assert agent is not None
+        assert agent.agent_id == "ares"
+    
+    @pytest.mark.asyncio
+    async def test_execute_task(self, agent):

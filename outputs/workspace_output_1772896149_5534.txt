@@ -1,0 +1,20 @@
+3d2
+< Tests Redis and RabbitMQ message queue functionality
+6d4
+< import sys
+9d6
+< import json
+19c16
+<     """Tests for MessageQueueIntegration class."""
+---
+>     """Test suite for MessageQueueIntegration class."""
+21,23c18,24
+<     def test_init_default_values(self):
+<         """Test initialization with default values."""
+<         mq = MessageQueueIntegration()
+---
+>     def test_initialization_redis(self):
+>         """Test initialization with Redis provider."""
+>         mq = MessageQueueIntegration(
+>             provider=QueueProvider.REDIS,
+>             host="localhost",

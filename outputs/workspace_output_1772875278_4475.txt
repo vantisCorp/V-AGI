@@ -1,0 +1,4 @@
+13:class AgentStatus(Enum):
+116:        self.status = AgentStatus.IDLE
+155:    async def get_status(self) -> AgentStatus:
+160:    async def set_status(self, status: AgentStatus) -> None:

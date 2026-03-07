@@ -1,0 +1,41 @@
+{
+    "total_count": 3,
+    "workflows": [
+        {
+            "id": 242895546,
+            "node_id": "W_kwDORBjV2M4Oekq6",
+            "name": "CI/CD Pipeline",
+            "path": ".github/workflows/ci.yml",
+            "state": "active",
+            "created_at": "2026-03-07T13:08:58.000Z",
+            "updated_at": "2026-03-07T13:09:02.000Z",
+            "url": "https://api.github.com/repos/vantisCorp/V-AGI/actions/workflows/242895546",
+            "html_url": "https://github.com/vantisCorp/V-AGI/blob/main/.github/workflows/ci.yml",
+            "badge_url": "https://github.com/vantisCorp/V-AGI/workflows/CI/CD%20Pipeline/badge.svg"
+        },
+        {
+            "id": 242900207,
+            "node_id": "W_kwDORBjV2M4Oelzv",
+            "name": "Simple Test",
+            "path": ".github/workflows/test-simple.yml",
+            "state": "active",
+            "created_at": "2026-03-07T13:29:59.000Z",
+            "updated_at": "2026-03-07T13:29:59.000Z",
+            "url": "https://api.github.com/repos/vantisCorp/V-AGI/actions/workflows/242900207",
+            "html_url": "https://github.com/vantisCorp/V-AGI/blob/main/.github/workflows/test-simple.yml",
+            "badge_url": "https://github.com/vantisCorp/V-AGI/workflows/Simple%20Test/badge.svg"
+        },
+        {
+            "id": 242895573,
+            "node_id": "W_kwDORBjV2M4OekrV",
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active",
+            "created_at": "2026-03-07T13:09:08.000Z",
+            "updated_at": "2026-03-07T13:09:08.000Z",
+            "url": "https://api.github.com/repos/vantisCorp/V-AGI/actions/workflows/242895573",
+            "html_url": "https://github.com/vantisCorp/V-AGI/actions/workflows/dependabot/dependabot-updates",
+            "badge_url": "https://github.com/vantisCorp/V-AGI/actions/workflows/dependabot/dependabot-updates/badge.svg"
+        }
+    ]
+}

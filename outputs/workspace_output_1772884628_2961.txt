@@ -1,0 +1,31 @@
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert node to dictionary."""
+        return {
+            "id": self.id,
+            "label": self.label,
+            "properties": self.properties,
+            "created_at": self.created_at.isoformat()
+        }
+
+
+@dataclass
+class KnowledgeRelationship:
+    """Relationship between knowledge nodes."""
+    source: str
+    target: str
+    relationship_type: str
+    properties: Dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.utcnow)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert relationship to dictionary."""
+        return {
+            "source": self.source,
+            "target": self.target,
+            "type": self.relationship_type,
+            "properties": self.properties,
+            "created_at": self.created_at.isoformat()
+        }
+
+
+class LongTermMemory:

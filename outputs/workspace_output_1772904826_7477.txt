@@ -1,0 +1,52 @@
+    async def handle_task_status(self, websocket: Any,
+                                client_id: str, message_id: str, data: Dict[str, Any]):
+        """
+        Handle task status request.
+        
+        Args:
+            websocket: WebSocket connection
+            client_id: Client identifier
+            message_id: Message identifier
+            data: Task status request data
+        """
+        task_id = data.get('task_id')
+        
+        if not task_id:
+            error_msg = self.protocol.create_message(
+                message_type=MessageType.ERROR,
+                data={"error": "Missing task_id"},
+                reply_to=message_id
+            )
+            await websocket.send(error_msg)
+            return
+        
+        if not self.orchestrator:
+            error_msg = self.protocol.create_message(
+                message_type=MessageType.ERROR,
+                data={"error": "Orchestrator not available"},
+                reply_to=message_id
+            )
+            await websocket.send(error_msg)
+            return
+        
+        # Get task from orchestrator
+        task = self.orchestrator.task_queue.get(task_id)
+        
+        if task:
+            status_msg = self.protocol.create_message(
+                message_type=MessageType.TASK_STATUS,
+                data={
+                    "task_id": task.task_id,
+                    "status": task.status.value,
+                    "agent_id": task.agent_id,
+                    "created_at": task.created_at.isoformat() if task.created_at else None,
+                    "updated_at": task.updated_at.isoformat() if task.updated_at else None
+                },
+                reply_to=message_id
+            )
+            await websocket.send(status_msg)
+        else:
+            error_msg = self.protocol.create_message(
+                message_type=MessageType.ERROR,
+                data={"error": f"Task not found: {task_id}"},
+                reply_to=message_id

@@ -1,0 +1,12 @@
+30:    def to_dict(self) -> Dict[str, Any]:
+49:    def to_dict(self) -> Dict[str, Any]:
+71:    def __init__(
+96:    def _connect(self) -> None:
+108:    async def close(self) -> None:
+114:    def _execute_query(self, query: str, parameters: Dict[str, Any] = None) -> List[Dict[str, Any]]:
+136:    async def store_node(self, node: KnowledgeNode) -> bool:
+171:    async def get_node(self, node_id: str) -> Optional[Dict[str, Any]]:
+202:    async def create_relationship(
+245:    async def search_nodes(
+296:    async def get_connected_nodes(
+349:    async def get_stats(self) -> Dict[str, Any]:

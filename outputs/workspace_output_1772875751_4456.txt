@@ -1,0 +1,14 @@
+63:    def __init__(self, agent_id: str = "veritas"):
+104:    async def validate_task(self, task: Task) -> bool:
+125:    async def execute_task(self, task: Task) -> AgentResponse:
+194:    async def _verify_fact(self, task: Task) -> Dict[str, Any]:
+228:    async def _verify_against_sources(self, claim: FactClaim) -> VerificationResult:
+265:    async def _check_consistency(self, task: Task) -> Dict[str, Any]:
+289:    async def _analyze_logical_consistency(self, content: str) -> LogicalConsistency:
+323:    def _detect_contradictions(self, sentences: List[str]) -> List[str]:
+347:    def _detect_circular_reasoning(self, content: str) -> bool:
+372:    async def _validate_sources(self, task: Task) -> Dict[str, Any]:
+402:    async def _assess_source_reliability(self, source: str) -> float:
+420:    async def _generate_citations(self, task: Task) -> Dict[str, Any]:
+460:    async def _fact_check_content(self, task: Task) -> Dict[str, Any]:
+502:    def _extract_factual_claims(self, content: str) -> List[str]:

@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "visibility": "private",
+  "owner": "vantisCorp"
+}

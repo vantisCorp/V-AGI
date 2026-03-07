@@ -1,0 +1,39 @@
+class MessageType(Enum):
+    """Message type enumeration."""
+    
+    # Connection Management
+    WELCOME = "welcome"
+    PING = "ping"
+    PONG = "pong"
+    GOODBYE = "goodbye"
+    
+    # Task Management
+    TASK_SUBMIT = "task_submit"
+    TACK = "task_ack"  # Task acknowledgment
+    TASK_RESULT = "task_result"
+    TASK_CANCEL = "task_cancel"
+    TASK_STATUS = "task_status"
+    
+    # Agent Management
+    AGENT_LIST = "agent_list"
+    AGENT_STATUS = "agent_status"
+    
+    # Streaming
+    STREAM_START = "stream_start"
+    STREAM_STARTED = "stream_started"
+    STREAM_DATA = "stream_data"
+    STREAM_STOP = "stream_stop"
+    STREAM_STOPPED = "stream_stopped"
+    
+    # Subscriptions
+    SUBSCRIBE = "subscribe"
+    SUBSCRIPTION_CONFIRMED = "subscription_confirmed"
+    UNSUBSCRIBE = "unsubscribe"
+    SUBSCRIPTION_CANCELLED = "subscription_cancelled"
+    
+    # Events
+    EVENT = "event"
+    NOTIFICATION = "notification"
+    
+    # Errors
+    ERROR = "error"

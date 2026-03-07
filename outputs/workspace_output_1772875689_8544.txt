@@ -1,0 +1,273 @@
+"""
+Unit Tests for Core Components
+Tests NEXUS Orchestrator, Memory Systems, and Security Layer
+"""
+
+import pytest
+import asyncio
+from unittest.mock import Mock, AsyncMock, patch
+from datetime import datetime
+
+from src.nexus.orchestrator import NexusOrchestrator
+from src.memory.working_memory import WorkingMemory
+from src.memory.long_term_memory import LongTermMemory
+from src.memory.vector_store import VectorStore
+from src.security.aegis import AegisGuardian
+
+
+class TestNexusOrchestrator:
+    """Test suite for NEXUS Orchestrator."""
+    
+    @pytest.fixture
+    async def orchestrator(self):
+        """Create orchestrator instance for testing."""
+        orchestrator = NexusOrchestrator()
+        yield orchestrator
+        # Cleanup
+        await orchestrator.shutdown()
+    
+    @pytest.mark.asyncio
+    async def test_orchestrator_initialization(self, orchestrator):
+        """Test orchestrator initialization."""
+        assert orchestrator is not None
+        assert orchestrator.agents == {}
+        assert orchestrator.active_tasks == {}
+    
+    @pytest.mark.asyncio
+    async def test_register_agent(self, orchestrator):
+        """Test agent registration."""
+        mock_agent = Mock()
+        mock_agent.agent_id = "test_agent"
+        mock_agent.capabilities = ["test_capability"]
+        
+        await orchestrator.register_agent(mock_agent)
+        
+        assert "test_agent" in orchestrator.agents
+        assert orchestrator.agents["test_agent"] == mock_agent
+    
+    @pytest.mark.asyncio
+    async def test_distribute_task(self, orchestrator):
+        """Test task distribution."""
+        # Register mock agent
+        mock_agent = AsyncMock()
+        mock_agent.agent_id = "test_agent"
+        mock_agent.capabilities = ["test_capability"]
+        mock_agent.process_task = AsyncMock(return_value={"result": "success"})
+        
+        await orchestrator.register_agent(mock_agent)
+        
+        # Distribute task
+        result = await orchestrator.distribute_task({
+            "type": "test_capability",
+            "data": "test_data"
+        })
+        
+        assert result is not None
+        assert "agent_id" in result
+        assert result["agent_id"] == "test_agent"
+        mock_agent.process_task.assert_called_once()
+    
+    @pytest.mark.asyncio
+    async def test_get_status(self, orchestrator):
+        """Test status retrieval."""
+        status = await orchestrator.get_status()
+        
+        assert "agents" in status
+        assert "active_tasks" in status
+        assert "memory_usage" in status
+
+
+class TestWorkingMemory:
+    """Test suite for Working Memory."""
+    
+    @pytest.fixture
+    def working_memory(self):
+        """Create working memory instance."""
+        return WorkingMemory()
+    
+    @pytest.mark.asyncio
+    async def test_store_retrieve(self, working_memory):
+        """Test storing and retrieving items."""
+        key = "test_key"
+        value = {"data": "test_value"}
+        
+        await working_memory.store(key, value)
+        retrieved = await working_memory.retrieve(key)
+        
+        assert retrieved == value
+    
+    @pytest.mark.asyncio
+    async def test_expiry(self, working_memory):
+        """Test item expiry."""
+        key = "test_key"
+        value = {"data": "test_value"}
+        
+        # Store with 1 second TTL
+        await working_memory.store(key, value, ttl=1)
+        
+        # Retrieve immediately
+        retrieved = await working_memory.retrieve(key)
+        assert retrieved == value
+        
+        # Wait for expiry
+        await asyncio.sleep(1.5)
+        
+        # Should be expired
+        retrieved = await working_memory.retrieve(key)
+        assert retrieved is None
+    
+    @pytest.mark.asyncio
+    async def test_clear(self, working_memory):
+        """Test clearing working memory."""
+        await working_memory.store("key1", {"data": "value1"})
+        await working_memory.store("key2", {"data": "value2"})
+        
+        await working_memory.clear()
+        
+        assert await working_memory.retrieve("key1") is None
+        assert await working_memory.retrieve("key2") is None
+
+
+class TestLongTermMemory:
+    """Test suite for Long Term Memory."""
+    
+    @pytest.fixture
+    def long_term_memory(self):
+        """Create long term memory instance."""
+        return LongTermMemory()
+    
+    @pytest.mark.asyncio
+    async def test_store_retrieve(self, long_term_memory):
+        """Test storing and retrieving knowledge."""
+        key = "test_knowledge"
+        knowledge = {
+            "content": "test content",
+            "source": "test",
+            "confidence": 0.9
+        }
+        
+        await long_term_memory.store(key, knowledge)
+        retrieved = await long_term_memory.retrieve(key)
+        
+        assert retrieved is not None
+        assert retrieved["content"] == "test content"
+    
+    @pytest.mark.asyncio
+    async def test_search(self, long_term_memory):
+        """Test knowledge search."""
+        # Store multiple knowledge items
+        await long_term_memory.store("key1", {"content": "python programming"})
+        await long_term_memory.store("key2", {"content": "machine learning"})
+        await long_term_memory.store("key3", {"content": "web development"})
+        
+        # Search
+        results = await long_term_memory.search("python")
+        
+        assert len(results) > 0
+        assert any("python" in r["content"] for r in results)
+    
+    @pytest.mark.asyncio
+    async def test_update(self, long_term_memory):
+        """Test knowledge update."""
+        key = "test_key"
+        initial = {"content": "initial content"}
+        updated = {"content": "updated content"}
+        
+        await long_term_memory.store(key, initial)
+        await long_term_memory.update(key, updated)
+        
+        retrieved = await long_term_memory.retrieve(key)
+        assert retrieved["content"] == "updated content"
+
+
+class TestVectorStore:
+    """Test suite for Vector Store."""
+    
+    @pytest.fixture
+    def vector_store(self):
+        """Create vector store instance."""
+        return VectorStore()
+    
+    @pytest.mark.asyncio
+    async def test_add_search(self, vector_store):
+        """Test adding and searching vectors."""
+        id1 = "doc1"
+        text1 = "artificial intelligence and machine learning"
+        id2 = "doc2"
+        text2 = "web development with python"
+        
+        # Add documents
+        await vector_store.add(id1, text1)
+        await vector_store.add(id2, text2)
+        
+        # Search
+        query = "AI and ML"
+        results = await vector_store.search(query, top_k=2)
+        
+        assert len(results) > 0
+        assert results[0]["id"] in [id1, id2]
+    
+    @pytest.mark.asyncio
+    async def test_delete(self, vector_store):
+        """Test deleting vectors."""
+        id1 = "doc1"
+        text = "test document"
+        
+        await vector_store.add(id1, text)
+        await vector_store.delete(id1)
+        
+        results = await vector_store.search("test", top_k=5)
+        assert not any(r["id"] == id1 for r in results)
+
+
+class TestAegisGuardian:
+    """Test suite for AEGIS Guardian."""
+    
+    @pytest.fixture
+    def aegis(self):
+        """Create AEGIS Guardian instance."""
+        return AegisGuardian()
+    
+    @pytest.mark.asyncio
+    async def test_threat_detection(self, aegis):
+        """Test threat detection."""
+        safe_request = {"action": "read", "resource": "data"}
+        malicious_request = {"action": "delete_all", "resource": "database"}
+        
+        safe_result = await aegis.analyze_request(safe_request)
+        malicious_result = await aegis.analyze_request(malicious_request)
+        
+        assert safe_result["is_safe"] == True
+        assert malicious_result["is_safe"] == False
+    
+    @pytest.mark.asyncio
+    async def test_access_control(self, aegis):
+        """Test access control."""
+        user = {"role": "user", "permissions": ["read"]}
+        resource = {"required_permission": "write"}
+        
+        result = await aegis.check_access(user, resource)
+        assert result["allowed"] == False
+        
+        user_admin = {"role": "admin", "permissions": ["read", "write", "delete"]}
+        result = await aegis.check_access(user_admin, resource)
+        assert result["allowed"] == True
+    
+    @pytest.mark.asyncio
+    async def test_audit_log(self, aegis):
+        """Test audit logging."""
+        event = {
+            "user": "test_user",
+            "action": "read_data",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        await aegis.log_event(event)
+        
+        logs = await aegis.get_audit_logs(limit=10)
+        assert len(logs) > 0
+        assert logs[0]["user"] == "test_user"
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

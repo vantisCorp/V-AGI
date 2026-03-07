@@ -1,0 +1,50 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace
+configfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)
+testpaths: tests
+plugins: anyio-4.12.1, cov-7.0.0, asyncio-1.3.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 64 items / 1 error
+
+==================================== ERRORS ====================================
+__________________ ERROR collecting tests/test_integration.py __________________
+
+    """
+    Integration Tests for OMNI-AI System
+    Tests end-to-end workflows and component interactions
+    """
+    
+    import pytest
+    from unittest.mock import Mock, AsyncMock, patch
+    from src.agents.base_agent import Task, TaskPriority, AgentCapabilities
+    
+    from src.nexus.orchestrator import NexusOrchestrator
+    from src.memory.working_memory import WorkingMemory
+>   from src.api.communication_protocol import MessageProtocol, MessageType, MessagePriority
+
+tests/test_integration.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """
+    OMNI-AI API Package
+    REST API, WebSocket, and communication interfaces
+    """
+    from .rest_api import create_app
+>   from .websocket_handler import WebSocketHandler
+
+src/api/__init__.py:6: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """
+    OMNI-AI WebSocket Handler
+    Provides real-time communication and streaming capabilities
+    """
+    import asyncio
+    import json
+    from typing import Dict, Any, Optional, Set, TYPE_CHECKING
+    from datetime import datetime
+    import logging
+    
+    try:

@@ -1,0 +1,6 @@
+Checking workflow file...
+Length: 2802 bytes
+Lines: 114
+Jobs: ['test', 'lint', 'security', 'build']
+Test job strategy: {'matrix': {'python-version': ['3.11', '3.12']}}
+Test job steps count: 7

@@ -1,0 +1,40 @@
+            id="test_task",
+            description="Run simulation",
+            parameters={"simulation_type": "physics", "scenario": "projectile", "task_type": "physics_simulation"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'status')
+
+
+class TestARGUSAgent:
+    """Test suite for ARGUS Agent (Monitoring & Analytics)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create ARGUS agent instance."""
+        return ARGUSAgent()
+    
+    @pytest.mark.asyncio
+    async def test_agent_initialization(self, agent):
+        """Test agent initializes correctly."""
+        assert agent is not None
+        assert agent.agent_id == "argus"
+    
+    @pytest.mark.asyncio
+    async def test_execute_task(self, agent):
+        """Test monitoring task execution."""
+        task = Task(
+            id="test_task",
+            description="Monitor system",
+            parameters={"scope": "system", "metrics": ["cpu", "memory"], "task_type": "real_time_monitoring"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'status')
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

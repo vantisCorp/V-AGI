@@ -1,0 +1,13 @@
+class AgentStatus(Enum):
+    """Agent status enumeration."""
+    IDLE = "idle"
+    PROCESSING = "processing"
+    WAITING = "waiting"
+    ERROR = "error"
+    TERMINATED = "terminated"
+
+
+class TaskPriority(Enum):
+    """Task priority levels."""
+    CRITICAL = 1
+    HIGH = 2

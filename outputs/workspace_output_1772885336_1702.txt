@@ -1,0 +1,22 @@
+class FilterResult:
+    """Result of content filtering."""
+    is_safe: bool
+    filtered_content: Optional[str] = None
+    threats: List[ThreatType] = field(default_factory=list)
+    confidence: float = 0.0
+    action_taken: str = ""
+
+
+class AegisGuardian:
+    """
+    AEGIS Guardian Layer - Comprehensive security system.
+    
+    Features:
+    - Real-time content filtering
+    - Intent analysis
+    - Policy enforcement
+    - Threat detection
+    - Audit logging
+    """
+    
+    # Regex patterns for detecting threats

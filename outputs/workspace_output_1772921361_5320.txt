@@ -1,0 +1,11 @@
+
+
+class TestLEXCoreAgent:
+    """Test suite for LEX-Core Agent (Legal & Compliance)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create LEX-Core agent instance."""
+        return LEXCoreAgent()
+    
+    @pytest.mark.asyncio

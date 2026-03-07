@@ -1,0 +1,2 @@
+122:        self.content_templates = {
+822:            "content_types_supported": len(self.content_templates),

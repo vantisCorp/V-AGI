@@ -1,0 +1,100 @@
+"""
+OMNI-AI WebSocket Handler
+Provides real-time communication and streaming capabilities
+"""
+import asyncio
+import json
+from typing import Dict, Any, Optional, Set, TYPE_CHECKING
+from datetime import datetime
+import logging
+
+try:
+    import websockets
+    WEBSOCKETS_AVAILABLE = True
+except ImportError:
+    WEBSOCKETS_AVAILABLE = False
+
+if TYPE_CHECKING:
+    from websockets.server import WebSocketServerProtocol
+
+from ..nexus.orchestrator import NexusOrchestrator
+from ..agents.base_agent import Task, AgentStatus
+from .communication_protocol import MessageProtocol, MessageType
+
+
+logger = logging.getLogger(__name__)
+
+
+class WebSocketHandler:
+    """
+    WebSocket handler for real-time communication.
+    Supports bidirectional messaging, streaming, and event notifications.
+    """
+    
+    def __init__(self, orchestrator: NexusOrchestrator = None,
+                 host: str = "0.0.0.0",
+                 port: int = 8765):
+        """
+        Initialize WebSocket handler.
+        
+        Args:
+            orchestrator: NEXUS orchestrator instance
+            host: WebSocket server host
+            port: WebSocket server port
+        """
+        self.orchestrator = orchestrator
+        self.host = host
+        self.port = port
+        
+        # Connected clients
+        self.clients: Set[WebSocketServerProtocol] = set()
+        
+        # Message protocol
+        self.protocol = MessageProtocol()
+        
+        # Server instance
+        self.server = None
+        
+        logger.info(f"WebSocketHandler initialized on {host}:{port}")
+    
+    async def handle_client(self, websocket: WebSocketServerProtocol, path: str):
+        """
+        Handle a connected WebSocket client.
+        
+        Args:
+            websocket: WebSocket connection
+            path: WebSocket path
+        """
+        client_id = f"client_{id(websocket)}"
+        logger.info(f"Client connected: {client_id}")
+        
+        # Add client to connected set
+        self.clients.add(websocket)
+        
+        try:
+            # Send welcome message
+            welcome_msg = self.protocol.create_message(
+                message_type=MessageType.WELCOME,
+                data={
+                    "client_id": client_id,
+                    "server_time": datetime.utcnow().isoformat(),
+                    "capabilities": ["task_submission", "streaming", "notifications"]
+                }
+            )
+            await websocket.send(welcome_msg)
+            
+            # Handle incoming messages
+            async for message in websocket:
+                try:
+                    await self.handle_message(websocket, client_id, message)
+                except json.JSONDecodeError:
+                    error_msg = self.protocol.create_message(
+                        message_type=MessageType.ERROR,
+                        data={"error": "Invalid JSON format"}
+                    )
+                    await websocket.send(error_msg)
+                except Exception as e:
+                    logger.error(f"Error handling message from {client_id}: {str(e)}")
+                    error_msg = self.protocol.create_message(
+                        message_type=MessageType.ERROR,
+                        data={"error": str(e)}

@@ -1,0 +1,8 @@
+38:    def to_dict(self) -> Dict[str, Any]:
+60:    def __init__(
+89:    def _initialize(self) -> None:
+119:    def generate_embedding(self, text: str) -> Optional[np.ndarray]:
+133:    async def add_document(
+179:    async def search(
+232:    async def delete_document(self, document_id: str) -> bool:
+253:    async def get_stats(self) -> Dict[str, Any]:

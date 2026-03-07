@@ -1,0 +1,9 @@
+50:    def __init__(self):
+73:        self.metrics = type('Metrics', (), {'tasks_received': 0, 'tasks_completed': 0, 'tasks_failed': 0})()
+76:        self.metrics_database = {
+226:            self.metrics.tasks_received += 1
+252:                self.metrics.tasks_completed += 1
+261:                self.metrics.tasks_failed += 1
+271:            self.metrics.tasks_failed += 1
+272:            self.task_history[task.id] = {
+322:        scope_metrics = self.metrics_database.get(scope, {})

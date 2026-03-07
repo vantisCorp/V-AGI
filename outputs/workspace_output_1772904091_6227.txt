@@ -1,0 +1,17 @@
+34:    def __init__(self, orchestrator: NexusOrchestrator = None,
+60:    async def handle_client(self, websocket: Any, path: str):
+111:    async def handle_message(self, websocket: Any,
+165:    async def handle_task_submit(self, websocket: Any,
+234:    async def handle_task_cancel(self, websocket: Any,
+269:    async def handle_task_status(self, websocket: Any,
+324:    async def handle_agent_list(self, websocket: Any,
+363:    async def handle_stream_start(self, websocket: Any,
+401:    async def handle_stream_stop(self, websocket: Any,
+422:    async def handle_subscribe(self, websocket: Any,
+447:    async def handle_unsubscribe(self, websocket: Any,
+470:    async def handle_ping(self, websocket: Any,
+489:    async def stream_metrics(self, websocket: Any):
+531:    async def stream_events(self, websocket: Any):
+558:    async def broadcast_message(self, message_type: MessageType, data: Dict[str, Any]):
+586:    async def start(self):
+604:    async def stop(self):

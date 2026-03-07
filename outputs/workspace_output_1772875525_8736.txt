@@ -1,0 +1,80 @@
+from typing import Dict, List, Any, Optional, Tuple
+from datetime import datetime, timedelta
+from enum import Enum
+import asyncio
+import random
+from ..agents.base_agent import BaseAgent, Task, AgentResponse, AgentStatus, TaskPriority
+
+
+class SimulationType(Enum):
+    """Simulation type enumeration."""
+    PHYSICS = "physics"
+    ECONOMIC = "economic"
+    SOCIAL = "social"
+    MILITARY = "military"
+    MEDICAL = "medical"
+    ENVIRONMENTAL = "environmental"
+    GAME_MECHANICS = "game_mechanics"
+
+
+class GameGenre(Enum):
+    """Game genre enumeration."""
+    STRATEGY = "strategy"
+    RPG = "rpg"
+    SIMULATION = "simulation"
+    PUZZLE = "puzzle"
+    ADVENTURE = "adventure"
+    ACTION = "action"
+    SPORTS = "sports"
+    EDUCATIONAL = "educational"
+
+
+class SimulationState(Enum):
+    """Simulation state enumeration."""
+    INITIALIZING = "initializing"
+    RUNNING = "running"
+    PAUSED = "paused"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+
+class LUDUSAgent(BaseAgent):
+    """
+    LUDUS Agent - Simulation and Gaming Specialist
+    
+    Capabilities:
+    - Physics simulation
+    - Economic modeling
+    - Game mechanics design
+    - Scenario planning
+    - Virtual prototyping
+    - Interactive simulations
+    - Educational games
+    - Strategic war games
+    """
+    
+    def __init__(self):
+        super().__init__(
+            name="LUDUS",
+            description="Simulation and gaming specialist",
+            version="1.0.0",
+            clearance_level=2,
+            capabilities=[
+                "physics_simulation",
+                "economic_modeling",
+                "game_mechanics_design",
+                "scenario_planning",
+                "virtual_prototyping",
+                "interactive_simulations",
+                "educational_games",
+                "strategic_war_games"
+            ]
+        )
+        
+        # Simulation engines database
+        self.simulation_engines = {
+            SimulationType.PHYSICS: {
+                "name": "Newton Engine",
+                "capabilities": [
+                    "Rigid body dynamics",
+                    "Soft body physics",

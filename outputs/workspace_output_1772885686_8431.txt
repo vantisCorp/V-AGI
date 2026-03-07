@@ -1,0 +1,6 @@
+15:    IDLE = "idle"
+16:    PROCESSING = "processing"
+17:    WAITING = "waiting"
+18:    ERROR = "error"
+19:    TERMINATED = "terminated"
+116:        self.status = AgentStatus.IDLE

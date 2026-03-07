@@ -1,0 +1,16 @@
+From https://github.com/vantisCorp/V-AGI
+ * branch            main       -> FETCH_HEAD
+   4890dc5..6b220a4  main       -> origin/main
+Updating 4890dc5..6b220a4
+Fast-forward
+ .github/ISSUE_TEMPLATE/bug_report.md      |  31 ++++++++
+ .github/ISSUE_TEMPLATE/feature_request.md |  19 +++++
+ .github/PULL_REQUEST_TEMPLATE.md          |  24 +++++++
+ .github/dependabot.yml                    |  28 ++++++++
+ .github/workflows/ci.yml                  | 114 ++++++++++++++++++++++++++++++
+ 5 files changed, 216 insertions(+)
+ create mode 100644 .github/ISSUE_TEMPLATE/bug_report.md
+ create mode 100644 .github/ISSUE_TEMPLATE/feature_request.md
+ create mode 100644 .github/PULL_REQUEST_TEMPLATE.md
+ create mode 100644 .github/dependabot.yml
+ create mode 100644 .github/workflows/ci.yml

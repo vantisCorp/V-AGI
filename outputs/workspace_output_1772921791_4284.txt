@@ -1,0 +1,20 @@
+138:        valid_task_types = [
+147:        task_type = task.parameters.get("task_type", "")
+148:        return task_type in valid_task_types
+165:            task_type = task.parameters.get("task_type", "")
+167:            if task_type == "monitor_threats":
+168:                result = await self._monitor_threats(task)
+169:            elif task_type == "detect_anomalies":
+170:                result = await self._detect_anomalies(task)
+171:            elif task_type == "respond_incident":
+172:                result = await self._respond_incident(task)
+173:            elif task_type == "scan_vulnerabilities":
+174:                result = await self._scan_vulnerabilities(task)
+175:            elif task_type == "check_compliance":
+176:                result = await self._check_compliance(task)
+177:            elif task_type == "generate_security_report":
+178:                result = await self._generate_security_report(task)
+181:                    "error": f"Unknown task type: {task_type}",
+193:                metadata={"task_type": task_type}
+221:    async def _monitor_threats(self, task: Task) -> Dict[str, Any]:
+276:    async def _detect_anomalies(self, task: Task) -> Dict[str, Any]:

@@ -1,0 +1,8 @@
+264:            if task_type == "physics_simulation":
+266:            elif task_type == "economic_modeling":
+268:            elif task_type == "game_mechanics_design":
+270:            elif task_type == "scenario_planning":
+272:            elif task_type == "virtual_prototyping":
+274:            elif task_type == "interactive_simulation":
+276:            elif task_type == "educational_game":
+278:            elif task_type == "strategic_war_game":

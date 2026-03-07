@@ -1,0 +1,3 @@
+The value of the GITHUB_TOKEN environment variable is being used for authentication.
+To refresh credentials stored in GitHub CLI, first clear the value from the environment.
+Cannot refresh token

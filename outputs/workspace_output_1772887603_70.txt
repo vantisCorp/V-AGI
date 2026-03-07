@@ -1,0 +1,3 @@
+4890dc5 Merge pull request #1 from vantisCorp/feature/omni-ai-implementation
+eb56d32 feat: Implement OMNI-AI multi-agent system with 9 specialized agents
+5487fb4 Create README.md

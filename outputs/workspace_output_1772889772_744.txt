@@ -1,0 +1,5 @@
+completed	failure	build(deps): Bump actions/cache from 4 to 5	CI/CD Pipeline	dependabot/github_actions/actions/cache-5	pull_request	22799796615	4s	2026-03-07T13:20:02Z
+completed	failure	Merge pull request #10 from vantisCorp/fix/ci-requirements	CI/CD Pipeline	main	push	22799781129	5s	2026-03-07T13:21:50Z
+completed	failure	fix: Add minimal CI requirements for faster builds	CI/CD Pipeline	fix/ci-requirements	pull_request	22799743221	4s	2026-03-07T13:16:21Z
+completed	failure	fix: Add minimal CI requirements for faster builds	CI/CD Pipeline	fix/ci-requirements	pull_request	22799714252	11s	2026-03-07T13:14:26Z
+completed	failure	build(deps): Bump actions/cache from 4 to 5	CI/CD Pipeline	dependabot/github_actions/actions/cache-5	pull_request	22799707710	4s	2026-03-07T13:13:54Z

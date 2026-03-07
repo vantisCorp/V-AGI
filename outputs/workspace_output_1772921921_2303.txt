@@ -1,0 +1,11 @@
+            elif task_type == "audit_preparation":
+                result = await self._prepare_audit(task)
+            elif task_type == "intellectual_property_analysis":
+                result = await self._analyze_intellectual_property(task)
+            else:
+                raise ValueError(f"Unknown task type: {task_type}")
+            
+            # Validate result
+            if await self.validate_task(task, result):
+                self.metrics.tasks_completed += 1
+                return AgentResponse(

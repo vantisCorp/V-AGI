@@ -1,0 +1,73 @@
+    async def execute_task(self, task: Task) -> AgentResponse:
+        """
+        Execute a monitoring and analytics task.
+        
+        Args:
+            task: Task to execute
+            
+        Returns:
+            AgentResponse with execution results
+        """
+        try:
+            self.metrics.tasks_received += 1
+            
+            # Determine task type and execute appropriate method
+            task_type = task.parameters.get("task_type", "real_time_monitoring")
+            
+            if task_type == "real_time_monitoring":
+                result = await self._monitor_real_time(task)
+            elif task_type == "performance_analytics":
+                result = await self._analyze_performance(task)
+            elif task_type == "log_analysis":
+                result = await self._analyze_logs(task)
+            elif task_type == "alert_management":
+                result = await self._manage_alerts(task)
+            elif task_type == "trend_analysis":
+                result = await self._analyze_trends(task)
+            elif task_type == "anomaly_detection":
+                result = await self._detect_anomalies(task)
+            elif task_type == "dashboard_generation":
+                result = await self._generate_dashboard(task)
+            elif task_type == "report_generation":
+                result = await self._generate_report(task)
+            else:
+                raise ValueError(f"Unknown task type: {task_type}")
+            
+            # Validate result
+            if await self.validate_task(task, result):
+                self.metrics.tasks_completed += 1
+                return AgentResponse(
+                    agent_id=self.agent_id,
+                    task_id=task.id,
+                    status=AgentStatus.IDLE,
+                    result=result,
+                    timestamp=datetime.utcnow()
+                )
+            else:
+                self.metrics.tasks_failed += 1
+                return AgentResponse(
+                    agent_id=self.agent_id,
+                    task_id=task.id,
+                    status=AgentStatus.ERROR,
+                    error="Task validation failed",
+                    timestamp=datetime.utcnow()
+                )
+                
+        except Exception as e:
+            self.metrics.tasks_failed += 1
+            self.task_history[task.id] = {
+                "status": "failed",
+                "error": str(e),
+                "timestamp": datetime.utcnow()
+            }
+            return AgentResponse(
+                agent_id=self.agent_id,
+                task_id=task.id,
+                status=AgentStatus.ERROR,
+                error=str(e),
+                timestamp=datetime.utcnow()
+            )
+    
+    async def validate_task(self, task: Task, result: Dict[str, Any]) -> bool:
+        """
+        Validate task execution result.

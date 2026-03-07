@@ -1,0 +1,16 @@
+
+X fix/ci-requirements CI/CD Pipeline vantisCorp/V-AGI#10 · 22799714252
+Triggered via pull_request less than a minute ago
+
+JOBS
+X lint in 3s (ID 66139527757)
+X security in 3s (ID 66139527760)
+X test (3.12) in 3s (ID 66139527761)
+X test (3.11) in 3s (ID 66139527764)
+- build in 0s (ID 66139533531)
+
+ANNOTATIONS
+requesting annotations returned 403 Forbidden as the token does not have sufficient permissions. Note that it is not currently possible to create a fine-grained PAT with the `checks:read` permission.
+
+To see what failed, try: gh run view 22799714252 --log-failed
+View this run on GitHub: https://github.com/vantisCorp/V-AGI/actions/runs/22799714252

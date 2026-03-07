@@ -1,0 +1,9 @@
+16:from src.agents.lex_core import LEXCoreAgent
+17:from src.agents.ludus import LUDUSAgent
+18:from src.agents.argus import ARGUSAgent
+285:class TestLEXCoreAgent:
+291:        return LEXCoreAgent()
+324:class TestLUDUSAgent:
+330:        return LUDUSAgent()
+364:class TestARGUSAgent:
+370:        return ARGUSAgent()

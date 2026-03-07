@@ -1,0 +1,30 @@
+    async def create_primitive(self, 
+                               primitive_type: str,
+                               dimensions: Dict[str, float],
+                               name: Optional[str] = None) -> CADComponent:
+        """
+        Create a basic geometric primitive.
+        
+        Args:
+            primitive_type: Type of primitive (box, sphere, cylinder, cone, torus)
+            dimensions: Dimensions of the primitive (varies by type)
+            name: Optional name for the component
+            
+        Returns:
+            CADComponent object
+        """
+        component_id = f"primitive_{len(self.components)}"
+        name = name or f"{primitive_type}_{component_id}"
+        
+        geometry = {
+            "type": primitive_type,
+            "parameters": dimensions
+        }
+        
+        component = CADComponent(
+            id=component_id,
+            name=name,
+            geometry=geometry,
+            dimensions=dimensions
+        )
+        

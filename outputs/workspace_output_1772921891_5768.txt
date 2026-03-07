@@ -1,0 +1,6 @@
+tests/test_specialized_agents.py::TestCerberusAgent::test_get_stats FAILED [ 18%]
+tests/test_specialized_agents.py::TestCerberusAgent::test_security_tools_initialized FAILED [ 19%]
+tests/test_specialized_agents.py::TestLEXCoreAgent::test_execute_unknown_task_type FAILED [ 75%]
+FAILED tests/test_specialized_agents.py::TestCerberusAgent::test_get_stats - AssertionError: assert 'specialization' in {'total_incidents': 0, 'active_incidents': 0, 'resolved_incidents': 0, 'incident_types': [], 'threat_indicators_configured': 4}
+FAILED tests/test_specialized_agents.py::TestCerberusAgent::test_security_tools_initialized - AttributeError: 'CerberusAgent' object has no attribute 'security_tools'
+FAILED tests/test_specialized_agents.py::TestLEXCoreAgent::test_execute_unknown_task_type - Failed: DID NOT RAISE <class 'ValueError'>

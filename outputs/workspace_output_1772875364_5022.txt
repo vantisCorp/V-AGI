@@ -1,0 +1,51 @@
+                "brand_identity",
+                "social_media",
+                "script_writing",
+                "art_generation"
+            ],
+            tools=[
+                "language_model",
+                "image_generator",
+                "music_generator",
+                "style_analyzer"
+            ],
+            max_concurrent_tasks=5,
+            specialization="creative"
+        )
+        
+        super().__init__(
+            agent_id=agent_id,
+            capabilities=capabilities,
+            clearance_level=1
+        )
+        
+        # Content templates
+        self.content_templates = {
+            ContentType.STORY: self._story_template,
+            ContentType.POEM: self._poem_template,
+            ContentType.ARTICLE: self._article_template,
+            ContentType.MARKETING_COPY: self._marketing_copy_template,
+            ContentType.SOCIAL_MEDIA: self._social_media_template,
+            ContentType.SCRIPT: self._script_template
+        }
+        
+        # Style presets
+        self.style_presets = {
+            "professional": "Formal, clear, and business-oriented",
+            "casual": "Conversational, friendly, and approachable",
+            "dramatic": "Emotional, intense, and theatrical",
+            "humorous": "Funny, witty, and entertaining",
+            "minimalist": "Simple, clean, and straightforward",
+            "artistic": "Expressive, imaginative, and creative",
+            "technical": "Precise, detailed, and informative"
+        }
+        
+        logger.info(f"MUSE agent initialized: {agent_id}")
+    
+    async def validate_task(self, task: Task) -> bool:
+        """
+        Validate if this agent can handle the task.
+        
+        Args:
+            task: Task to validate
+            

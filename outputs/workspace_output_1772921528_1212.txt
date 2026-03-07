@@ -1,0 +1,28 @@
+class TestMuseAgent:
+    """Test suite for MUSE Agent (Creative)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create MUSE agent instance."""
+        return MuseAgent()
+    
+    @pytest.mark.asyncio
+    async def test_agent_initialization(self, agent):
+        """Test agent initializes correctly."""
+        assert agent is not None
+        assert agent.agent_id == "muse"
+    
+    @pytest.mark.asyncio
+    async def test_execute_task(self, agent):
+        """Test creative task execution."""
+        task = Task(
+            id="test_task",
+            description="Generate content",
+            parameters={"content_type": "story", "topic": "AI", "task_type": "generate_content"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'status')
+
+

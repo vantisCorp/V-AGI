@@ -1,0 +1,2 @@
+91:    MALICIOUS_PATTERNS = [
+119:        self.malicious_regex = [re.compile(p, re.IGNORECASE | re.DOTALL) for p in self.MALICIOUS_PATTERNS]

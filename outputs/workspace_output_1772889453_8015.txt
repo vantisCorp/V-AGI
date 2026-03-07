@@ -1,0 +1,3 @@
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-ci.txt') }}
+        pip install -r requirements-ci.txt
+      run: safety check -r requirements-ci.txt || true

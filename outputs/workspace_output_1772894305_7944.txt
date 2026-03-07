@@ -1,0 +1,11 @@
+65:                "memory": "/api/memory",
+66:                "monitoring": "/api/monitoring"
+86:    def list_agents():
+302:    @app.route('/api/memory/working', methods=['GET', 'POST', 'DELETE'])
+347:    @app.route('/api/memory/long-term/nodes', methods=['POST'])
+370:    @app.route('/api/memory/long-term/nodes/<node_id>', methods=['GET'])
+385:    @app.route('/api/memory/long-term/search', methods=['POST'])
+408:    @app.route('/api/memory/vector/search', methods=['POST'])
+431:    @app.route('/api/memory/vector/store', methods=['POST'])
+453:    @app.route('/api/monitoring/metrics', methods=['GET'])
+480:    @app.route('/api/monitoring/health', methods=['GET'])

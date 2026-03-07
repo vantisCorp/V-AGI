@@ -1,0 +1,120 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace
+configfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)
+plugins: anyio-4.12.1, cov-7.0.0, asyncio-1.3.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 88 items
+
+tests/test_basic.py::TestVeritasAgent::test_agent_initialization PASSED  [  1%]
+tests/test_basic.py::TestVeritasAgent::test_validate_task PASSED         [  2%]
+tests/test_basic.py::TestVeritasAgent::test_verify_fact PASSED           [  3%]
+tests/test_basic.py::TestAegisGuardian::test_initialization PASSED       [  4%]
+tests/test_basic.py::TestAegisGuardian::test_filter_input_safe PASSED    [  5%]
+tests/test_basic.py::TestAegisGuardian::test_filter_input_malicious PASSED [  6%]
+tests/test_basic.py::TestAegisGuardian::test_get_security_events PASSED  [  7%]
+tests/test_basic.py::TestAegisGuardian::test_get_stats PASSED            [  9%]
+tests/test_basic.py::TestWorkingMemory::test_set_and_get PASSED          [ 10%]
+tests/test_basic.py::TestWorkingMemory::test_get_nonexistent PASSED      [ 11%]
+tests/test_basic.py::TestWorkingMemory::test_delete PASSED               [ 12%]
+tests/test_basic.py::TestWorkingMemory::test_size_limit PASSED           [ 13%]
+tests/test_basic.py::TestWorkingMemory::test_get_stats PASSED            [ 14%]
+tests/test_basic.py::TestNexusOrchestrator::test_initialization PASSED   [ 15%]
+tests/test_basic.py::TestNexusOrchestrator::test_register_agent PASSED   [ 17%]
+tests/test_basic.py::TestNexusOrchestrator::test_submit_task PASSED      [ 18%]
+tests/test_basic.py::TestNexusOrchestrator::test_get_task_status PASSED  [ 19%]
+tests/test_basic.py::TestNexusOrchestrator::test_get_stats PASSED        [ 20%]
+tests/test_core_components.py::TestNexusOrchestrator::test_orchestrator_initialization FAILED [ 21%]
+tests/test_core_components.py::TestNexusOrchestrator::test_orchestrator_initialization ERROR [ 21%]
+tests/test_core_components.py::TestNexusOrchestrator::test_register_agent FAILED [ 22%]
+tests/test_core_components.py::TestNexusOrchestrator::test_register_agent ERROR [ 22%]
+tests/test_core_components.py::TestNexusOrchestrator::test_distribute_task FAILED [ 23%]
+tests/test_core_components.py::TestNexusOrchestrator::test_distribute_task ERROR [ 23%]
+tests/test_core_components.py::TestNexusOrchestrator::test_get_status FAILED [ 25%]
+tests/test_core_components.py::TestNexusOrchestrator::test_get_status ERROR [ 25%]
+tests/test_core_components.py::TestWorkingMemory::test_store_retrieve FAILED [ 26%]
+tests/test_core_components.py::TestWorkingMemory::test_expiry FAILED     [ 27%]
+tests/test_core_components.py::TestWorkingMemory::test_clear FAILED      [ 28%]
+tests/test_core_components.py::TestLongTermMemory::test_store_retrieve FAILED [ 29%]
+tests/test_core_components.py::TestLongTermMemory::test_search FAILED    [ 30%]
+tests/test_core_components.py::TestLongTermMemory::test_update FAILED    [ 31%]
+tests/test_core_components.py::TestVectorStore::test_add_search FAILED   [ 32%]
+tests/test_core_components.py::TestVectorStore::test_delete FAILED       [ 34%]
+tests/test_core_components.py::TestAegisGuardian::test_threat_detection FAILED [ 35%]
+tests/test_core_components.py::TestAegisGuardian::test_access_control FAILED [ 36%]
+tests/test_core_components.py::TestAegisGuardian::test_audit_log FAILED  [ 37%]
+tests/test_integration.py::TestOrchestratorIntegration::test_orchestrator_memory_integration FAILED [ 38%]
+tests/test_integration.py::TestOrchestratorIntegration::test_orchestrator_agent_coordination FAILED [ 39%]
+tests/test_integration.py::TestAPIIntegration::test_rest_api_health PASSED [ 40%]
+tests/test_integration.py::TestAPIIntegration::test_rest_api_agents_list FAILED [ 42%]
+tests/test_integration.py::TestAPIIntegration::test_rest_api_task_submission FAILED [ 43%]
+tests/test_integration.py::TestWebSocketIntegration::test_websocket_connection FAILED [ 44%]
+tests/test_integration.py::TestWebSocketIntegration::test_websocket_message_handling FAILED [ 45%]
+tests/test_integration.py::TestMessageProtocolIntegration::test_message_creation FAILED [ 46%]
+tests/test_integration.py::TestMessageProtocolIntegration::test_message_validation FAILED [ 47%]
+tests/test_integration.py::TestMessageProtocolIntegration::test_priority_queue FAILED [ 48%]
+tests/test_integration.py::TestCADIntegration::test_cad_primitive_creation PASSED [ 50%]
+tests/test_integration.py::TestCADIntegration::test_cad_boolean_operations FAILED [ 51%]
+tests/test_integration.py::TestCADIntegration::test_cad_mass_properties PASSED [ 52%]
+tests/test_integration.py::TestPhysicsEngineIntegration::test_physics_body_creation PASSED [ 53%]
+tests/test_integration.py::TestPhysicsEngineIntegration::test_physics_simulation FAILED [ 54%]
+tests/test_integration.py::TestPhysicsEngineIntegration::test_physics_energy_analysis PASSED [ 55%]
+tests/test_integration.py::TestDigitalTwinIntegration::test_digital_twin_creation FAILED [ 56%]
+tests/test_integration.py::TestDigitalTwinIntegration::test_digital_twin_sync FAILED [ 57%]
+tests/test_integration.py::TestDigitalTwinIntegration::test_digital_twin_prediction FAILED [ 59%]
+tests/test_integration.py::TestCodeSandboxIntegration::test_code_execution PASSED [ 60%]
+tests/test_integration.py::TestCodeSandboxIntegration::test_code_validation PASSED [ 61%]
+tests/test_integration.py::TestCodeSandboxIntegration::test_code_analysis PASSED [ 62%]
+tests/test_performance.py::TestMemoryPerformance::test_working_memory_throughput FAILED [ 63%]
+tests/test_performance.py::TestMemoryPerformance::test_working_memory_concurrent_access FAILED [ 64%]
+tests/test_performance.py::TestMemoryPerformance::test_vector_store_search_performance FAILED [ 65%]
+tests/test_performance.py::TestOrchestratorPerformance::test_task_distribution_latency FAILED [ 67%]
+tests/test_performance.py::TestOrchestratorPerformance::test_multi_agent_concurrency FAILED [ 68%]
+tests/test_performance.py::TestMessageProtocolPerformance::test_message_creation_performance FAILED [ 69%]
+tests/test_performance.py::TestMessageProtocolPerformance::test_priority_queue_performance FAILED [ 70%]
+tests/test_performance.py::TestAdvancedToolsPerformance::test_cad_operation_performance FAILED [ 71%]
+tests/test_performance.py::TestAdvancedToolsPerformance::test_physics_simulation_performance PASSED [ 72%]
+tests/test_performance.py::TestAdvancedToolsPerformance::test_digital_twin_sync_performance FAILED [ 73%]
+tests/test_performance.py::TestAdvancedToolsPerformance::test_code_sandbox_execution_performance PASSED [ 75%]
+tests/test_performance.py::TestScalability::test_memory_scalability FAILED [ 76%]
+tests/test_performance.py::TestScalability::test_vector_store_scalability FAILED [ 77%]
+tests/test_specialized_agents.py::TestVeritasAgent::test_verify_fact FAILED [ 78%]
+tests/test_specialized_agents.py::TestVeritasAgent::test_check_consistency FAILED [ 79%]
+tests/test_specialized_agents.py::TestCerberusAgent::test_monitor_threats FAILED [ 80%]
+tests/test_specialized_agents.py::TestCerberusAgent::test_detect_anomalies FAILED [ 81%]
+tests/test_specialized_agents.py::TestCerberusAgent::test_assess_vulnerability FAILED [ 82%]
+tests/test_specialized_agents.py::TestMuseAgent::test_generate_story FAILED [ 84%]
+tests/test_specialized_agents.py::TestMuseAgent::test_write_poetry FAILED [ 85%]
+tests/test_specialized_agents.py::TestMuseAgent::test_create_article FAILED [ 86%]
+tests/test_specialized_agents.py::TestForgeAgent::test_generate_blueprint FAILED [ 87%]
+tests/test_specialized_agents.py::TestForgeAgent::test_analyze_structure FAILED [ 88%]
+tests/test_specialized_agents.py::TestVitaAgent::test_analyze_symptoms FAILED [ 89%]
+tests/test_specialized_agents.py::TestVitaAgent::test_check_drug_interactions FAILED [ 90%]
+tests/test_specialized_agents.py::TestAresAgent::test_create_strategic_plan FAILED [ 92%]
+tests/test_specialized_agents.py::TestAresAgent::test_assess_risk FAILED [ 93%]
+tests/test_specialized_agents.py::TestLEXCoreAgent::test_analyze_document FAILED [ 94%]
+tests/test_specialized_agents.py::TestLEXCoreAgent::test_assess_compliance FAILED [ 95%]
+tests/test_specialized_agents.py::TestLUDUSAgent::test_run_physics_simulation FAILED [ 96%]
+tests/test_specialized_agents.py::TestLUDUSAgent::test_design_game_mechanics FAILED [ 97%]
+tests/test_specialized_agents.py::TestARGUSAgent::test_monitor_real_time FAILED [ 98%]
+tests/test_specialized_agents.py::TestARGUSAgent::test_analyze_performance FAILED [100%]
+
+==================================== ERRORS ====================================
+_ ERROR at teardown of TestNexusOrchestrator.test_orchestrator_initialization __
+tests/test_core_components.py:27: in orchestrator
+    await orchestrator.shutdown()
+          ^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'NexusOrchestrator' object has no attribute 'shutdown'
+---------------------------- Captured stderr setup -----------------------------
+2026-03-07 09:27:38.304 | INFO     | src.nexus.orchestrator:__init__:102 - NEXUS Orchestrator initialized
+________ ERROR at teardown of TestNexusOrchestrator.test_register_agent ________
+tests/test_core_components.py:27: in orchestrator
+    await orchestrator.shutdown()
+          ^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'NexusOrchestrator' object has no attribute 'shutdown'
+---------------------------- Captured stderr setup -----------------------------
+2026-03-07 09:27:38.340 | INFO     | src.nexus.orchestrator:__init__:102 - NEXUS Orchestrator initialized
+_______ ERROR at teardown of TestNexusOrchestrator.test_distribute_task ________
+tests/test_core_components.py:27: in orchestrator
+    await orchestrator.shutdown()

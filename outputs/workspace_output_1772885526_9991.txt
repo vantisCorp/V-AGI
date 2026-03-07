@@ -1,0 +1,41 @@
+                    "Weak termination clauses",
+                    "Inadequate dispute resolution mechanisms"
+                ],
+                "mitigation": [
+                    "Use clear, precise language",
+                    "Negotiate balanced liability provisions",
+                    "Ensure adequate protection",
+                    "Include clear termination rights",
+                    "Define dispute resolution process"
+                ]
+            },
+            "regulatory": {
+                "risks": [
+                    "Non-compliance with applicable laws",
+                    "Failure to obtain required licenses",
+                    "Inadequate reporting obligations",
+                    "Failure to maintain required documentation",
+                    "Insufficient oversight controls"
+                ],
+                "mitigation": [
+                    "Stay updated on regulatory changes",
+                    "Implement compliance monitoring",
+                    "Maintain comprehensive records",
+                    "Conduct regular compliance reviews",
+                    "Establish oversight committees"
+                ]
+            }
+        }
+    
+    async def execute_task(self, task: Task) -> AgentResponse:
+        """
+        Execute a legal and compliance task.
+        
+        Args:
+            task: Task to execute
+            
+        Returns:
+            AgentResponse with execution results
+        """
+        try:
+            self.metrics.tasks_received += 1

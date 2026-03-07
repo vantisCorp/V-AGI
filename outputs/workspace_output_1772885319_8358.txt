@@ -1,0 +1,36 @@
+        """Create AEGIS Guardian instance."""
+        return AegisGuardian()
+    
+    def test_initialization(self, aegis):
+        """Test AEGIS initialization."""
+        assert aegis is not None
+    
+    @pytest.mark.asyncio
+    async def test_filter_input_safe(self, aegis):
+        """Test input filtering with safe content."""
+        safe_input = {"action": "read", "data": "normal data"}
+        result = await aegis.filter_input(safe_input)
+        assert result["is_valid"] == True
+    
+    @pytest.mark.asyncio
+    async def test_filter_input_malicious(self, aegis):
+        """Test input filtering with malicious content."""
+        malicious_input = {"action": "read", "data": "'; DROP TABLE users; --"}
+        result = await aegis.filter_input(malicious_input)
+        assert result["is_valid"] == False
+    
+    @pytest.mark.asyncio
+    async def test_get_security_events(self, aegis):
+        """Test getting security events."""
+        events = await aegis.get_security_events()
+        assert isinstance(events, list)
+    
+    @pytest.mark.asyncio
+    async def test_get_stats(self, aegis):
+        """Test getting statistics."""
+        stats = await aegis.get_stats()
+        assert isinstance(stats, dict)
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])
