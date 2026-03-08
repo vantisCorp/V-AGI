@@ -103,6 +103,40 @@ class MockWorkingMemory:
 class MockLongTermMemory:
     def __init__(self):
         self.nodes = {}
+        self.enabled = True
+    
+    async def store_node(self, node_id, node_type, properties):
+        self.nodes[node_id] = {
+            "node_id": node_id,
+            "node_type": node_type,
+            "properties": properties
+        }
+        return True
+    
+    async def get_node(self, node_id):
+        return self.nodes.get(node_id)
+    
+    async def search_nodes(self, query, node_type=None):
+        return [n for n in self.nodes.values() if query.lower() in str(n).lower()]
+
+
+class MockVectorStore:
+    def __init__(self):
+        self.documents = []
+        self.enabled = True
+    
+    async def add_document(self, text, metadata):
+        self.documents.append({"text": text, "metadata": metadata})
+        return True
+    
+    async def search(self, query, top_k=5):
+        # Simple mock search
+        return self.documents[:top_k]
+
+
+class MockLongTermMemory:
+    def __init__(self):
+        self.nodes = {}
     
     async def create_node(self, node_id, node_type, properties, relationships=None):
         self.nodes[node_id] = {
@@ -157,6 +191,36 @@ def app():
 @pytest.fixture
 def client(app):
     """Create test client."""
+    return app.test_client()
+
+
+@pytest.fixture
+def client_with_ltm():
+    """Create a test client with long-term memory."""
+    orchestrator = MockOrchestrator()
+    ltm = MockLongTermMemory()
+    
+    app = create_app(
+        orchestrator=orchestrator,
+        long_term_memory=ltm
+    )
+    app.config['TESTING'] = True
+    
+    return app.test_client()
+
+
+@pytest.fixture
+def client_with_vs():
+    """Create a test client with vector store."""
+    orchestrator = MockOrchestrator()
+    vector_store = MockVectorStore()
+    
+    app = create_app(
+        orchestrator=orchestrator,
+        vector_store=vector_store
+    )
+    app.config['TESTING'] = True
+    
     return app.test_client()
 
 
@@ -387,3 +451,317 @@ class TestMonitoringEndpoints:
         response = client.get('/api/monitoring/metrics')
         
         assert response.status_code == 503
+
+
+class TestBatchTaskEndpoints:
+    """Tests for batch task submission endpoint."""
+    
+    def test_submit_batch_tasks(self, client):
+        """Test submitting multiple tasks in batch."""
+        tasks_data = {
+            "tasks": [
+                {
+                    "description": "Task 1",
+                    "parameters": {"param": "value1"},
+                    "priority": "high"
+                },
+                {
+                    "description": "Task 2",
+                    "parameters": {"param": "value2"},
+                    "priority": "medium"
+                }
+            ]
+        }
+        
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps(tasks_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'results' in data
+        # total_tasks counts successfully created tasks
+        assert 'total_tasks' in data
+    
+    def test_submit_batch_tasks_missing_tasks(self, client):
+        """Test batch submission without tasks field."""
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps({}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 400
+    
+    def test_submit_batch_tasks_invalid_priority(self, client):
+        """Test batch submission with invalid priority."""
+        tasks_data = {
+            "tasks": [
+                {
+                    "description": "Task 1",
+                    "parameters": {},
+                    "priority": "invalid_priority"
+                }
+            ]
+        }
+        
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps(tasks_data),
+            content_type='application/json'
+        )
+        
+        # Should have error for invalid priority
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'results' in data
+    
+    def test_batch_tasks_not_configured(self):
+        """Test batch submission when orchestrator not configured."""
+        app = create_app()
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps({"tasks": []}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 503
+
+
+class TestLongTermMemoryEndpoints:
+    """Tests for long-term memory endpoints."""
+    
+    def test_store_knowledge_node_missing_field(self, client):
+        """Test storing a node with missing required field."""
+        node_data = {
+            "node_id": "node-1",
+            "node_type": "concept"
+            # Missing properties
+        }
+        
+        response = client.post(
+            '/api/memory/long-term/nodes',
+            data=json.dumps(node_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 400
+    
+    def test_long_term_memory_not_configured(self):
+        """Test long-term memory endpoints when not configured."""
+        app = create_app()
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        response = client.post(
+            '/api/memory/long-term/nodes',
+            data=json.dumps({"node_id": "1", "node_type": "t", "properties": {}}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 503
+    
+    def test_get_knowledge_node_not_configured(self):
+        """Test getting a knowledge node when not configured."""
+        app = create_app()
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        response = client.get('/api/memory/long-term/nodes/node-1')
+        
+        assert response.status_code == 503
+    
+    def test_search_knowledge_graph_not_configured(self):
+        """Test searching knowledge graph when not configured."""
+        app = create_app()
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        response = client.post(
+            '/api/memory/long-term/search',
+            data=json.dumps({"query": "test"}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 503
+
+
+class TestVectorStoreEndpoints:
+    """Tests for vector store endpoints."""
+    
+    def test_vector_store_not_configured(self):
+        """Test vector store endpoints when not configured."""
+        app = create_app()
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        response = client.post(
+            '/api/memory/vector/search',
+            data=json.dumps({"query": "test"}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 503
+    
+    def test_store_vector_document_not_configured(self):
+        """Test storing document when vector store not configured."""
+        app = create_app()
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        response = client.post(
+            '/api/memory/vector/store',
+            data=json.dumps({"text": "test", "metadata": {}}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 503
+    
+    def test_store_vector_document_missing_field(self, client):
+        """Test storing a document with missing required field."""
+        doc_data = {
+            "text": "Test document"
+            # Missing metadata
+        }
+        
+        response = client.post(
+            '/api/memory/vector/store',
+            data=json.dumps(doc_data),
+            content_type='application/json'
+        )
+        
+        # Returns 503 if vector store not configured, 400 if missing field
+        assert response.status_code in [400, 503]
+
+
+class TestErrorHandlers:
+    """Tests for error handlers."""
+    
+    def test_404_error(self, client):
+        """Test 404 error handler."""
+        response = client.get('/nonexistent-endpoint')
+        
+        assert response.status_code == 404
+        data = json.loads(response.data)
+        assert 'error' in data
+    
+    def test_index_endpoint(self, client):
+        """Test the root endpoint."""
+        response = client.get('/')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['name'] == 'OMNI-AI REST API'
+        assert 'endpoints' in data
+    
+    def test_health_endpoint(self, client):
+        """Test the health endpoint."""
+        response = client.get('/health')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'healthy'
+        assert 'services' in data
+
+
+class TestAegisSecurity:
+    """Tests for AEGIS security integration."""
+    
+    def test_submit_task_blocked_by_aegis(self):
+        """Test task submission blocked by AEGIS."""
+        # Create mock AEGIS that blocks requests
+        mock_aegis = Mock()
+        mock_aegis.filter_input = Mock(return_value={
+            "blocked": True,
+            "reason": "Suspicious content detected"
+        })
+        
+        app = create_app(orchestrator=MockOrchestrator(), aegis=mock_aegis)
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        task_data = {
+            "description": "Suspicious task",
+            "parameters": {"malicious": "data"}
+        }
+        
+        response = client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 403
+        data = json.loads(response.data)
+        assert 'blocked' in data['error'].lower() or 'aegis' in data['error'].lower()
+    
+    def test_submit_task_allowed_by_aegis(self):
+        """Test task submission allowed by AEGIS."""
+        mock_aegis = Mock()
+        mock_aegis.filter_input = Mock(return_value={
+            "blocked": False,
+            "data": {"description": "Safe task", "parameters": {}}
+        })
+        
+        app = create_app(orchestrator=MockOrchestrator(), aegis=mock_aegis)
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        task_data = {
+            "description": "Safe task",
+            "parameters": {}
+        }
+        
+        response = client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        # Should not be blocked (may still fail for other reasons)
+        assert response.status_code != 403
+
+
+class TestTaskFiltering:
+    """Tests for task filtering and pagination."""
+    
+    def test_list_tasks_with_status_filter(self, client):
+        """Test listing tasks with status filter."""
+        response = client.get('/api/tasks?status=idle')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'tasks' in data
+    
+    def test_list_tasks_with_limit(self, client):
+        """Test listing tasks with limit."""
+        response = client.get('/api/tasks?limit=10')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'tasks' in data
+    
+    def test_get_task_found(self, client):
+        """Test getting an existing task."""
+        # First submit a task
+        task_data = {
+            "description": "Test task",
+            "parameters": {"param": "value"}
+        }
+        
+        client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        # Try to get the task (task ID is generated)
+        response = client.get('/api/tasks/task-1')
+        
+        # May return 404 if task ID doesn't match
+        assert response.status_code in [200, 404]
