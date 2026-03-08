@@ -193,6 +193,35 @@ pytest tests/ --cov=src --cov-report=html
 - [Agents Implementation](docs/agents-implementation.md)
 - [Security Implementation](docs/security-implementation.md)
 - [Simulation Tools](docs/simulation-tools-implementation.md)
+- [Self-Hosted Runner Setup](docs/self-hosted-runner-setup.md)
+
+## 🔄 CI/CD
+
+This project uses GitHub Actions for continuous integration and deployment. The CI pipeline includes:
+
+- **Testing**: Automated test execution with coverage reporting
+- **Linting**: Code style checks with Black, isort, and Flake8
+- **Security**: Dependency vulnerability scanning with Safety
+- **Build**: Package building and artifact publishing
+
+### Running CI Locally
+
+```bash
+# Run tests
+pytest tests/ --cov=src
+
+# Run linting
+black --check src/ tests/
+isort --check-only src/ tests/
+flake8 src/ tests/
+
+# Run security check
+pip install safety && safety check -r requirements.txt
+```
+
+### Self-Hosted Runners
+
+For private repositories, GitHub Actions requires a paid plan or self-hosted runners. See the [Self-Hosted Runner Setup Guide](docs/self-hosted-runner-setup.md) for instructions.
 
 ## 🤝 Contributing
 
