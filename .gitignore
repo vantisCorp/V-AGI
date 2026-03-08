@@ -79,3 +79,5 @@ secrets/
 tmp/
 temp/
 *.tmp
+# Output files
+outputs/
