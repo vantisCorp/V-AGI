@@ -1,0 +1,3 @@
+completed	failure	test: Try ubuntu-22.04 runner	CI	main	push	22823826144	4s	2026-03-08T15:14:57Z
+completed	failure	fix: Restore ubuntu-latest runner configuration	CI	main	push	22823677174	3s	2026-03-08T15:06:16Z
+completed	failure	test: Try macos-latest runner to check if ubuntu runners are unavailable	CI	main	push	22823647829	5s	2026-03-08T15:04:36Z
