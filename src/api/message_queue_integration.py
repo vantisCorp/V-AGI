@@ -10,8 +10,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Callable, Dict, Optional
 
-from .communication_protocol import (MessagePriority, MessageProtocol,
-                                     MessageType)
+from .communication_protocol import MessagePriority, MessageProtocol, MessageType
 
 logger = logging.getLogger(__name__)
 

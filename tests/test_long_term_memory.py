@@ -9,8 +9,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from src.memory.long_term_memory import (KnowledgeNode, KnowledgeRelationship,
-                                         LongTermMemory)
+from src.memory.long_term_memory import KnowledgeNode, KnowledgeRelationship, LongTermMemory
 
 
 class TestKnowledgeNode:

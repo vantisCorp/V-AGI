@@ -7,8 +7,12 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from src.memory.long_term_memory import (NEO4J_AVAILABLE, KnowledgeNode,
-                                         KnowledgeRelationship, LongTermMemory)
+from src.memory.long_term_memory import (
+    NEO4J_AVAILABLE,
+    KnowledgeNode,
+    KnowledgeRelationship,
+    LongTermMemory,
+)
 from src.memory.vector_store import VectorDocument, VectorStore
 from src.memory.working_memory import MemoryItem, WorkingMemory
 

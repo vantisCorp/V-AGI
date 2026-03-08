@@ -7,8 +7,7 @@ Provides multi-tiered memory systems:
 - Vector Store: Similarity-based retrieval for semantic search
 """
 
-from .long_term_memory import (KnowledgeNode, KnowledgeRelationship,
-                               LongTermMemory)
+from .long_term_memory import KnowledgeNode, KnowledgeRelationship, LongTermMemory
 from .working_memory import MemoryItem, WorkingMemory
 
 __all__ = [

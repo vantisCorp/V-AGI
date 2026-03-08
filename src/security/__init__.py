@@ -8,8 +8,7 @@ Provides comprehensive security systems:
 - Threat detection and response
 """
 
-from .aegis import (AegisGuardian, FilterResult, SecurityEvent, SecurityLevel,
-                    ThreatType)
+from .aegis import AegisGuardian, FilterResult, SecurityEvent, SecurityLevel, ThreatType
 
 __all__ = [
     "AegisGuardian",

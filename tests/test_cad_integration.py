@@ -8,8 +8,13 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from src.tools.cad_integration import (CADAssembly, CADComponent, CADFormat,
-                                       CADIntegration, CADOperation)
+from src.tools.cad_integration import (
+    CADAssembly,
+    CADComponent,
+    CADFormat,
+    CADIntegration,
+    CADOperation,
+)
 
 
 class TestCADFormat:

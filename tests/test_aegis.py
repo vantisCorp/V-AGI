@@ -8,8 +8,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from src.security.aegis import (AegisGuardian, FilterResult, SecurityEvent,
-                                SecurityLevel, ThreatType)
+from src.security.aegis import AegisGuardian, FilterResult, SecurityEvent, SecurityLevel, ThreatType
 
 
 class TestSecurityLevel:

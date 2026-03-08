@@ -9,8 +9,7 @@ Central orchestration system for multi-agent coordination:
 - Progress tracking
 """
 
-from .orchestrator import (AgentAssignment, NexusOrchestrator,
-                           OrchestratedTask, TaskStatus)
+from .orchestrator import AgentAssignment, NexusOrchestrator, OrchestratedTask, TaskStatus
 
 __all__ = [
     "NexusOrchestrator",

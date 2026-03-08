@@ -10,10 +10,8 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from src.agents.base_agent import (AgentResponse, AgentStatus, Task,
-                                   TaskPriority)
-from src.api.communication_protocol import (MessagePriority, MessageProtocol,
-                                            MessageType)
+from src.agents.base_agent import AgentResponse, AgentStatus, Task, TaskPriority
+from src.api.communication_protocol import MessagePriority, MessageProtocol, MessageType
 from src.api.websocket_handler import WebSocketHandler
 
 

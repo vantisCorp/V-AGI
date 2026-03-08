@@ -11,8 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 
 from src.api.communication_protocol import MessagePriority, MessageType
-from src.api.message_queue_integration import (MessageQueueIntegration,
-                                               QueueProvider)
+from src.api.message_queue_integration import MessageQueueIntegration, QueueProvider
 
 
 class TestMessageQueueIntegration:
