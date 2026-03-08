@@ -1,0 +1,100 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace
+configfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)
+plugins: anyio-4.12.1, cov-7.0.0, asyncio-1.3.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 33 items
+
+tests/test_message_queue_integration.py::TestQueueProvider::test_queue_provider_values PASSED [  3%]
+tests/test_message_queue_integration.py::TestQueueProvider::test_queue_provider_count PASSED [  6%]
+tests/test_message_queue_integration.py::TestQueueProvider::test_queue_provider_from_string PASSED [  9%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_mqi_initialization PASSED [ 12%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_mqi_initialization_with_auth PASSED [ 15%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_mqi_initialization_rabbitmq PASSED [ 18%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_unsupported_provider PASSED [ 21%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_redis_success FAILED [ 24%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_redis_with_password FAILED [ 27%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_redis_import_error FAILED [ 30%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_rabbitmq_success FAILED [ 33%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_disconnect_redis PASSED [ 36%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_disconnect_rabbitmq PASSED [ 39%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_disconnect_no_connection PASSED [ 42%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_publish_not_connected PASSED [ 45%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_publish_redis PASSED [ 48%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_publish_with_priority PASSED [ 51%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_subscribe_not_connected PASSED [ 54%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_subscribe_redis PASSED [ 57%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_send_task PASSED [ 60%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_broadcast_event PASSED [ 63%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_send_notification PASSED [ 66%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_register_handler PASSED [ 69%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_with_handler PASSED [ 72%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_no_handler PASSED [ 75%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_handler_exception PASSED [ 78%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_not_connected PASSED [ 81%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_redis PASSED [ 84%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_redis_exception PASSED [ 87%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationRabbitMQ::test_publish_rabbitmq FAILED [ 90%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationRabbitMQ::test_subscribe_rabbitmq PASSED [ 93%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationIntegration::test_full_workflow_redis FAILED [ 96%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationIntegration::test_task_and_notification_workflow FAILED [100%]
+
+=================================== FAILURES ===================================
+____________ TestMessageQueueIntegration.test_connect_redis_success ____________
+tests/test_message_queue_integration.py:124: in test_connect_redis_success
+    with patch('src.api.message_queue_integration.aioredis') as mock_aioredis:
+/usr/local/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/unittest/mock.py:1419: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'src.api.message_queue_integration' from '/workspace/src/api/message_queue_integration.py'> does not have the attribute 'aioredis'
+_________ TestMessageQueueIntegration.test_connect_redis_with_password _________
+tests/test_message_queue_integration.py:145: in test_connect_redis_with_password
+    with patch('src.api.message_queue_integration.aioredis') as mock_aioredis:
+/usr/local/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/unittest/mock.py:1419: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'src.api.message_queue_integration' from '/workspace/src/api/message_queue_integration.py'> does not have the attribute 'aioredis'
+_________ TestMessageQueueIntegration.test_connect_redis_import_error __________
+tests/test_message_queue_integration.py:155: in test_connect_redis_import_error
+    with patch('src.api.message_queue_integration.aioredis', None):
+/usr/local/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/unittest/mock.py:1419: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'src.api.message_queue_integration' from '/workspace/src/api/message_queue_integration.py'> does not have the attribute 'aioredis'
+__________ TestMessageQueueIntegration.test_connect_rabbitmq_success ___________
+tests/test_message_queue_integration.py:166: in test_connect_rabbitmq_success
+    with patch('src.api.message_queue_integration.aio_pika') as mock_aio_pika:
+/usr/local/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/unittest/mock.py:1419: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'src.api.message_queue_integration' from '/workspace/src/api/message_queue_integration.py'> does not have the attribute 'aio_pika'
+__________ TestMessageQueueIntegrationRabbitMQ.test_publish_rabbitmq ___________
+tests/test_message_queue_integration.py:414: in test_publish_rabbitmq
+    await mqi.publish("test_topic", {"type": "agent_message", "data": {}})
+src/api/message_queue_integration.py:167: in publish
+    await self._publish_rabbitmq(topic, protocol_message)
+src/api/message_queue_integration.py:183: in _publish_rabbitmq
+    aio_pika.ExchangeType.FANOUT,
+    ^^^^^^^^
+E   NameError: name 'aio_pika' is not defined
+------------------------------ Captured log call -------------------------------
+ERROR    src.api.message_queue_integration:message_queue_integration.py:172 Failed to publish message: name 'aio_pika' is not defined
+_______ TestMessageQueueIntegrationIntegration.test_full_workflow_redis ________
+tests/test_message_queue_integration.py:457: in test_full_workflow_redis
+    with patch('src.api.message_queue_integration.aioredis') as mock_aioredis:
+/usr/local/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/unittest/mock.py:1419: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'src.api.message_queue_integration' from '/workspace/src/api/message_queue_integration.py'> does not have the attribute 'aioredis'

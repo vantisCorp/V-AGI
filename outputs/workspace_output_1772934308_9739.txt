@@ -1,0 +1,33 @@
+    async def send_task(self,
+                       task_queue: str,
+                       task_id: str,
+                       description: str,
+                       parameters: Dict[str, Any],
+                       priority: str = "medium",
+                       agent_id: Optional[str] = None):
+        """
+        Send a task to a task queue.
+        
+        Args:
+            task_queue: Task queue name
+            task_id: Unique task identifier
+            description: Task description
+            parameters: Task parameters
+            priority: Task priority
+            agent_id: Optional specific agent ID
+        """
+        task_message = self.protocol.create_task_message(
+            task_id=task_id,
+            description=description,
+            parameters=parameters,
+            priority=priority,
+            agent_id=agent_id
+        )
+        
+        await self.publish(task_queue, json.loads(task_message), MessagePriority.MEDIUM)
+    
+    async def broadcast_event(self,
+                             event_type: str,
+                             event_data: Dict[str, Any],
+                             source: Optional[str] = None):
+        """

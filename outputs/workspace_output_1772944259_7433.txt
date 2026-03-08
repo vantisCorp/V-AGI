@@ -1,0 +1,300 @@
+"""
+Tests for Code Sandbox Module.
+"""
+
+import pytest
+import asyncio
+from unittest.mock import Mock, patch, MagicMock, AsyncMock
+from datetime import datetime
+
+from src.tools.code_sandbox import (
+    CodeLanguage,
+    ExecutionStatus,
+    ExecutionResult,
+    SandboxConfig,
+    CodeSandbox
+)
+
+
+class TestCodeLanguage:
+    """Tests for CodeLanguage enum."""
+    
+    def test_code_language_values(self):
+        """Test CodeLanguage enum values."""
+        assert CodeLanguage.PYTHON.value == "python"
+        assert CodeLanguage.JAVASCRIPT.value == "javascript"
+        assert CodeLanguage.JAVA.value == "java"
+        assert CodeLanguage.CPP.value == "cpp"
+        assert CodeLanguage.RUST.value == "rust"
+        assert CodeLanguage.GO.value == "go"
+        assert CodeLanguage.RUBY.value == "ruby"
+        assert CodeLanguage.PHP.value == "php"
+    
+    def test_code_language_count(self):
+        """Test that CodeLanguage has expected number of values."""
+        assert len(CodeLanguage) == 8
+    
+    def test_code_language_from_string(self):
+        """Test creating CodeLanguage from string."""
+        assert CodeLanguage("python") == CodeLanguage.PYTHON
+        assert CodeLanguage("javascript") == CodeLanguage.JAVASCRIPT
+
+
+class TestExecutionStatus:
+    """Tests for ExecutionStatus enum."""
+    
+    def test_execution_status_values(self):
+        """Test ExecutionStatus enum values."""
+        assert ExecutionStatus.PENDING.value == "pending"
+        assert ExecutionStatus.RUNNING.value == "running"
+        assert ExecutionStatus.COMPLETED.value == "completed"
+        assert ExecutionStatus.FAILED.value == "failed"
+        assert ExecutionStatus.TIMEOUT.value == "timeout"
+        assert ExecutionStatus.MEMORY_ERROR.value == "memory_error"
+        assert ExecutionStatus.ERROR.value == "error"
+    
+    def test_execution_status_count(self):
+        """Test that ExecutionStatus has expected number of values."""
+        assert len(ExecutionStatus) == 7
+
+
+class TestExecutionResult:
+    """Tests for ExecutionResult dataclass."""
+    
+    def test_execution_result_creation(self):
+        """Test creating an ExecutionResult."""
+        result = ExecutionResult(
+            execution_id="exec_0",
+            status=ExecutionStatus.COMPLETED,
+            language=CodeLanguage.PYTHON,
+            code="print('hello')",
+            output="hello\n",
+            error="",
+            exit_code=0,
+            execution_time=0.5,
+            memory_used=10.0,
+            start_time=0.0,
+            end_time=0.5
+        )
+        
+        assert result.execution_id == "exec_0"
+        assert result.status == ExecutionStatus.COMPLETED
+        assert result.language == CodeLanguage.PYTHON
+        assert result.output == "hello\n"
+        assert result.exit_code == 0
+    
+    def test_execution_result_defaults(self):
+        """Test ExecutionResult with minimal args."""
+        result = ExecutionResult(
+            execution_id="exec_1",
+            status=ExecutionStatus.FAILED,
+            language=CodeLanguage.JAVASCRIPT,
+            code="",
+            output="",
+            error="Syntax error",
+            exit_code=1,
+            execution_time=0.0,
+            memory_used=0.0,
+            start_time=0.0,
+            end_time=0.0
+        )
+        
+        assert result.status == ExecutionStatus.FAILED
+        assert result.error == "Syntax error"
+
+
+class TestSandboxConfig:
+    """Tests for SandboxConfig dataclass."""
+    
+    def test_sandbox_config_defaults(self):
+        """Test SandboxConfig default values."""
+        config = SandboxConfig()
+        
+        assert config.max_execution_time == 30.0
+        assert config.max_memory == 256
+        assert config.max_output_size == 1000000
+        assert config.enable_network is False
+        assert config.enable_filesystem is False
+    
+    def test_sandbox_config_custom(self):
+        """Test SandboxConfig with custom values."""
+        config = SandboxConfig(
+            max_execution_time=60.0,
+            max_memory=512,
+            enable_network=True,
+            enable_filesystem=True
+        )
+        
+        assert config.max_execution_time == 60.0
+        assert config.max_memory == 512
+        assert config.enable_network is True
+        assert config.enable_filesystem is True
+    
+    def test_sandbox_config_lists(self):
+        """Test SandboxConfig with list fields."""
+        config = SandboxConfig(
+            allowed_imports=["os", "sys"],
+            forbidden_imports=["subprocess"]
+        )
+        
+        assert "os" in config.allowed_imports
+        assert "subprocess" in config.forbidden_imports
+
+
+class TestCodeSandboxInit:
+    """Tests for CodeSandbox initialization."""
+    
+    def test_init_default(self):
+        """Test CodeSandbox initialization with defaults."""
+        sandbox = CodeSandbox()
+        
+        assert sandbox.config is not None
+        assert sandbox.executions == {}
+        assert sandbox.temp_dir is not None
+        assert "omni_sandbox_" in sandbox.temp_dir
+    
+    def test_init_with_config(self):
+        """Test CodeSandbox initialization with custom config."""
+        config = SandboxConfig(max_execution_time=60.0)
+        sandbox = CodeSandbox(config=config)
+        
+        assert sandbox.config.max_execution_time == 60.0
+    
+    def test_language_configs(self):
+        """Test that language configs are set up correctly."""
+        sandbox = CodeSandbox()
+        
+        assert CodeLanguage.PYTHON in sandbox.language_configs
+        assert CodeLanguage.JAVASCRIPT in sandbox.language_configs
+        assert CodeLanguage.JAVA in sandbox.language_configs
+        assert CodeLanguage.CPP in sandbox.language_configs
+        assert CodeLanguage.RUST in sandbox.language_configs
+        assert CodeLanguage.GO in sandbox.language_configs
+
+
+class TestCodeSandboxMethods:
+    """Tests for CodeSandbox methods."""
+    
+    def test_list_executions_empty(self):
+        """Test list_executions when empty."""
+        sandbox = CodeSandbox()
+        
+        assert sandbox.list_executions() == []
+    
+    def test_list_executions_with_data(self):
+        """Test list_executions with executions."""
+        sandbox = CodeSandbox()
+        
+        # Add mock executions
+        sandbox.executions["exec_0"] = Mock()
+        sandbox.executions["exec_1"] = Mock()
+        
+        result = sandbox.list_executions()
+        
+        assert "exec_0" in result
+        assert "exec_1" in result
+    
+    @pytest.mark.asyncio
+    async def test_get_execution_found(self):
+        """Test get_execution when found."""
+        sandbox = CodeSandbox()
+        
+        mock_result = Mock()
+        sandbox.executions["exec_0"] = mock_result
+        
+        result = await sandbox.get_execution("exec_0")
+        
+        assert result == mock_result
+    
+    @pytest.mark.asyncio
+    async def test_get_execution_not_found(self):
+        """Test get_execution when not found."""
+        sandbox = CodeSandbox()
+        
+        result = await sandbox.get_execution("nonexistent")
+        
+        assert result is None
+    
+    def test_create_temp_file_python(self):
+        """Test _create_temp_file for Python."""
+        sandbox = CodeSandbox()
+        
+        temp_file = sandbox._create_temp_file("print('hello')", CodeLanguage.PYTHON)
+        
+        assert temp_file.endswith(".py")
+    
+    def test_create_temp_file_javascript(self):
+        """Test _create_temp_file for JavaScript."""
+        sandbox = CodeSandbox()
+        
+        temp_file = sandbox._create_temp_file("console.log('hello')", CodeLanguage.JAVASCRIPT)
+        
+        assert temp_file.endswith(".js")
+
+
+class TestCodeSandboxValidate:
+    """Tests for code validation."""
+    
+    @pytest.mark.asyncio
+    async def test_validate_python_valid(self):
+        """Test validating valid Python code."""
+        sandbox = CodeSandbox()
+        
+        result = await sandbox.validate_code("x = 1\nprint(x)", CodeLanguage.PYTHON)
+        
+        assert result["valid"] is True
+        assert len(result["errors"]) == 0
+    
+    @pytest.mark.asyncio
+    async def test_validate_python_invalid(self):
+        """Test validating invalid Python code."""
+        sandbox = CodeSandbox()
+        
+        result = await sandbox.validate_code("x = \n", CodeLanguage.PYTHON)
+        
+        assert result["valid"] is False
+        assert len(result["errors"]) > 0
+    
+    @pytest.mark.asyncio
+    async def test_validate_javascript(self):
+        """Test validating JavaScript code."""
+        sandbox = CodeSandbox()
+        
+        result = await sandbox.validate_code("function test() {}", CodeLanguage.JAVASCRIPT)
+        
+        assert result["valid"] is True
+    
+    @pytest.mark.asyncio
+    async def test_validate_javascript_warning(self):
+        """Test validating JavaScript code with warning."""
+        sandbox = CodeSandbox()
+        
+        # Code without function/const/let declarations
+        result = await sandbox.validate_code("x = 1", CodeLanguage.JAVASCRIPT)
+        
+        assert result["valid"] is True
+        assert len(result["warnings"]) > 0
+
+
+class TestCodeSandboxAnalyze:
+    """Tests for code analysis."""
+    
+    @pytest.mark.asyncio
+    async def test_analyze_python_basic(self):
+        """Test analyzing Python code."""
+        sandbox = CodeSandbox()
+        
+        code = """
+def hello():
+    pass
+
+class MyClass:
+    pass
+"""
+        
+        result = await sandbox.analyze_code(code, CodeLanguage.PYTHON)
+        
+        assert result["language"] == "python"
+        assert result["functions"] == 1
+        assert result["classes"] == 1
+    

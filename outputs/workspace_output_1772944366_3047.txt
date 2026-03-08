@@ -1,0 +1,2 @@
+705:    async def test_connect_redis_connection_error(self):
+723:    async def test_connect_rabbitmq_connection_error(self):

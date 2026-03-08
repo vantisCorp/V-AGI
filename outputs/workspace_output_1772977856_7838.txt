@@ -1,0 +1,50 @@
+ERROR: /workspace/src/__init__.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/config.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/main.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/api/__init__.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/api/rest_api.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/api/message_queue_integration.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/api/communication_protocol.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/api/websocket_handler.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/agents/__init__.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/agents/ludus.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/agents/ares.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/agents/cerberus.py Imports are incorrectly sorted and/or formatted.
+ERROR: /workspace/src/agents/lex_core.py Imports are incorrectly sorted and/or formatted.
+--- /workspace/src/__init__.py:before	2026-03-08 13:50:40.577723
++++ /workspace/src/__init__.py:after	2026-03-08 13:50:56.944819
+@@ -12,7 +12,7 @@
+ __version__ = "0.1.0"
+ __author__ = "OMNI-AI Team"
+ 
+-from .config import settings, get_settings
++from .config import get_settings, settings
+ 
+ __all__ = [
+     "settings",
+--- /workspace/src/config.py:before	2026-03-08 13:50:42.605723
++++ /workspace/src/config.py:after	2026-03-08 13:50:56.949650
+@@ -1,6 +1,7 @@
++import os
++from typing import Optional
++
+ from pydantic_settings import BaseSettings, SettingsConfigDict
+-from typing import Optional
+-import os
+ 
+ 
+ class Settings(BaseSettings):
+--- /workspace/src/main.py:before	2026-03-08 13:50:42.609723
++++ /workspace/src/main.py:after	2026-03-08 13:50:56.952411
+@@ -5,6 +5,7 @@
+ import asyncio
+ import sys
+ from pathlib import Path
++
+ from loguru import logger
+ 
+ from config import settings
+@@ -45,10 +46,10 @@
+ 
+     try:
+         # Import and initialize core components

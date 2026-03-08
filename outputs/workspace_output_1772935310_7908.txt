@@ -1,0 +1,120 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace
+configfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)
+plugins: anyio-4.12.1, cov-7.0.0, asyncio-1.3.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 45 items
+
+tests/test_websocket_handler.py::TestWebSocketHandlerInit::test_init_default_values PASSED [  2%]
+tests/test_websocket_handler.py::TestWebSocketHandlerInit::test_init_custom_values PASSED [  4%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_task_submit FAILED [  6%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_task_cancel FAILED [  8%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_task_status FAILED [ 11%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_agent_list FAILED [ 13%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_stream_start FAILED [ 15%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_stream_stop FAILED [ 17%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_subscribe FAILED [ 20%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_unsubscribe FAILED [ 22%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_ping FAILED [ 24%]
+tests/test_websocket_handler.py::TestWebSocketHandlerHandleMessage::test_handle_message_unknown_type FAILED [ 26%]
+tests/test_websocket_handler.py::TestWebSocketHandlerTaskSubmit::test_handle_task_submit_success PASSED [ 28%]
+tests/test_websocket_handler.py::TestWebSocketHandlerTaskSubmit::test_handle_task_submit_no_orchestrator PASSED [ 31%]
+tests/test_websocket_handler.py::TestWebSocketHandlerTaskSubmit::test_handle_task_submit_missing_description PASSED [ 33%]
+tests/test_websocket_handler.py::TestWebSocketHandlerTaskCancel::test_handle_task_cancel_success PASSED [ 35%]
+tests/test_websocket_handler.py::TestWebSocketHandlerTaskCancel::test_handle_task_cancel_missing_task_id PASSED [ 37%]
+tests/test_websocket_handler.py::TestWebSocketHandlerTaskStatus::test_handle_task_status_missing_task_id PASSED [ 40%]
+tests/test_websocket_handler.py::TestWebSocketHandlerTaskStatus::test_handle_task_status_no_orchestrator PASSED [ 42%]
+tests/test_websocket_handler.py::TestWebSocketHandlerTaskStatus::test_handle_task_status_found PASSED [ 44%]
+tests/test_websocket_handler.py::TestWebSocketHandlerAgentList::test_handle_agent_list_success PASSED [ 46%]
+tests/test_websocket_handler.py::TestWebSocketHandlerAgentList::test_handle_agent_list_no_orchestrator PASSED [ 48%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_handle_stream_start_metrics PASSED [ 51%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_handle_stream_start_events PASSED [ 53%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_handle_stream_start_unknown_type PASSED [ 55%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_handle_stream_stop PASSED [ 57%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_stream_metrics PASSED [ 60%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_stream_events PASSED [ 62%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStreaming::test_stream_metrics_no_orchestrator PASSED [ 64%]
+tests/test_websocket_handler.py::TestWebSocketHandlerClient::test_handle_client_welcome_message PASSED [ 66%]
+tests/test_websocket_handler.py::TestWebSocketHandlerClient::test_handle_client_with_message PASSED [ 68%]
+tests/test_websocket_handler.py::TestWebSocketHandlerClient::test_handle_client_invalid_json PASSED [ 71%]
+tests/test_websocket_handler.py::TestWebSocketHandlerClient::test_handle_client_exception_in_handler PASSED [ 73%]
+tests/test_websocket_handler.py::TestWebSocketHandlerBroadcast::test_broadcast_message PASSED [ 75%]
+tests/test_websocket_handler.py::TestWebSocketHandlerBroadcast::test_broadcast_message_no_clients PASSED [ 77%]
+tests/test_websocket_handler.py::TestWebSocketHandlerBroadcast::test_broadcast_message_with_failure PASSED [ 80%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStartStop::test_start_server PASSED [ 82%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStartStop::test_start_server_no_websockets PASSED [ 84%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStartStop::test_stop_server PASSED [ 86%]
+tests/test_websocket_handler.py::TestWebSocketHandlerStartStop::test_stop_server_no_server PASSED [ 88%]
+tests/test_websocket_handler.py::TestWebSocketHandlerSubscriptions::test_handle_subscribe PASSED [ 91%]
+tests/test_websocket_handler.py::TestWebSocketHandlerSubscriptions::test_handle_unsubscribe PASSED [ 93%]
+tests/test_websocket_handler.py::TestWebSocketHandlerPingPong::test_handle_ping PASSED [ 95%]
+tests/test_websocket_handler.py::TestWebSocketHandlerClientManagement::test_client_add_remove PASSED [ 97%]
+tests/test_websocket_handler.py::TestWebSocketHandlerClientManagement::test_multiple_clients PASSED [100%]/usr/local/lib/python3.11/site-packages/coverage/inorout.py:561: CoverageWarning: Module src/api/websocket_handler was never imported. (module-not-imported); see https://coverage.readthedocs.io/en/7.13.4/messages.html#warning-module-not-imported
+  self.warn(f"Module {pkg} was never imported.", slug="module-not-imported")
+
+
+=================================== FAILURES ===================================
+______ TestWebSocketHandlerHandleMessage.test_handle_message_task_submit _______
+tests/test_websocket_handler.py:164: in test_handle_message_task_submit
+    await handler.handle_message(websocket, "client-1", message)
+src/api/websocket_handler.py:122: in handle_message
+    message = self.protocol.parse_message(raw_message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/api/communication_protocol.py:130: in parse_message
+    raise ValueError(f"Missing required field: {field}")
+E   ValueError: Missing required field: protocol_version
+______ TestWebSocketHandlerHandleMessage.test_handle_message_task_cancel _______
+tests/test_websocket_handler.py:181: in test_handle_message_task_cancel
+    await handler.handle_message(websocket, "client-1", message)
+src/api/websocket_handler.py:122: in handle_message
+    message = self.protocol.parse_message(raw_message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/api/communication_protocol.py:130: in parse_message
+    raise ValueError(f"Missing required field: {field}")
+E   ValueError: Missing required field: protocol_version
+______ TestWebSocketHandlerHandleMessage.test_handle_message_task_status _______
+tests/test_websocket_handler.py:198: in test_handle_message_task_status
+    await handler.handle_message(websocket, "client-1", message)
+src/api/websocket_handler.py:122: in handle_message
+    message = self.protocol.parse_message(raw_message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/api/communication_protocol.py:130: in parse_message
+    raise ValueError(f"Missing required field: {field}")
+E   ValueError: Missing required field: protocol_version
+_______ TestWebSocketHandlerHandleMessage.test_handle_message_agent_list _______
+tests/test_websocket_handler.py:213: in test_handle_message_agent_list
+    await handler.handle_message(websocket, "client-1", message)
+src/api/websocket_handler.py:122: in handle_message
+    message = self.protocol.parse_message(raw_message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/api/communication_protocol.py:130: in parse_message
+    raise ValueError(f"Missing required field: {field}")
+E   ValueError: Missing required field: protocol_version
+______ TestWebSocketHandlerHandleMessage.test_handle_message_stream_start ______
+tests/test_websocket_handler.py:230: in test_handle_message_stream_start
+    await handler.handle_message(websocket, "client-1", message)
+src/api/websocket_handler.py:122: in handle_message
+    message = self.protocol.parse_message(raw_message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/api/communication_protocol.py:130: in parse_message
+    raise ValueError(f"Missing required field: {field}")
+E   ValueError: Missing required field: protocol_version
+______ TestWebSocketHandlerHandleMessage.test_handle_message_stream_stop _______
+tests/test_websocket_handler.py:245: in test_handle_message_stream_stop
+    await handler.handle_message(websocket, "client-1", message)
+src/api/websocket_handler.py:122: in handle_message
+    message = self.protocol.parse_message(raw_message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/api/communication_protocol.py:130: in parse_message
+    raise ValueError(f"Missing required field: {field}")
+E   ValueError: Missing required field: protocol_version
+_______ TestWebSocketHandlerHandleMessage.test_handle_message_subscribe ________
+tests/test_websocket_handler.py:262: in test_handle_message_subscribe
+    await handler.handle_message(websocket, "client-1", message)
+src/api/websocket_handler.py:122: in handle_message
+    message = self.protocol.parse_message(raw_message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/api/communication_protocol.py:130: in parse_message
+    raise ValueError(f"Missing required field: {field}")

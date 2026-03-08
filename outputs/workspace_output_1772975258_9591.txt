@@ -1,0 +1,15 @@
+src/security/aegis.py                    148     96    35%   21, 57, 114-129, 133-142, 159-196, 219-243, 261-275, 288-298, 316-339, 358-373, 382-397
+src/tools/__init__.py                      5      5     0%   6-11
+src/tools/cad_integration.py             206    206     0%   7-569
+src/tools/code_sandbox.py                237    237     0%   7-570
+src/tools/digital_twin.py                251    251     0%   7-660
+src/tools/physics_engine.py              237    237     0%   7-562
+--------------------------------------------------------------------
+TOTAL                                   4399   3948    10%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ============================
+FAILED tests/test_websocket_handler.py::TestWebSocketHandlerErrorHandling::test_handle_message_exception
+FAILED tests/test_websocket_handler.py::TestWebSocketHandlerErrorHandling::test_stream_metrics_exception_handling
+FAILED tests/test_websocket_handler.py::TestWebSocketHandlerErrorHandling::test_stream_events_exception_handling
+FAILED tests/test_websocket_handler.py::TestWebSocketHandlerErrorHandling::test_handle_unknown_message_type_error
+========================= 4 failed, 3 passed in 2.40s ==========================

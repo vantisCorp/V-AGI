@@ -1,0 +1,10 @@
+ERROR tests/test_message_queue_integration.py
+ERROR tests/test_orchestrator.py
+ERROR tests/test_performance.py
+ERROR tests/test_physics_engine.py
+ERROR tests/test_rest_api.py
+ERROR tests/test_specialized_agents.py
+ERROR tests/test_vector_store.py
+ERROR tests/test_websocket_handler.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 19 errors during collection !!!!!!!!!!!!!!!!!!!
+============================== 19 errors in 0.85s ==============================

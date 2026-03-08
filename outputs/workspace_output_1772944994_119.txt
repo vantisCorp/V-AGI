@@ -1,0 +1,49 @@
+# Test Coverage Improvement Tasks - Phase 2
+
+## Current Status
+- Overall: **88%** coverage (up from 86%)
+- Tests: **748 passed**, 4 skipped
+
+## Modules Coverage Summary
+| Module | Coverage | Status |
+|--------|----------|--------|
+| Communication Protocol | 100% | ✅ Complete |
+| Orchestrator | 96% | ✅ Complete |
+| Ludus Agent | 95% | ✅ Complete |
+| Long Term Memory | 94% | ✅ Complete |
+| CAD Integration | 94% | ✅ Complete |
+| Code Sandbox | 91% | ✅ Improved |
+| VITA Agent | 90% | ✅ Improved |
+| ARGUS Agent | 90% | ✅ Good |
+| LEX-Core Agent | 89% | Good |
+| MUSE Agent | 90% | Good |
+| WebSocket Handler | 89% | Good |
+| ARES Agent | 89% | Good |
+| Message Queue Integration | 86% | ✅ Improved |
+| Digital Twin | 86% | Good |
+| Vector Store | 85% | Good |
+| Cerberus Agent | 85% | Good |
+| Working Memory | 88% | Good |
+| AEGIS Security | 90% | Good |
+| Forge Agent | 87% | Good |
+| Base Agent | 83% | Good |
+| Veritas Agent | 82% | Good |
+| REST API | 74% | Needs Work |
+| Physics Engine | 80% | Needs Work |
+
+## Remaining Tasks
+- [ ] src/api/rest_api.py - 74% → target 85%+
+- [ ] src/tools/physics_engine.py - 80% → target 90%+
+- [ ] Commit test improvements to git
+
+## Completed in Phase 1 & 2
+- [x] Communication Protocol: 63% → 100%
+- [x] Orchestrator: 70% → 96%
+- [x] WebSocket Handler: 52% → 90%
+- [x] Long Term Memory: 46% → 94%
+- [x] CAD Integration: 49% → 94%
+- [x] Vector Store: 46% → 85%
+- [x] VITA Agent: 73% → 90%
+- [x] Code Sandbox: 73% → 91%
+- [x] Message Queue Integration: 73% → 86%
+- [x] Overall: 70% → 88%

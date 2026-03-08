@@ -1,0 +1,16 @@
+        return jsonify({
+            "task_id": task.id,
+            "description": task.description,
+            "parameters": task.parameters,
+            "priority": task.priority.value,
+            "created_at": task.created_at.isoformat() if task.created_at else None,
+            "result": task.result if task.result else None
+        })
+    
+    @app.route('/api/tasks/submit', methods=['POST'])
+    def submit_task():
+        """Submit a new task for execution."""
+        if not app.orchestrator:
+            return jsonify({"error": "Orchestrator not configured"}), 503
+        
+        data = request.get_json()

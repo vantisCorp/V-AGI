@@ -1,0 +1,43 @@
+# Test Coverage Improvement Tasks
+
+## Current Progress
+- [x] Fix failing tests in test_orchestrator.py
+- [x] Add tests for AEGIS Guardian, Digital Twin Platform, Physics Engine
+- [x] Add tests for CAD Integration (49% -> 94%)
+- [x] Add tests for Long Term Memory (46% -> 94%)
+- [x] Add tests for Vector Store (46% -> 85%)
+- [x] Run and verify Message Queue Integration tests
+- [x] Add tests for REST API (58% -> 74%)
+- [x] Add tests for Code Sandbox (61% -> 73%)
+- [x] Add tests for WebSocket Handler (52% -> 90%)
+- [x] Add tests for Communication Protocol (63% -> 100%)
+- [ ] Push changes to GitHub (token expired - needs manual push)
+
+## Coverage Status
+- Overall: 84% (up from 70%)
+- Tests: 674 passed, 1 skipped
+
+## Local Commits Ready to Push
+- 5c60a14 Add comprehensive tests for Communication Protocol module achieving 100% coverage
+- 86cb1d6 Expand WebSocket Handler tests to improve coverage from 52% to 90%
+- 8868454 Add comprehensive tests for Code Sandbox module
+- bab6ac9 Add comprehensive tests for REST API module
+- b5f3792 Add comprehensive tests for Message Queue Integration module
+- 17bc159 Add comprehensive tests for Vector Store module
+- 0fbc0dc Add comprehensive tests for CAD Integration and Long Term Memory modules
+- 37e355f Add comprehensive tests for Physics Engine
+- 6ead009 Add comprehensive tests for Digital Twin Platform
+- 6a6b64e Add comprehensive tests for NEXUS Orchestrator and AEGIS Guardian
+
+## Coverage Improvements Summary
+| Module | Before | After |
+|--------|--------|-------|
+| Communication Protocol | 63% | 100% |
+| WebSocket Handler | 52% | 90% |
+| Long Term Memory | 46% | 94% |
+| CAD Integration | 49% | 94% |
+| Vector Store | 46% | 85% |
+| REST API | 58% | 74% |
+| Message Queue Integration | 43% | 73% |
+| Code Sandbox | 61% | 73% |
+| **Overall** | **70%** | **84%** |

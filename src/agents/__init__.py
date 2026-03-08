@@ -13,14 +13,8 @@ Contains all specialized agents for the multi-agent system:
 - ARGUS: Monitoring and analytics
 """
 
-from .base_agent import (
-    BaseAgent,
-    Task,
-    AgentResponse,
-    AgentStatus,
-    TaskPriority,
-    AgentCapabilities
-)
+from .base_agent import (AgentCapabilities, AgentResponse, AgentStatus,
+                         BaseAgent, Task, TaskPriority)
 
 __all__ = [
     "BaseAgent",

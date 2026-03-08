@@ -1,0 +1,2 @@
+249:        subtasks = await self._decompose_task(orchestrated_task.task)
+272:    async def _decompose_task(self, task: Task) -> List[Task]:

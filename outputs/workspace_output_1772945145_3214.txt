@@ -1,0 +1,5 @@
+                    description=task_data['description'],
+                    parameters=task_data['parameters'],
+                    priority=TaskPriority(task_data.get('priority', 'medium').lower()),
+                    agent_id=task_data.get('agent_id'),
+                    clearance_level=task_data.get('clearance_level', 1)

@@ -1,0 +1,7 @@
+        
+        await engine.apply_torque(body.id, [0.0, 5.0, 0.0])
+        
+        assert body.id in engine.torques    
+    @pytest.mark.asyncio
+    async def test_create_constraint_fixed(self, engine):
+        """Test creating a fixed constraint."""

@@ -1,0 +1,136 @@
+
+class TestVitaAgent:
+    """Test suite for VITA Agent (Healthcare)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create VITA agent instance."""
+        return VitaAgent()
+    
+    @pytest.mark.asyncio
+    async def test_agent_initialization(self, agent):
+        """Test agent initializes correctly."""
+        assert agent is not None
+        assert agent.agent_id == "vita"
+        assert hasattr(agent, 'conditions_database')
+        assert hasattr(agent, 'drug_interactions')
+    
+    @pytest.mark.asyncio
+    async def test_execute_symptom_analysis(self, agent):
+        """Test symptom analysis task."""
+        task = Task(
+            id="test_symptoms_1",
+            description="Analyze symptoms",
+            parameters={"symptoms": ["fever", "cough"], "task_type": "analyze_symptoms"},
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert response.agent_id == "vita"
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_execute_drug_interactions(self, agent):
+        """Test drug interaction check task."""
+        task = Task(
+            id="test_drug_1",
+            description="Check drug interactions",
+            parameters={"task_type": "check_drug_interactions", "medications": ["aspirin", "ibuprofen"]},
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_execute_patient_data_analysis(self, agent):
+        """Test patient data analysis task."""
+        task = Task(
+            id="test_patient_1",
+            description="Analyze patient data",
+            parameters={"task_type": "analyze_patient_data", "patient_id": "P123"},
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_execute_medical_research(self, agent):
+        """Test medical research task."""
+        task = Task(
+            id="test_research_1",
+            description="Medical research",
+            parameters={"task_type": "medical_research", "topic": "diabetes"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_execute_clinical_trial_analysis(self, agent):
+        """Test clinical trial analysis task."""
+        task = Task(
+            id="test_trial_1",
+            description="Clinical trial analysis",
+            parameters={"task_type": "clinical_trial_analysis", "trial_id": "CT001"},
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_execute_epidemiology_study(self, agent):
+        """Test epidemiology study task."""
+        task = Task(
+            id="test_epi_1",
+            description="Epidemiology study",
+            parameters={"task_type": "epidemiology_study", "disease": "influenza"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_execute_personalized_medicine(self, agent):
+        """Test personalized medicine task."""
+        task = Task(
+            id="test_personal_1",
+            description="Personalized medicine",
+            parameters={"task_type": "personalized_medicine", "patient_id": "P456"},
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_execute_health_monitoring(self, agent):
+        """Test health monitoring task."""
+        task = Task(
+            id="test_monitor_1",
+            description="Health monitoring",
+            parameters={"task_type": "health_monitoring", "patient_id": "P789"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_execute_unknown_task_type(self, agent):
+        """Test handling of unknown task type."""
+        task = Task(
+            id="test_unknown_1",
+            description="Unknown task",
+            parameters={"task_type": "unknown_type"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        # VITA returns success with error in result for unknown types
+        assert "error" in response.result
+    

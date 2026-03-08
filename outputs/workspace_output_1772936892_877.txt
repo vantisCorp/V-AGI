@@ -1,0 +1,200 @@
+"""
+Tests for NEXUS Orchestrator.
+"""
+
+import pytest
+import asyncio
+from unittest.mock import Mock, patch, MagicMock, AsyncMock
+
+from src.nexus.orchestrator import NexusOrchestrator, OrchestratedTask, AgentAssignment, TaskStatus
+from src.agents.base_agent import BaseAgent, AgentCapabilities, AgentResponse, Task, TaskPriority
+
+
+class TestOrchestratedTask:
+    """Test suite for OrchestratedTask dataclass."""
+    
+    def test_orchestrated_task_creation(self):
+        """Test creating an orchestrated task."""
+        task = Task(id="test-1", description="Test task")
+        orchestrated = OrchestratedTask(
+            task=task,
+            status=TaskStatus.PENDING
+        )
+        assert orchestrated.task.id == "test-1"
+        assert orchestrated.status == TaskStatus.PENDING
+
+
+class TestAgentAssignment:
+    """Test suite for AgentAssignment dataclass."""
+    
+    def test_agent_assignment_creation(self):
+        """Test creating an agent assignment."""
+        assignment = AgentAssignment(
+            agent_id="agent-1",
+            task_id="task-1"
+        )
+        assert assignment.agent_id == "agent-1"
+        assert assignment.task_id == "task-1"
+        assert assignment.assigned_at is not None
+        assert assignment.priority.value == TaskPriority.MEDIUM.value
+
+
+class TestNexusOrchestrator:
+    """Test suite for NEXUS Orchestrator."""
+    
+    @pytest.fixture
+    def orchestrator(self):
+        """Create orchestrator instance."""
+        return NexusOrchestrator(max_concurrent_agents=5)
+    
+    @pytest.fixture
+    def mock_agent(self):
+        """Create mock agent."""
+        agent = AsyncMock(spec=BaseAgent)
+        agent.agent_id = "test-agent"
+        agent.execute_task = AsyncMock(return_value=AgentResponse(
+            agent_id="test-agent",
+            task_id="test-task",
+            status="idle",
+            result={"success": True}
+        ))
+        return agent
+    
+    @pytest.fixture
+    def mock_capabilities(self):
+        """Create mock capabilities."""
+        return AgentCapabilities(
+            name="test-agent",
+            description="Test agent",
+            skills=["analysis", "processing"],
+            tools=["tool1", "tool2"]
+        )
+    
+    def test_init(self, orchestrator):
+        """Test initialization."""
+        assert orchestrator.max_concurrent_agents == 5
+        assert len(orchestrator.agents) == 0
+        assert len(orchestrator.tasks) == 0
+        assert orchestrator.is_running is False
+    
+    @pytest.mark.asyncio
+    async def test_register_agent(self, orchestrator, mock_agent, mock_capabilities):
+        """Test registering an agent."""
+        await orchestrator.register_agent(mock_agent, mock_capabilities)
+        
+        assert "test-agent" in orchestrator.agents
+        assert "test-agent" in orchestrator.agent_capabilities
+    
+    @pytest.mark.asyncio
+    async def test_unregister_agent(self, orchestrator, mock_agent, mock_capabilities):
+        """Test unregistering an agent."""
+        await orchestrator.register_agent(mock_agent, mock_capabilities)
+        await orchestrator.unregister_agent("test-agent")
+        
+        assert "test-agent" not in orchestrator.agents
+    
+    @pytest.mark.asyncio
+    async def test_unregister_nonexistent_agent(self, orchestrator):
+        """Test unregistering a non-existent agent."""
+        # Should not raise
+        await orchestrator.unregister_agent("nonexistent-agent")
+    
+    @pytest.mark.asyncio
+    async def test_submit_task(self, orchestrator, mock_agent, mock_capabilities):
+        """Test submitting a task."""
+        await orchestrator.register_agent(mock_agent, mock_capabilities)
+        
+        task = Task(
+            id="test-task-1",
+            description="Test task",
+            priority=TaskPriority.MEDIUM
+        )
+        
+        task_id = await orchestrator.submit_task(task)
+        assert task_id is not None
+    
+    @pytest.mark.asyncio
+    async def test_get_task_status(self, orchestrator, mock_agent, mock_capabilities):
+        """Test getting task status."""
+        await orchestrator.register_agent(mock_agent, mock_capabilities)
+        
+        task = Task(
+            id="test-task-2",
+            description="Test task",
+            priority=TaskPriority.MEDIUM
+        )
+        
+        task_id = await orchestrator.submit_task(task)
+        status = await orchestrator.get_task_status(task_id)
+        
+        assert status is not None
+        assert "task_id" in status
+    
+    @pytest.mark.asyncio
+    async def test_get_task_status_nonexistent(self, orchestrator):
+        """Test getting status for non-existent task."""
+        status = await orchestrator.get_task_status("nonexistent-task")
+        assert status is None
+    
+    @pytest.mark.asyncio
+    async def test_get_all_tasks(self, orchestrator, mock_agent, mock_capabilities):
+        """Test getting all tasks."""
+        await orchestrator.register_agent(mock_agent, mock_capabilities)
+        
+        task1 = Task(id="task-1", description="Task 1", priority=TaskPriority.LOW)
+        task2 = Task(id="task-2", description="Task 2", priority=TaskPriority.HIGH)
+        
+        await orchestrator.submit_task(task1)
+        await orchestrator.submit_task(task2)
+        
+        all_tasks = await orchestrator.get_all_tasks()
+        assert len(all_tasks) >= 2
+    
+    @pytest.mark.asyncio
+    async def test_get_stats(self, orchestrator):
+        """Test getting orchestrator stats."""
+        stats = await orchestrator.get_stats()
+        
+        assert stats is not None
+        assert "is_running" in stats
+        assert "registered_agents" in stats
+    
+    @pytest.mark.asyncio
+    async def test_start_and_stop(self, orchestrator):
+        """Test starting and stopping orchestrator."""
+        await orchestrator.start()
+        assert orchestrator.is_running is True
+        
+        await orchestrator.stop()
+        assert orchestrator.is_running is False
+    
+    @pytest.mark.asyncio
+    async def test_stop_when_not_running(self, orchestrator):
+        """Test stopping when not running."""
+        # Should not raise
+        await orchestrator.stop()
+    
+    @pytest.mark.asyncio
+    async def test_select_agent(self, orchestrator, mock_agent, mock_capabilities):
+        """Test agent selection."""
+        # Add capabilities to the mock agent
+        mock_agent.capabilities = mock_capabilities
+        mock_agent.get_status = AsyncMock(return_value=MagicMock(value="idle"))
+        mock_agent.get_task_count = AsyncMock(return_value=0)
+        
+        await orchestrator.register_agent(mock_agent, mock_capabilities)
+        
+        task = Task(
+            id="test-task-3",
+            description="Test task",
+            parameters={"task_type": "analysis"},
+            priority=TaskPriority.MEDIUM
+        )
+        
+        selected = await orchestrator._select_agent(task)
+        # Should select the agent since it's idle
+        assert selected is not None
+        assert selected.agent_id == "test-agent"
+
+
+class TestOrchestratorIntegration:

@@ -1,0 +1,72 @@
+class TestCerberusAgent:
+    """Test suite for CERBERUS Agent (Security)."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create CERBERUS agent instance."""
+        return CerberusAgent()
+    
+    @pytest.mark.asyncio
+    async def test_agent_initialization(self, agent):
+        """Test agent initializes correctly."""
+        assert agent is not None
+        assert agent.agent_id == "cerberus"
+    
+    @pytest.mark.asyncio
+    async def test_validate_task(self, agent):
+        """Test task validation."""
+        task = Task(
+            id="test_task",
+            description="Monitor security",
+            parameters={"action": "scan"},
+            priority=TaskPriority.HIGH
+        )
+        result = await agent.validate_task(task)
+        assert isinstance(result, bool)
+    
+    @pytest.mark.asyncio
+    async def test_execute_task(self, agent):
+        """Test security task execution."""
+        task = Task(
+            id="test_task",
+            description="Monitor security",
+            parameters={"action": "scan", "task_type": "monitor_threats"},
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'status')
+
+    @pytest.mark.asyncio
+    async def test_execute_detect_anomalies(self, agent):
+        """Test anomaly detection task."""
+        task = Task(
+            id="test_anomaly_1",
+            description="Detect anomalies",
+            parameters={
+                "task_type": "detect_anomalies",
+                "data_sources": ["network_logs", "system_logs"],
+                "sensitivity": "high"
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+    @pytest.mark.asyncio
+    async def test_execute_respond_incident(self, agent):
+        """Test incident response task."""
+        task = Task(
+            id="test_incident_1",
+            description="Respond to incident",
+            parameters={
+                "task_type": "respond_incident",
+                "incident_type": "malware_detection",
+                "severity": "high",
+                "affected_systems": ["server-1", "workstation-5"]
+            },
+            priority=TaskPriority.CRITICAL
+        )
+        response = await agent.execute_task(task)
+        assert response is not None

@@ -1,0 +1,16 @@
+    async def test_remove_body(self, engine):
+        """Test removing a body from simulation."""
+        body = await engine.create_body(
+            name="Temporary",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        assert body.id in engine.bodies
+        
+        await engine.remove_body(body.id)
+        
+        assert body.id not in engine.bodies
+    

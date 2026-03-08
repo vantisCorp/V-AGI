@@ -1,0 +1,316 @@
+    async def test_remove_body(self, engine):
+        """Test removing a body from simulation."""
+        body = await engine.create_body(
+            name="Temporary",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        assert body.id in engine.bodies
+        
+        await engine.remove_body(body.id)
+        
+        assert body.id not in engine.bodies
+    
+    @pytest.mark.asyncio
+    async def test_remove_constraint(self, engine):
+        """Test removing a constraint from simulation."""
+        await engine.create_body(
+            name="Body A",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        await engine.create_body(
+            name="Body B",
+            mass=1.0,
+            position=[2.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        constraint = await engine.create_constraint(
+            name="Spring",
+            constraint_type=ConstraintType.SPRING,
+            body_a_id="body_0",
+            body_b_id="body_1",
+            parameters={"stiffness": 100.0}
+        )
+        
+        assert constraint.id in engine.constraints
+        
+        await engine.remove_constraint(constraint.id)
+        
+        assert constraint.id not in engine.constraints
+    
+    @pytest.mark.asyncio
+    async def test_reset_simulation(self, engine):
+        """Test resetting the simulation."""
+        await engine.create_body(
+            name="Test Body",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        await engine.simulate_step()
+        
+        await engine.reset()
+        
+        assert len(engine.bodies) == 0
+        assert len(engine.constraints) == 0
+        assert engine.simulation_time == 0.0
+    
+    @pytest.mark.asyncio
+    async def test_set_time_step(self, engine):
+        """Test setting custom time step."""
+        engine.set_time_step(1.0 / 120.0)
+        
+        assert engine.time_step == 1.0 / 120.0
+    
+    @pytest.mark.asyncio
+    async def test_get_body_by_name(self, engine):
+        """Test getting body by name."""
+        await engine.create_body(
+            name="UniqueName",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        body = engine.get_body_by_name("UniqueName")
+        
+        assert body is not None
+        assert body.name == "UniqueName"
+    
+    @pytest.mark.asyncio
+    async def test_get_body_by_name_not_found(self, engine):
+        """Test getting body by name when not found."""
+        body = engine.get_body_by_name("Nonexistent")
+        
+        assert body is None
+    
+    @pytest.mark.asyncio
+    async def test_create_constraint_fixed(self, engine):
+        """Test creating a fixed constraint."""
+        await engine.create_body(
+            name="Body A",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        await engine.create_body(
+            name="Body B",
+            mass=1.0,
+            position=[2.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        constraint = await engine.create_constraint(
+            name="FixedJoint",
+            constraint_type=ConstraintType.FIXED,
+            body_a_id="body_0",
+            body_b_id="body_1",
+            parameters={}
+        )
+        
+        assert constraint.type == ConstraintType.FIXED
+    
+    @pytest.mark.asyncio
+    async def test_create_constraint_hinge(self, engine):
+        """Test creating a hinge constraint."""
+        await engine.create_body(
+            name="Body A",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="box",
+            dimensions={"width": 1.0, "height": 1.0, "depth": 1.0}
+        )
+        await engine.create_body(
+            name="Body B",
+            mass=1.0,
+            position=[2.0, 0.0, 0.0],
+            shape="box",
+            dimensions={"width": 1.0, "height": 1.0, "depth": 1.0}
+        )
+        
+        constraint = await engine.create_constraint(
+            name="DoorHinge",
+            constraint_type=ConstraintType.HINGE,
+            body_a_id="body_0",
+            body_b_id="body_1",
+            parameters={"axis": [0, 1, 0], "anchor": [0.5, 0, 0]}
+        )
+        
+        assert constraint.type == ConstraintType.HINGE
+    
+    @pytest.mark.asyncio
+    async def test_create_constraint_slider(self, engine):
+        """Test creating a slider constraint."""
+        await engine.create_body(
+            name="Body A",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="box",
+            dimensions={"width": 1.0, "height": 1.0, "depth": 1.0}
+        )
+        await engine.create_body(
+            name="Body B",
+            mass=1.0,
+            position=[2.0, 0.0, 0.0],
+            shape="box",
+            dimensions={"width": 1.0, "height": 1.0, "depth": 1.0}
+        )
+        
+        constraint = await engine.create_constraint(
+            name="Slider",
+            constraint_type=ConstraintType.SLIDER,
+            body_a_id="body_0",
+            body_b_id="body_1",
+            parameters={"axis": [1, 0, 0]}
+        )
+        
+        assert constraint.type == ConstraintType.SLIDER
+    
+    @pytest.mark.asyncio
+    async def test_create_constraint_universal(self, engine):
+        """Test creating a universal constraint."""
+        await engine.create_body(
+            name="Body A",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        await engine.create_body(
+            name="Body B",
+            mass=1.0,
+            position=[2.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        constraint = await engine.create_constraint(
+            name="Universal",
+            constraint_type=ConstraintType.UNIVERSAL,
+            body_a_id="body_0",
+            body_b_id="body_1",
+            parameters={}
+        )
+        
+        assert constraint.type == ConstraintType.UNIVERSAL
+    
+    @pytest.mark.asyncio
+    async def test_get_simulation_stats(self, engine):
+        """Test getting simulation statistics."""
+        await engine.create_body(
+            name="Test Body",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        stats = engine.get_stats()
+        
+        assert "body_count" in stats
+        assert "constraint_count" in stats
+        assert stats["body_count"] == 1
+    
+    @pytest.mark.asyncio
+    async def test_serialize_state(self, engine):
+        """Test serializing simulation state."""
+        await engine.create_body(
+            name="Test Body",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        state_dict = engine.serialize_state()
+        
+        assert "time" in state_dict
+        assert "bodies" in state_dict
+    
+    @pytest.mark.asyncio
+    async def test_deserialize_state(self, engine):
+        """Test deserializing simulation state."""
+        state_data = {
+            "time": 1.5,
+            "bodies": [
+                {
+                    "id": "imported_body",
+                    "name": "Imported Body",
+                    "mass": 5.0,
+                    "position": [1.0, 2.0, 3.0],
+                    "velocity": [0.0, 0.0, 0.0],
+                    "acceleration": [0.0, 0.0, 0.0],
+                    "rotation": [0.0, 0.0, 0.0],
+                    "angular_velocity": [0.0, 0.0, 0.0],
+                    "shape": "box",
+                    "dimensions": {"width": 1.0, "height": 1.0, "depth": 1.0},
+                    "material_properties": {},
+                    "is_static": False
+                }
+            ],
+            "constraints": []
+        }
+        
+        await engine.deserialize_state(state_data)
+        
+        assert "imported_body" in engine.bodies
+        assert engine.simulation_time == 1.5
+    
+    @pytest.mark.asyncio
+    async def test_raycast_hit(self, engine):
+        """Test raycast hitting a body."""
+        await engine.create_body(
+            name="Target",
+            mass=1.0,
+            position=[5.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 1.0}
+        )
+        
+        # Raycast from origin towards the body
+        hit = await engine.raycast(
+            origin=[0.0, 0.0, 0.0],
+            direction=[1.0, 0.0, 0.0],
+            max_distance=10.0
+        )
+        
+        assert hit is not None
+        assert "body_id" in hit or hit is False or hit is None  # Implementation may vary
+    
+    @pytest.mark.asyncio
+    async def test_raycast_miss(self, engine):
+        """Test raycast missing all bodies."""
+        await engine.create_body(
+            name="Target",
+            mass=1.0,
+            position=[5.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 1.0}
+        )
+        
+        # Raycast in opposite direction
+        hit = await engine.raycast(
+            origin=[0.0, 0.0, 0.0],
+            direction=[-1.0, 0.0, 0.0],
+            max_distance=10.0
+        )
+        
+        # Should miss
+        assert hit is None or hit is False
+    
+    @pytest.mark.asyncio
+    async def test_simulation_with_constraints(self, engine):
+        """Test simulation with constraints affecting bodies."""

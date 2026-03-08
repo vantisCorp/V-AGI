@@ -1,0 +1,20 @@
+would reformat /workspace/tests/test_cad_integration.py
+would reformat /workspace/tests/test_code_sandbox.py
+would reformat /workspace/tests/test_core_components.py
+would reformat /workspace/tests/test_communication_protocol.py
+would reformat /workspace/tests/test_digital_twin.py
+would reformat /workspace/tests/test_integration.py
+would reformat /workspace/tests/test_memory.py
+would reformat /workspace/tests/test_message_queue.py
+would reformat /workspace/tests/test_long_term_memory.py
+would reformat /workspace/tests/test_orchestrator.py
+would reformat /workspace/tests/test_performance.py
+would reformat /workspace/tests/test_message_queue_integration.py
+would reformat /workspace/tests/test_physics_engine.py
+would reformat /workspace/tests/test_rest_api.py
+would reformat /workspace/tests/test_vector_store.py
+would reformat /workspace/tests/test_websocket_handler.py
+would reformat /workspace/tests/test_specialized_agents.py
+
+Oh no! 💥 💔 💥
+53 files would be reformatted.

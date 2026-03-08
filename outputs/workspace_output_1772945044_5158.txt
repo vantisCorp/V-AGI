@@ -1,0 +1,5 @@
+    
+    @pytest.mark.asyncio
+    async def test_remove_body(self, engine):
+        """Test removing a body from simulation."""
+        body = await engine.create_body(

@@ -1,0 +1,42 @@
+class TestTaskDecomposition:
+    """Tests for task decomposition."""
+    
+    @pytest.fixture
+    def orchestrator(self):
+        """Create orchestrator instance."""
+        return NexusOrchestrator(max_concurrent_agents=2)
+    
+    @pytest.mark.asyncio
+    async def test_decompose_critical_task(self, orchestrator):
+        """Test decomposition of critical priority task."""
+        task = Task(
+            id="critical-task",
+            description="Critical operation",
+            parameters={"key": "value"},
+            priority=TaskPriority.CRITICAL
+        )
+        
+        subtasks = await orchestrator._decompose_task(task)
+        
+        assert len(subtasks) == 3
+        for i, subtask in enumerate(subtasks):
+            assert f"Subtask {i+1}" in subtask.description
+            assert subtask.priority == TaskPriority.HIGH
+    
+    @pytest.mark.asyncio
+    async def test_decompose_non_critical_task(self, orchestrator):
+        """Test that non-critical tasks are not decomposed."""
+        for priority in [TaskPriority.LOW, TaskPriority.MEDIUM, TaskPriority.HIGH]:
+            task = Task(
+                id=f"task-{priority.value}",
+                description="Regular task",
+                parameters={},
+                priority=priority
+            )
+            
+            subtasks = await orchestrator._decompose_task(task)
+            assert len(subtasks) == 0
+
+
+class TestResultAggregation:
+    """Tests for result aggregation."""

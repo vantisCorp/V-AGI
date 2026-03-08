@@ -1,0 +1,62 @@
+    @app.route('/api/memory/long-term/nodes', methods=['POST'])
+    def store_knowledge_node():
+        """Store a knowledge node in long-term memory."""
+        if not app.long_term_memory:
+            return jsonify({"error": "Long-term memory not configured"}), 503
+        
+        data = request.get_json()
+        
+        required_fields = ['node_id', 'node_type', 'properties']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"Missing required field: {field}"}), 400
+        
+        try:
+            asyncio.run(app.long_term_memory.store_node(
+                node_id=data['node_id'],
+                node_type=data['node_type'],
+                properties=data['properties']
+            ))
+            return jsonify({"status": "stored", "node_id": data['node_id']})
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    
+    @app.route('/api/memory/long-term/nodes/<node_id>', methods=['GET'])
+    def get_knowledge_node(node_id: str):
+        """Get a knowledge node from long-term memory."""
+        if not app.long_term_memory:
+            return jsonify({"error": "Long-term memory not configured"}), 503
+        
+        try:
+            node = asyncio.run(app.long_term_memory.get_node(node_id))
+            if node:
+                return jsonify({"node": node})
+            else:
+                return jsonify({"error": "Node not found"}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    
+    @app.route('/api/memory/long-term/search', methods=['POST'])
+    def search_knowledge_graph():
+        """Search the knowledge graph."""
+        if not app.long_term_memory:
+            return jsonify({"error": "Long-term memory not configured"}), 503
+        
+        data = request.get_json()
+        query = data.get('query', '')
+        node_type = data.get('node_type')
+        
+        try:
+            results = asyncio.run(app.long_term_memory.search_nodes(
+                query=query,
+                node_type=node_type
+            ))
+            return jsonify({
+                "query": query,
+                "results": results,
+                "count": len(results)
+            })
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    
+    @app.route('/api/memory/vector/search', methods=['POST'])

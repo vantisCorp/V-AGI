@@ -1,0 +1,25 @@
+703:    def test_submit_task_allowed_by_aegis(self):
+733:    def test_list_tasks_with_status_filter(self, client):
+741:    def test_list_tasks_with_limit(self, client):
+749:    def test_get_task_found(self, client):
+773:    def test_submit_batch_tasks(self, client):
+801:    def test_submit_batch_tasks_missing_tasks_field(self, client):
+813:    def test_submit_batch_tasks_invalid_priority(self, client):
+834:    def test_working_memory_get_all_keys(self, client):
+850:    def test_working_memory_get_specific_key(self, client):
+866:    def test_working_memory_delete(self, client):
+882:    def test_working_memory_delete_not_found(self, client):
+890:    def test_working_memory_post_missing_fields(self, client):
+900:    def test_working_memory_delete_missing_key(self, client):
+906:    def test_working_memory_not_configured(self):
+916:    def test_submit_task_missing_description(self, client):
+930:    def test_submit_task_with_clearance_level(self, client):
+947:    def test_get_agent_not_found(self, client):
+955:    def test_list_agents_no_orchestrator(self):
+965:    def test_health_services_status(self, client):
+975:    def test_index_endpoint_endpoints_list(self, client):
+984:    def test_submit_task_with_invalid_json(self, client):
+995:    def test_cancel_task_endpoint(self, client):
+1015:    def test_get_monitoring_stats(self, client):
+1022:    def test_long_term_memory_store_node(self):
+1044:    def test_vector_store_search(self):

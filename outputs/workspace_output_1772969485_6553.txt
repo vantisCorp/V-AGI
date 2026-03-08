@@ -1,0 +1,50 @@
+_______________ coverage: platform linux, python 3.11.14-final-0 _______________
+
+Name                                   Stmts   Miss  Cover   Missing
+--------------------------------------------------------------------
+src/__init__.py                            4      0   100%
+src/agents/__init__.py                     2      0   100%
+src/agents/ares.py                       185    185     0%   15-789
+src/agents/argus.py                      299    299     0%   1-1295
+src/agents/base_agent.py                  95     33    65%   43, 68, 113-119, 132, 145, 149, 153, 157-158, 162-163, 167-168, 172-174, 178-179, 183-187, 196-202, 216
+src/agents/cerberus.py                   149    149     0%   13-579
+src/agents/forge.py                      209    209     0%   14-792
+src/agents/lex_core.py                   179    179     0%   1-1182
+src/agents/ludus.py                      214    214     0%   1-1148
+src/agents/muse.py                       220    220     0%   13-821
+src/agents/veritas.py                    170    170     0%   12-532
+src/agents/vita.py                       282    282     0%   15-846
+src/api/__init__.py                        4      0   100%
+src/api/communication_protocol.py        139     80    42%   75, 96-108, 124-142, 154-176, 195-201, 227-235, 258-266, 289-297, 318-325, 341-346, 358, 370-378, 390-394, 410-415, 431-438, 448-454, 463-467, 471, 475-477, 481
+src/api/message_queue_integration.py     161    161     0%   5-393
+src/api/rest_api.py                      232     20    91%   119, 179, 197, 225, 357, 370, 391, 414, 435-442, 486, 493-494, 507-509, 519
+src/api/websocket_handler.py             192    161    16%   13, 45-58, 68-109, 122-163, 176-232, 245-267, 280-322, 334-361, 374-399, 412-420, 433-445, 458-468, 480-487, 496-529, 538-556, 566-584, 588-602, 606-610
+src/config.py                             47      1    98%   84
+src/main.py                               42     42     0%   5-92
+src/memory/__init__.py                     3      0   100%
+src/memory/long_term_memory.py           124     88    29%   16, 32, 51, 87-94, 98-106, 110-112, 125-134, 146-169, 181-200, 221-243, 262-285, 313-334, 356-365
+src/memory/vector_store.py               107     76    29%   16, 23, 40, 78-87, 91-117, 129-131, 146-177, 196-230, 242-251, 260-273
+src/memory/working_memory.py              73     50    32%   26-28, 47-50, 61-80, 92-106, 118-123, 127-129, 138-150, 159-160, 169-170, 179-182
+src/nexus/__init__.py                      2      0   100%
+src/nexus/orchestrator.py                179    125    30%   84-102, 116-120, 129-133, 154-173, 177-188, 192-206, 215-230, 240-270, 283-297, 311-327, 341-357, 370-384, 396-403, 415-420, 443-456, 465-477
+src/security/__init__.py                   2      0   100%
+src/security/aegis.py                    148     96    35%   21, 57, 114-129, 133-142, 159-196, 219-243, 261-275, 288-298, 316-339, 358-373, 382-397
+src/tools/__init__.py                      5      5     0%   6-11
+src/tools/cad_integration.py             206    206     0%   7-569
+src/tools/code_sandbox.py                237    237     0%   7-570
+src/tools/digital_twin.py                251    251     0%   7-660
+src/tools/physics_engine.py              237    237     0%   7-562
+--------------------------------------------------------------------
+TOTAL                                   4399   3776    14%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ============================
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_submit_task_value_error
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_store_knowledge_node_success
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_get_knowledge_node_success
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_search_knowledge_graph_success
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_search_vector_store_success
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_store_vector_document_success
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_health_degraded_no_orchestrator
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_health_degraded_with_failed_agents
+FAILED tests/test_rest_api.py::TestRestApiExtended::test_vector_store_add_document_error
+========================= 9 failed, 65 passed in 3.50s =========================

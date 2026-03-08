@@ -1,0 +1,23 @@
+class AgentResponse:
+    """Agent response data structure."""
+
+    task_id: str
+    agent_id: str
+    status: str
+    result: Optional[Any] = None
+    error: Optional[str] = None
+    execution_time: float = 0.0
+    metadata: Dict[str, Any] = field(default_factory=dict)
+    timestamp: datetime = field(default_factory=datetime.utcnow)
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert response to dictionary."""
+        return {
+            "task_id": self.task_id,
+            "agent_id": self.agent_id,
+            "status": self.status,
+            "result": self.result,
+            "error": self.error,
+            "execution_time": self.execution_time,
+            "metadata": self.metadata,
+            "timestamp": self.timestamp.isoformat(),

@@ -1,0 +1,151 @@
+        mass = volume * density
+        
+        centroid = self._calculate_centroid(dimensions)
+        inertia = self._calculate_inertia_tensor(dimensions, mass)
+        
+        properties = {
+            "component_id": component_id,
+            "mass": mass,
+            "volume": volume,
+            "density": density,
+            "centroid": centroid,
+            "inertia_tensor": inertia,
+            "surface_area": self._calculate_surface_area(dimensions)
+        }
+        
+        logger.info(f"Analyzed mass properties for component: {component_id}")
+        return properties
+    
+    async def export_model(self,
+                           component_id: str,
+                           file_format: CADFormat,
+                           filename: str) -> str:
+        """
+        Export a component to a CAD file format.
+        
+        Args:
+            component_id: ID of component to export
+            file_format: Target file format
+            filename: Output filename
+            
+        Returns:
+            Path to exported file
+        """
+        if component_id not in self.components:
+            raise ValueError("Component ID not found")
+        
+        component = self.components[component_id]
+        
+        # Create export data
+        export_data = {
+            "format": file_format.value,
+            "component": {
+                "id": component.id,
+                "name": component.name,
+                "geometry": component.geometry,
+                "dimensions": component.dimensions
+            }
+        }
+        
+        # In a real implementation, this would generate actual CAD files
+        export_path = f"/workspace/exports/cad/{filename}.{file_format.value}"
+        
+        # Save export data (placeholder)
+        self._log_operation("export_model", {
+            "component_id": component_id,
+            "format": file_format.value,
+            "filename": filename
+        })
+        
+        logger.info(f"Exported component {component_id} to {file_format.value}")
+        return export_path
+    
+    async def validate_design(self,
+                              component_id: str,
+                              criteria: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Validate a design against engineering criteria.
+        
+        Args:
+            component_id: ID of component to validate
+            criteria: Validation criteria (stress, deformation, safety factor, etc.)
+            
+        Returns:
+            Validation results with pass/fail status and details
+        """
+        if component_id not in self.components:
+            raise ValueError("Component ID not found")
+        
+        component = self.components[component_id]
+        properties = await self.analyze_mass_properties(component_id)
+        
+        validation_results = {
+            "component_id": component_id,
+            "criteria": criteria,
+            "results": {},
+            "overall_status": "pass"
+        }
+        
+        # Validate various criteria
+        if "max_mass" in criteria:
+            mass_pass = properties["mass"] <= criteria["max_mass"]
+            validation_results["results"]["mass"] = {
+                "required": criteria["max_mass"],
+                "actual": properties["mass"],
+                "status": "pass" if mass_pass else "fail"
+            }
+            if not mass_pass:
+                validation_results["overall_status"] = "fail"
+        
+        if "max_volume" in criteria:
+            volume_pass = properties["volume"] <= criteria["max_volume"]
+            validation_results["results"]["volume"] = {
+                "required": criteria["max_volume"],
+                "actual": properties["volume"],
+                "status": "pass" if volume_pass else "fail"
+            }
+            if not volume_pass:
+                validation_results["overall_status"] = "fail"
+        
+        if "min_safety_factor" in criteria:
+            # Simplified safety factor calculation
+            safety_factor = self._calculate_safety_factor(component, properties)
+            sf_pass = safety_factor >= criteria["min_safety_factor"]
+            validation_results["results"]["safety_factor"] = {
+                "required": criteria["min_safety_factor"],
+                "actual": safety_factor,
+                "status": "pass" if sf_pass else "fail"
+            }
+            if not sf_pass:
+                validation_results["overall_status"] = "fail"
+        
+        logger.info(f"Validated design for component: {component_id}")
+        return validation_results
+    
+    async def optimize_design(self,
+                              component_id: str,
+                              objective: str,
+                              constraints: Dict[str, Any]) -> CADComponent:
+        """
+        Optimize a design for specific objectives.
+        
+        Args:
+            component_id: ID of component to optimize
+            objective: Optimization objective (minimize_mass, minimize_volume, maximize_strength)
+            constraints: Design constraints to respect
+            
+        Returns:
+            Optimized CADComponent
+        """
+        if component_id not in self.components:
+            raise ValueError("Component ID not found")
+        
+        original = self.components[component_id]
+        optimized_geometry = original.geometry.copy()
+        
+        # Apply optimization based on objective
+        if objective == "minimize_mass":
+            # Simplified: reduce dimensions while maintaining structural integrity
+            scale_factor = 0.95
+            optimized_dimensions = self._scale_dimensions(
+                original.dimensions, scale_factor

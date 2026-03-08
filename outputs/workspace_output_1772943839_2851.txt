@@ -1,0 +1,30 @@
+        initial_completed = agent.metrics.tasks_completed
+        
+        task = Task(
+            id="test_metrics_1",
+            description="Test metrics",
+            parameters={"task_type": "real_time_monitoring"},
+            priority=TaskPriority.MEDIUM
+        )
+        await agent.execute_task(task)
+        
+        assert agent.metrics.tasks_received == initial_received + 1
+        assert agent.metrics.tasks_completed == initial_completed + 1
+    
+    @pytest.mark.asyncio
+    async def test_task_history_tracking(self, agent):
+        """Test that failed tasks are recorded in history."""
+        task = Task(
+            id="test_history_1",
+            description="Test history",
+            parameters={"task_type": "unknown_type"},
+            priority=TaskPriority.MEDIUM
+        )
+        await agent.execute_task(task)
+        
+        # Task should be recorded in history due to error
+        assert "test_history_1" in agent.task_history
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

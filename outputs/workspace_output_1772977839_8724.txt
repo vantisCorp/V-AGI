@@ -1,0 +1,10 @@
+reformatted /workspace/tests/test_message_queue_integration.py
+reformatted /workspace/tests/test_performance.py
+reformatted /workspace/tests/test_physics_engine.py
+reformatted /workspace/tests/test_rest_api.py
+reformatted /workspace/tests/test_vector_store.py
+reformatted /workspace/tests/test_specialized_agents.py
+reformatted /workspace/tests/test_websocket_handler.py
+
+All done! ✨ 🍰 ✨
+53 files reformatted.

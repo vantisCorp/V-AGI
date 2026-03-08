@@ -1,0 +1,6 @@
+234:                "task_id": result.task_id,
+236:                "status": result.status.value,
+237:                "result": result.result,
+278:                    "task_id": result.task_id,
+279:                    "status": result.status.value,
+280:                    "result": result.result

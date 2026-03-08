@@ -1,0 +1,3 @@
+67:                "monitoring": "/api/monitoring"
+450:    @app.route('/api/monitoring/metrics', methods=['GET'])
+477:    @app.route('/api/monitoring/health', methods=['GET'])

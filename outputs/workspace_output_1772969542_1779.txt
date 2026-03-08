@@ -1,0 +1,62 @@
+class MockLongTermMemory:
+    def __init__(self):
+        self.nodes = {}
+        self.enabled = True
+    
+    async def store_node(self, node_id, node_type, properties):
+        self.nodes[node_id] = {
+            "node_id": node_id,
+            "node_type": node_type,
+            "properties": properties
+        }
+        return True
+    
+    async def get_node(self, node_id):
+        return self.nodes.get(node_id)
+    
+    async def search_nodes(self, query, node_type=None):
+        return [n for n in self.nodes.values() if query.lower() in str(n).lower()]
+
+
+class MockVectorStore:
+    def __init__(self):
+        self.documents = []
+        self.enabled = True
+    
+    async def add_document(self, text, metadata):
+        self.documents.append({"text": text, "metadata": metadata})
+        return True
+    
+    async def search(self, query, top_k=5):
+        # Simple mock search
+        return self.documents[:top_k]
+
+
+class MockLongTermMemory:
+    def __init__(self):
+        self.nodes = {}
+    
+    async def create_node(self, node_id, node_type, properties, relationships=None):
+        self.nodes[node_id] = {
+            "id": node_id,
+            "type": node_type,
+            "properties": properties,
+            "relationships": relationships or []
+        }
+        return node_id
+    
+    async def get_node(self, node_id):
+        return self.nodes.get(node_id)
+    
+    async def search_nodes(self, query, limit=10):
+        return [n for n in self.nodes.values() if query in str(n)]
+
+
+class MockVectorStore:
+    def __init__(self):
+        self.vectors = {}
+    
+    async def store_vector(self, text, metadata=None):
+        vector_id = f"vec-{len(self.vectors) + 1}"
+        self.vectors[vector_id] = {"text": text, "metadata": metadata}
+        return vector_id

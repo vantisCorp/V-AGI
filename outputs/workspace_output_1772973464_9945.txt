@@ -1,0 +1,4 @@
+11:from src.agents.cerberus import CerberusAgent
+129:class TestCerberusAgent:
+135:        return CerberusAgent()
+141:        assert agent.agent_id == "cerberus"

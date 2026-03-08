@@ -1,0 +1,151 @@
+            
+            # Prepare command
+            if language in [CodeLanguage.JAVA, CodeLanguage.CPP, CodeLanguage.RUST, CodeLanguage.GO]:
+                # Compiled languages
+                executable = temp_file.replace(lang_config["extension"], "")
+                command = [executable]
+            else:
+                # Interpreted languages
+                command = lang_config["command"] + [temp_file]
+            
+            # Run code with timeout
+            process = await asyncio.create_subprocess_exec(
+                *command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                stdin=subprocess.PIPE,
+                cwd=self.temp_dir
+            )
+            
+            # Write input if provided
+            if input_data:
+                process.stdin.write(input_data.encode())
+                process.stdin.close()
+            
+            # Wait for completion with timeout
+            try:
+                stdout, stderr = await asyncio.wait_for(
+                    process.communicate(),
+                    timeout=config.max_execution_time
+                )
+                
+                output = stdout.decode('utf-8', errors='replace')
+                error = stderr.decode('utf-8', errors='replace')
+                exit_code = process.returncode
+                execution_time = asyncio.get_event_loop().time() - start_time
+                
+                # Check exit status
+                if exit_code != 0:
+                    status = ExecutionStatus.FAILED
+                
+            except asyncio.TimeoutError:
+                process.kill()
+                await process.wait()
+                status = ExecutionStatus.TIMEOUT
+                error = f"Execution timeout after {config.max_execution_time}s"
+                execution_time = config.max_execution_time
+            
+            # Truncate output if too large
+            if len(output) > config.max_output_size:
+                output = output[:config.max_output_size]
+                output += "\n... (output truncated)"
+            
+            if len(error) > config.max_output_size:
+                error = error[:config.max_output_size]
+                error += "\n... (error truncated)"
+            
+        except Exception as e:
+            status = ExecutionStatus.ERROR
+            error = str(e)
+            logger.error(f"Execution error: {e}")
+        
+        end_time = asyncio.get_event_loop().time()
+        
+        return ExecutionResult(
+            execution_id=execution_id,
+            status=status,
+            language=language,
+            code="",  # Don't store full code in result
+            output=output,
+            error=error,
+            exit_code=exit_code,
+            execution_time=execution_time,
+            memory_used=memory_used,
+            start_time=start_time,
+            end_time=end_time
+        )
+    
+    async def _compile_code(self,
+                           temp_file: str,
+                           language: CodeLanguage,
+                           lang_config: Dict[str, Any]) -> bool:
+        """Compile code for compiled languages."""
+        try:
+            if language == CodeLanguage.JAVA:
+                compile_cmd = lang_config["compile_command"] + [temp_file]
+            elif language == CodeLanguage.CPP:
+                executable = temp_file.replace(".cpp", "")
+                compile_cmd = lang_config["compile_command"] + [executable, temp_file]
+            elif language == CodeLanguage.RUST:
+                executable = temp_file.replace(".rs", "")
+                compile_cmd = lang_config["compile_command"] + [executable, temp_file]
+            elif language == CodeLanguage.GO:
+                executable = temp_file.replace(".go", "")
+                compile_cmd = lang_config["compile_command"] + [executable, temp_file]
+            else:
+                return True
+            
+            process = await asyncio.create_subprocess_exec(
+                *compile_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.temp_dir
+            )
+            
+            stdout, stderr = await asyncio.wait_for(
+                process.communicate(),
+                timeout=30.0
+            )
+            
+            return process.returncode == 0
+            
+        except Exception as e:
+            logger.error(f"Compilation error: {e}")
+            return False
+    
+    async def _check_python_security(self, code: str, config: SandboxConfig) -> Dict[str, Any]:
+        """Check Python code for security issues."""
+        result = {"allowed": True, "reason": ""}
+        
+        # Check for forbidden imports
+        for forbidden in config.forbidden_imports:
+            if forbidden in code:
+                result["allowed"] = False
+                result["reason"] = f"Forbidden import: {forbidden}"
+                return result
+        
+        # Check for dangerous operations
+        dangerous_patterns = [
+            "__import__",
+            "exec(",
+            "eval(",
+            "compile(",
+            "open(",
+            "os.system",
+            "subprocess.",
+            "pickle.",
+            "marshal."
+        ]
+        
+        if not config.enable_filesystem:
+            dangerous_patterns.extend(["open(", "file(", "os.path"])
+        
+        if not config.enable_network:
+            dangerous_patterns.extend(["urllib.", "requests.", "socket.", "http."])
+        
+        for pattern in dangerous_patterns:
+            if pattern in code:
+                # Allow some patterns in comments
+                lines = code.split('\n')
+                for line in lines:
+                    if pattern in line and not line.strip().startswith('#'):

@@ -1,0 +1,9 @@
+class TaskPriority(Enum):
+    """Task priority levels."""
+    CRITICAL = 1
+    HIGH = 2
+    MEDIUM = 3
+    LOW = 4
+
+
+@dataclass

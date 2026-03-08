@@ -1,0 +1,17 @@
+        
+        # Create tasks
+        for task_data in data['tasks']:
+            try:
+                task = Task(
+                    task_id=task_data.get('task_id'),
+                    description=task_data['description'],
+                    parameters=task_data['parameters'],
+                    priority=TaskPriority[task_data.get('priority', 'medium').upper()],
+                    agent_id=task_data.get('agent_id'),
+                    clearance_level=task_data.get('clearance_level', 1)
+                )
+                tasks.append(task)
+            except ValueError as e:
+                results.append({
+                    "error": f"Invalid task data: {str(e)}"
+                })

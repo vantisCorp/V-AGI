@@ -1,0 +1,4 @@
+tests/test_specialized_agents.py::TestARGUSAgent::test_task_history_tracking PASSED [100%]/usr/local/lib/python3.11/site-packages/coverage/inorout.py:561: CoverageWarning: Module src/agents/vita was never imported. (module-not-imported); see https://coverage.readthedocs.io/en/7.13.4/messages.html#warning-module-not-imported
+src/agents/vita.py                       282     77    73%   51, 211-223, 281-298, 322-323, 341-342, 358-365, 393, 409, 411, 430-432, 435-437, 503-509, 513-517, 521-525, 529-531, 541-545, 549-551, 555-557, 568-576, 596-598, 601-603, 617, 619
+TOTAL                                   4398   2626    40%
+============================= 107 passed in 16.88s =============================

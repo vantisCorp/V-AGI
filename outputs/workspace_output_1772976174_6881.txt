@@ -1,0 +1,59 @@
+class TestBaseAgentComponents:
+    """Tests for BaseAgent components - Task, AgentResponse, etc."""
+    
+    def test_task_to_dict(self):
+        """Test Task.to_dict() method."""
+        task = Task(
+            id="test-task-1",
+            description="Test task description",
+            parameters={"key": "value"},
+            priority=TaskPriority.HIGH
+        )
+        
+        result = task.to_dict()
+        
+        assert result["id"] == "test-task-1"
+        assert result["description"] == "Test task description"
+        assert result["parameters"] == {"key": "value"}
+        assert result["priority"] == 2  # TaskPriority.HIGH.value
+        assert "created_at" in result
+    
+    def test_task_to_dict_with_deadline(self):
+        """Test Task.to_dict() with deadline."""
+        task = Task(
+            id="test-task-2",
+            description="Task with deadline",
+            parameters={},
+            priority=TaskPriority.MEDIUM,
+            deadline=datetime.utcnow() + timedelta(hours=1)
+        )
+        
+        result = task.to_dict()
+        
+        assert result["deadline"] is not None
+    
+    def test_agent_response_to_dict(self):
+        """Test AgentResponse.to_dict() method."""
+        response = AgentResponse(
+            task_id="task-1",
+            agent_id="agent-1",
+            status="success",
+            result={"output": "done"},
+            execution_time=1.5
+        )
+        
+        result = response.to_dict()
+        
+        assert result["task_id"] == "task-1"
+        assert result["agent_id"] == "agent-1"
+        assert result["status"] == "success"
+        assert result["result"] == {"output": "done"}
+        assert result["execution_time"] == 1.5
+    
+    def test_agent_response_with_error(self):
+        """Test AgentResponse with error."""
+        response = AgentResponse(
+            task_id="task-2",
+            agent_id="agent-1",
+            status="error",
+            error="Something went wrong",

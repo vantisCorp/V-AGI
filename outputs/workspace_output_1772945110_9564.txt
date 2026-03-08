@@ -1,0 +1,31 @@
+=================================== FAILURES ===================================
+_________________ TestRestApiExtended.test_submit_batch_tasks __________________
+
+self = <tests.test_rest_api.TestRestApiExtended object at 0x7f7cd19ebed0>
+client = <FlaskClient <Flask 'src.api.rest_api'>>
+
+    def test_submit_batch_tasks(self, client):
+        """Test submitting multiple tasks in batch."""
+        batch_data = {
+            "tasks": [
+                {
+                    "description": "Task 1",
+                    "parameters": {"param": "value1"},
+                    "priority": "high"
+                },
+                {
+                    "description": "Task 2",
+                    "parameters": {"param": "value2"},
+                    "priority": "medium"
+                }
+            ]
+        }
+    
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps(batch_data),
+            content_type='application/json'
+        )
+    
+        assert response.status_code == 200
+        data = json.loads(response.data)

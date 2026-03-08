@@ -1,0 +1,26 @@
+    def __init__(self):
+        self.agents = {
+            "agent-1": MockAgent("agent-1", "Agent One"),
+            "agent-2": MockAgent("agent-2", "Agent Two"),
+        }
+        self.task_queue = {}
+        self._task_counter = 0
+    
+    def register_agent(self, agent):
+        self.agents[agent.agent_id] = agent
+    
+    async def submit_task(self, task):
+        self._task_counter += 1
+        task.task_id = f"task-{self._task_counter}"
+        task.status = AgentStatus.IDLE
+        task.timestamp = datetime.utcnow()
+        self.task_queue[task.task_id] = task
+        return task
+
+
+class MockAegis:
+    def filter_input(self, data):
+        return {"blocked": False, "data": data}
+    
+    def validate_token(self, token):
+        return token == "valid-token"

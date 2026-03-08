@@ -1,0 +1,11 @@
+95:                "agent_id": agent.agent_id,
+115:    @app.route('/api/agents/<agent_id>', methods=['GET'])
+116:    def get_agent(agent_id: str):
+121:        agent = app.orchestrator.agents.get(agent_id)
+123:            return jsonify({"error": f"Agent not found: {agent_id}"}), 404
+126:            "agent_id": agent.agent_id,
+168:                    "agent_id": t.agent_id,
+192:            "agent_id": task.agent_id,
+240:                "agent_id": result.agent_id,
+466:        for agent_id, agent in app.orchestrator.agents.items():
+467:            metrics["agents"][agent_id] = {

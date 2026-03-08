@@ -1,0 +1,208 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace
+configfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)
+plugins: anyio-4.12.1, cov-7.0.0, asyncio-1.3.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 37 items
+
+tests/test_message_queue_integration.py::TestQueueProvider::test_queue_provider_values PASSED [  2%]
+tests/test_message_queue_integration.py::TestQueueProvider::test_queue_provider_count PASSED [  5%]
+tests/test_message_queue_integration.py::TestQueueProvider::test_queue_provider_from_string PASSED [  8%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_mqi_initialization PASSED [ 10%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_mqi_initialization_with_auth PASSED [ 13%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_mqi_initialization_rabbitmq PASSED [ 16%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_unsupported_provider FAILED [ 18%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_redis_success PASSED [ 21%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_redis_with_password PASSED [ 24%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_rabbitmq_success PASSED [ 27%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_disconnect_redis PASSED [ 29%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_disconnect_rabbitmq PASSED [ 32%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_disconnect_no_connection PASSED [ 35%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_publish_not_connected FAILED [ 37%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_publish_redis PASSED [ 40%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_publish_with_priority PASSED [ 43%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_subscribe_not_connected FAILED [ 45%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_subscribe_redis FAILED [ 48%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_send_task FAILED [ 51%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_broadcast_event PASSED [ 54%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_send_notification PASSED [ 56%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_register_handler FAILED [ 59%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_with_handler FAILED [ 62%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_no_handler FAILED [ 64%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_handler_exception FAILED [ 67%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_not_connected FAILED [ 70%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_redis FAILED [ 72%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_redis_exception FAILED [ 75%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationRabbitMQ::test_publish_rabbitmq PASSED [ 78%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationRabbitMQ::test_subscribe_rabbitmq PASSED [ 81%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationIntegration::test_full_workflow_redis FAILED [ 83%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationIntegration::test_task_and_notification_workflow FAILED [ 86%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationIntegration::test_handler_registration_workflow FAILED [ 89%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationEdgeCases::test_multiple_handlers_same_type FAILED [ 91%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationEdgeCases::test_publish_empty_message PASSED [ 94%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationEdgeCases::test_send_task_to_multiple_agents FAILED [ 97%]
+tests/test_message_queue_integration.py::TestMessageQueueIntegrationEdgeCases::test_mqi_provider_variants PASSED [100%]
+
+=================================== FAILURES ===================================
+________ TestMessageQueueIntegration.test_connect_unsupported_provider _________
+tests/test_message_queue_integration.py:86: in test_connect_unsupported_provider
+    await mqi.connect()
+src/api/message_queue_integration.py:71: in connect
+    raise ValueError(f"Unsupported provider: {self.provider}")
+E   ValueError: Unsupported provider: unsupported
+------------------------------ Captured log call -------------------------------
+ERROR    src.api.message_queue_integration:message_queue_integration.py:77 Failed to connect to message queue: Unsupported provider: unsupported
+____________ TestMessageQueueIntegration.test_publish_not_connected ____________
+tests/test_message_queue_integration.py:198: in test_publish_not_connected
+    await mqi.publish("test_topic", {"type": "agent_message", "data": {}})
+src/api/message_queue_integration.py:154: in publish
+    raise ConnectionError("Not connected to message queue")
+E   ConnectionError: Not connected to message queue
+___________ TestMessageQueueIntegration.test_subscribe_not_connected ___________
+tests/test_message_queue_integration.py:241: in test_subscribe_not_connected
+    await mqi.subscribe("test_topic")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.subscribe() missing 1 required positional argument: 'handler'
+_______________ TestMessageQueueIntegration.test_subscribe_redis _______________
+tests/test_message_queue_integration.py:257: in test_subscribe_redis
+    await mqi.subscribe("test_topic")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.subscribe() missing 1 required positional argument: 'handler'
+__________________ TestMessageQueueIntegration.test_send_task __________________
+tests/test_message_queue_integration.py:273: in test_send_task
+    await mqi.send_task("agent_1", {"action": "process", "params": {}})
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.send_task() missing 2 required positional arguments: 'description' and 'parameters'
+______________ TestMessageQueueIntegration.test_register_handler _______________
+tests/test_message_queue_integration.py:322: in test_register_handler
+    mqi.register_handler(MessageType.TASK, handler)
+                         ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/enum.py:786: in __getattr__
+    raise AttributeError(name) from None
+E   AttributeError: TASK
+_________ TestMessageQueueIntegration.test_handle_message_with_handler _________
+tests/test_message_queue_integration.py:340: in test_handle_message_with_handler
+    mqi.register_handler(MessageType.TASK, handler)
+                         ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/enum.py:786: in __getattr__
+    raise AttributeError(name) from None
+E   AttributeError: TASK
+__________ TestMessageQueueIntegration.test_handle_message_no_handler __________
+tests/test_message_queue_integration.py:365: in test_handle_message_no_handler
+    await mqi.handle_message(test_message)
+src/api/message_queue_integration.py:361: in handle_message
+    logger.warning(f"No handler registered for message type: {message_type.value}")
+                                                              ^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'NoneType' object has no attribute 'value'
+______ TestMessageQueueIntegration.test_handle_message_handler_exception _______
+tests/test_message_queue_integration.py:385: in test_handle_message_handler_exception
+    await mqi.handle_message(test_message)
+src/api/message_queue_integration.py:361: in handle_message
+    logger.warning(f"No handler registered for message type: {message_type.value}")
+                                                              ^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'NoneType' object has no attribute 'value'
+________ TestMessageQueueIntegration.test_get_queue_info_not_connected _________
+tests/test_message_queue_integration.py:393: in test_get_queue_info_not_connected
+    result = await mqi.get_queue_info("test_queue")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.get_queue_info() takes 1 positional argument but 2 were given
+____________ TestMessageQueueIntegration.test_get_queue_info_redis _____________
+tests/test_message_queue_integration.py:413: in test_get_queue_info_redis
+    result = await mqi.get_queue_info("test_queue")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.get_queue_info() takes 1 positional argument but 2 were given
+_______ TestMessageQueueIntegration.test_get_queue_info_redis_exception ________
+tests/test_message_queue_integration.py:430: in test_get_queue_info_redis_exception
+    result = await mqi.get_queue_info("test_queue")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.get_queue_info() takes 1 positional argument but 2 were given
+_______ TestMessageQueueIntegrationIntegration.test_full_workflow_redis ________
+tests/test_message_queue_integration.py:507: in test_full_workflow_redis
+    await mqi.subscribe("test_topic")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.subscribe() missing 1 required positional argument: 'handler'
+__ TestMessageQueueIntegrationIntegration.test_task_and_notification_workflow __
+tests/test_message_queue_integration.py:528: in test_task_and_notification_workflow
+    await mqi.send_task("agent_1", {"action": "process", "params": {}})
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.send_task() missing 2 required positional arguments: 'description' and 'parameters'
+__ TestMessageQueueIntegrationIntegration.test_handler_registration_workflow ___
+tests/test_message_queue_integration.py:556: in test_handler_registration_workflow
+    mqi.register_handler(MessageType.TASK, task_handler)
+                         ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/enum.py:786: in __getattr__
+    raise AttributeError(name) from None
+E   AttributeError: TASK
+____ TestMessageQueueIntegrationEdgeCases.test_multiple_handlers_same_type _____
+tests/test_message_queue_integration.py:590: in test_multiple_handlers_same_type
+    mqi.register_handler(MessageType.TASK, handler1)
+                         ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/enum.py:786: in __getattr__
+    raise AttributeError(name) from None
+E   AttributeError: TASK
+____ TestMessageQueueIntegrationEdgeCases.test_send_task_to_multiple_agents ____
+tests/test_message_queue_integration.py:624: in test_send_task_to_multiple_agents
+    await mqi.send_task(agent, {"action": "process"})
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: MessageQueueIntegration.send_task() missing 2 required positional arguments: 'description' and 'parameters'
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.11.14-final-0 _______________
+
+Name                                   Stmts   Miss  Cover   Missing
+--------------------------------------------------------------------
+src/__init__.py                            4      0   100%
+src/agents/__init__.py                     2      0   100%
+src/agents/ares.py                       185    185     0%   15-789
+src/agents/argus.py                      299    299     0%   1-1295
+src/agents/base_agent.py                  95     33    65%   43, 68, 113-119, 132, 145, 149, 153, 157-158, 162-163, 167-168, 172-174, 178-179, 183-187, 196-202, 216
+src/agents/cerberus.py                   149    149     0%   13-579
+src/agents/forge.py                      209    209     0%   14-792
+src/agents/lex_core.py                   179    179     0%   1-1182
+src/agents/ludus.py                      214    214     0%   1-1148
+src/agents/muse.py                       220    220     0%   13-821
+src/agents/veritas.py                    170    170     0%   12-532
+src/agents/vita.py                       282    282     0%   15-846
+src/api/__init__.py                        4      0   100%
+src/api/communication_protocol.py        139     72    48%   106, 124-142, 154-176, 195-201, 227-235, 258-266, 341-346, 358, 370-378, 390-394, 410-415, 431-438, 448-454, 463-467, 471, 475-477, 481
+src/api/message_queue_integration.py     161     91    43%   67, 69, 73-74, 82-106, 110-128, 166-167, 171-173, 181-192, 204-217, 221-233, 237-261, 281-289, 342-343, 355-359, 370-393
+src/api/rest_api.py                      231    218     6%   38-530
+src/api/websocket_handler.py             192    162    16%   14-15, 45-58, 68-109, 122-163, 176-232, 245-267, 280-322, 334-361, 374-399, 412-420, 433-445, 458-468, 480-487, 496-529, 538-556, 566-584, 588-602, 606-610
+src/config.py                             47      1    98%   84
+src/main.py                               42     42     0%   5-92
+src/memory/__init__.py                     3      0   100%
+src/memory/long_term_memory.py           124     88    29%   16, 32, 51, 87-94, 98-106, 110-112, 125-134, 146-169, 181-200, 221-243, 262-285, 313-334, 356-365
+src/memory/vector_store.py               107     76    29%   16, 23, 40, 78-87, 91-117, 129-131, 146-177, 196-230, 242-251, 260-273
+src/memory/working_memory.py              73     50    32%   26-28, 47-50, 61-80, 92-106, 118-123, 127-129, 138-150, 159-160, 169-170, 179-182
+src/nexus/__init__.py                      2      0   100%
+src/nexus/orchestrator.py                179    125    30%   84-102, 116-120, 129-133, 154-173, 177-188, 192-206, 215-230, 240-270, 283-297, 311-327, 341-357, 370-384, 396-403, 415-420, 443-456, 465-477
+src/security/__init__.py                   2      0   100%
+src/security/aegis.py                    148     96    35%   21, 57, 114-129, 133-142, 159-196, 219-243, 261-275, 288-298, 316-339, 358-373, 382-397
+src/tools/__init__.py                      5      5     0%   6-11
+src/tools/cad_integration.py             206    206     0%   7-569
+src/tools/code_sandbox.py                237    237     0%   7-570
+src/tools/digital_twin.py                251    251     0%   7-660
+src/tools/physics_engine.py              237    237     0%   7-562
+--------------------------------------------------------------------
+TOTAL                                   4398   3897    11%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ============================
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_connect_unsupported_provider - ValueError: Unsupported provider: unsupported
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_publish_not_connected - ConnectionError: Not connected to message queue
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_subscribe_not_connected - TypeError: MessageQueueIntegration.subscribe() missing 1 required positional argument: 'handler'
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_subscribe_redis - TypeError: MessageQueueIntegration.subscribe() missing 1 required positional argument: 'handler'
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_send_task - TypeError: MessageQueueIntegration.send_task() missing 2 required positional arguments: 'description' and 'parameters'
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_register_handler - AttributeError: TASK
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_with_handler - AttributeError: TASK
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_no_handler - AttributeError: 'NoneType' object has no attribute 'value'
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_handle_message_handler_exception - AttributeError: 'NoneType' object has no attribute 'value'
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_not_connected - TypeError: MessageQueueIntegration.get_queue_info() takes 1 positional argument but 2 were given
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_redis - TypeError: MessageQueueIntegration.get_queue_info() takes 1 positional argument but 2 were given
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegration::test_get_queue_info_redis_exception - TypeError: MessageQueueIntegration.get_queue_info() takes 1 positional argument but 2 were given
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegrationIntegration::test_full_workflow_redis - TypeError: MessageQueueIntegration.subscribe() missing 1 required positional argument: 'handler'
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegrationIntegration::test_task_and_notification_workflow - TypeError: MessageQueueIntegration.send_task() missing 2 required positional arguments: 'description' and 'parameters'
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegrationIntegration::test_handler_registration_workflow - AttributeError: TASK
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegrationEdgeCases::test_multiple_handlers_same_type - AttributeError: TASK
+FAILED tests/test_message_queue_integration.py::TestMessageQueueIntegrationEdgeCases::test_send_task_to_multiple_agents - TypeError: MessageQueueIntegration.send_task() missing 2 required positional arguments: 'description' and 'parameters'
+======================== 17 failed, 20 passed in 1.84s =========================

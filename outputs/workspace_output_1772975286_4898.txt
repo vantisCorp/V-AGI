@@ -1,0 +1,26 @@
+        
+        assert handler.host == "custom-host"
+        assert handler.port == 9000
+        assert handler.orchestrator == orchestrator
+
+
+def make_test_message(msg_type, data=None, message_id="msg-1"):
+    """Helper to create valid protocol messages for testing."""
+    return json.dumps({
+        "protocol_version": "1.0.0",
+        "message_id": message_id,
+        "type": msg_type,
+        "timestamp": datetime.utcnow().isoformat(),
+        "data": data or {}
+    })
+
+
+class TestWebSocketHandlerHandleMessage:
+    """Tests for handle_message routing."""
+    
+    @pytest.mark.asyncio
+    async def test_handle_message_task_submit(self, handler):
+        """Test routing task_submit message."""
+        websocket = MockWebSocket()
+        
+        message = make_test_message("task_submit", {

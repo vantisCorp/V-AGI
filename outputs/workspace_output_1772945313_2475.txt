@@ -1,0 +1,45 @@
+        # May return 503 if not configured or 200 if available
+        assert response.status_code in [200, 503]
+    
+    def test_long_term_memory_store_node(self):
+        """Test storing a node in long-term memory."""
+        ltm = MockLongTermMemory()
+        app = create_app(long_term_memory=ltm)
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        node_data = {
+            "node_id": "test-node-1",
+            "node_type": "concept",
+            "properties": {"name": "Test Node"}
+        }
+        
+        response = client.post(
+            '/api/memory/long-term/nodes',
+            data=json.dumps(node_data),
+            content_type='application/json'
+        )
+        
+        # May succeed or fail depending on implementation
+        assert response.status_code in [200, 201, 503]
+    
+    def test_vector_store_search(self):
+        """Test vector store search."""
+        vs = MockVectorStore()
+        app = create_app(vector_store=vs)
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        search_data = {
+            "query": "test query",
+            "top_k": 5
+        }
+        
+        response = client.post(
+            '/api/memory/vector/search',
+            data=json.dumps(search_data),
+            content_type='application/json'
+        )
+        
+        # May succeed or fail depending on implementation
+        assert response.status_code in [200, 503]

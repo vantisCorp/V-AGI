@@ -1,0 +1,100 @@
+"""
+Tests for REST API
+Tests Flask REST API endpoints
+"""
+import pytest
+from unittest.mock import Mock, AsyncMock, patch, MagicMock
+import json
+from datetime import datetime
+
+from src.api.rest_api import create_app
+from src.agents.base_agent import AgentStatus, TaskPriority, Task
+
+
+# Mock metrics class with success_rate method
+class MockMetrics:
+    def __init__(self):
+        self.tasks_received = 10
+        self.tasks_completed = 8
+        self.tasks_failed = 2
+    
+    def success_rate(self):
+        if self.tasks_received == 0:
+            return 0.0
+        return self.tasks_completed / self.tasks_received
+
+
+class MockAgent:
+    def __init__(self, agent_id="test-agent-1", name="Test Agent"):
+        self.agent_id = agent_id
+        self.name = name
+        self.description = "A test agent"
+        self.version = "1.0.0"
+        self.clearance_level = 5
+        self.capabilities = ["test", "mock"]
+        self.status = AgentStatus.IDLE
+        self.metrics = MockMetrics()
+        self.task_history = {}
+
+
+class MockTask:
+    def __init__(self, task_id="task-1"):
+        self.task_id = task_id
+        self.description = "Test task"
+        self.parameters = {"param": "value"}
+        self.status = AgentStatus.IDLE
+        self.priority = TaskPriority.MEDIUM
+        self.agent_id = "agent-1"
+        self.clearance_level = 1
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
+        self.result = None
+
+
+class MockOrchestrator:
+    def __init__(self):
+        self.agents = {
+            "agent-1": MockAgent("agent-1", "Agent One"),
+            "agent-2": MockAgent("agent-2", "Agent Two"),
+        }
+        self.task_queue = {}
+        self._task_counter = 0
+    
+    def register_agent(self, agent):
+        self.agents[agent.agent_id] = agent
+    
+    async def submit_task(self, task):
+        self._task_counter += 1
+        task_id = f"task-{self._task_counter}"
+        task.id = task_id
+        self.task_queue[task_id] = task
+        # Return an AgentResponse-like object
+        from dataclasses import dataclass, field
+        from datetime import datetime
+        @dataclass
+        class MockAgentResponse:
+            task_id: str
+            agent_id: str
+            status: object
+            result: object
+            timestamp: object
+        response = MockAgentResponse(
+            task_id=task_id,
+            agent_id="agent-1",
+            status=AgentStatus.IDLE,
+            result=None,
+            timestamp=datetime.utcnow()
+        )
+        return response
+
+
+class MockAegis:
+    def filter_input(self, data):
+        return {"blocked": False, "data": data}
+    
+    def validate_token(self, token):
+        return token == "valid-token"
+    
+    def check_permission(self, user, resource, action):
+        return True
+

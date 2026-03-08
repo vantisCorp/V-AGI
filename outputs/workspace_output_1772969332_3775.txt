@@ -1,0 +1,30 @@
+246:    def test_index(self, client):
+257:    def test_health(self, client):
+270:    def test_list_agents(self, client):
+279:    def test_list_agents_empty(self):
+289:    def test_get_agent(self, client):
+297:    def test_get_agent_not_found(self, client):
+307:    def test_list_tasks(self, client):
+315:    def test_list_tasks_empty(self):
+325:    def test_submit_task(self, client):
+345:    def test_submit_task_missing_field(self, client):
+355:    def test_get_task_not_found(self, client):
+365:    def test_working_memory_store(self, client):
+379:    def test_working_memory_retrieve(self, client):
+393:    def test_working_memory_list_keys(self, client):
+414:    def test_working_memory_delete(self, client):
+430:    def test_working_memory_not_configured(self):
+444:    def test_metrics(self, client):
+453:    def test_monitoring_health(self, client):
+461:    def test_monitoring_not_configured(self):
+475:    def test_submit_batch_tasks(self, client):
+504:    def test_submit_batch_tasks_missing_tasks(self, client):
+514:    def test_submit_batch_tasks_invalid_priority(self, client):
+537:    def test_batch_tasks_not_configured(self):
+555:    def test_store_knowledge_node_missing_field(self, client):
+571:    def test_long_term_memory_not_configured(self):
+585:    def test_get_knowledge_node_not_configured(self):
+595:    def test_search_knowledge_graph_not_configured(self):
+613:    def test_vector_store_not_configured(self):
+627:    def test_store_vector_document_not_configured(self):
+641:    def test_store_vector_document_missing_field(self, client):

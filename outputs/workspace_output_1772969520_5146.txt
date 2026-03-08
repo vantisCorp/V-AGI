@@ -1,0 +1,26 @@
+        """Store a knowledge node in long-term memory."""
+        if not app.long_term_memory:
+            return jsonify({"error": "Long-term memory not configured"}), 503
+        
+        data = request.get_json()
+        
+        required_fields = ['node_id', 'node_type', 'properties']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"Missing required field: {field}"}), 400
+        
+        try:
+            asyncio.run(app.long_term_memory.store_node(
+                node_id=data['node_id'],
+                node_type=data['node_type'],
+                properties=data['properties']
+            ))
+            return jsonify({"status": "stored", "node_id": data['node_id']})
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    
+    @app.route('/api/memory/long-term/nodes/<node_id>', methods=['GET'])
+    def get_knowledge_node(node_id: str):
+        """Get a knowledge node from long-term memory."""
+        if not app.long_term_memory:
+            return jsonify({"error": "Long-term memory not configured"}), 503

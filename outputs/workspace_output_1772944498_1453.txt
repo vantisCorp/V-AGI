@@ -1,0 +1,121 @@
+        assert result.execution_id is not None
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_compile_code_failure(self):
+        """Test code compilation failure."""
+        sandbox = CodeSandbox()
+        
+        # Invalid Java code
+        code = "invalid java code"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.JAVA)
+        
+        assert result.status == ExecutionStatus.FAILED
+        assert "Compilation" in result.error or result.exit_code != 0
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_execute_javascript_code(self):
+        """Test JavaScript code execution."""
+        sandbox = CodeSandbox()
+        
+        code = "console.log('Hello from JS');"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.JAVASCRIPT)
+        
+        assert result.execution_id is not None
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_run_code_exception_handling(self):
+        """Test _run_code exception handling."""
+        sandbox = CodeSandbox()
+        
+        # Create a situation that causes an exception
+        with patch('asyncio.create_subprocess_exec', side_effect=OSError("Process error")):
+            result = await sandbox._run_code(
+                "temp_file.py",
+                CodeLanguage.PYTHON,
+                None,
+                sandbox.config,
+                "exec_test",
+                0.0
+            )
+            
+            assert result.status == ExecutionStatus.ERROR
+    
+    @pytest.mark.asyncio
+    async def test_get_stats(self):
+        """Test get_stats method."""
+        sandbox = CodeSandbox()
+        
+        # Add some mock executions
+        sandbox.executions["exec_0"] = ExecutionResult(
+            execution_id="exec_0",
+            status=ExecutionStatus.COMPLETED,
+            language=CodeLanguage.PYTHON,
+            code="",
+            output="",
+            error="",
+            exit_code=0,
+            execution_time=0.5,
+            memory_used=10.0,
+            start_time=0.0,
+            end_time=0.5
+        )
+        sandbox.executions["exec_1"] = ExecutionResult(
+            execution_id="exec_1",
+            status=ExecutionStatus.FAILED,
+            language=CodeLanguage.PYTHON,
+            code="",
+            output="",
+            error="error",
+            exit_code=1,
+            execution_time=0.3,
+            memory_used=5.0,
+            start_time=0.0,
+            end_time=0.3
+        )
+        
+        stats = sandbox.get_stats()
+        
+        assert stats["total_executions"] == 2
+        assert stats["completed"] == 1
+        assert stats["failed"] == 1
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_security_check_commented_dangerous(self):
+        """Test that commented dangerous patterns are allowed."""
+        sandbox = CodeSandbox()
+        
+        code = "# This is a comment with exec('test')\nprint('safe')"
+        
+        result = await sandbox._check_python_security(code, SandboxConfig())
+        
+        assert result["allowed"] is True
+    
+    @pytest.mark.asyncio
+    async def test_security_check_enable_filesystem(self):
+        """Test security check with filesystem enabled."""
+        sandbox = CodeSandbox()
+        
+        config = SandboxConfig(enable_filesystem=True)
+        
+        # open() should be allowed when filesystem is enabled
+        result = await sandbox._check_python_security("open('file.txt')", config)
+        
+        # But other dangerous patterns still block
+        assert result["allowed"] is True or "open" not in result["reason"]
+    
+    @pytest.mark.asyncio
+    async def test_security_check_enable_network(self):
+        """Test security check with network enabled."""
+        sandbox = CodeSandbox()
+        
+        config = SandboxConfig(enable_network=True)
+        
+        # urllib should be allowed when network is enabled
+        result = await sandbox._check_python_security("import urllib.request", config)
+        

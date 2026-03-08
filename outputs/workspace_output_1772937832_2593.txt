@@ -1,0 +1,33 @@
+# Test Coverage Improvement Tasks
+
+## Current Progress
+- [x] Fix failing tests in test_orchestrator.py
+- [x] Add tests for AEGIS Guardian, Digital Twin Platform, Physics Engine
+- [x] Add tests for CAD Integration (49% -> 94%)
+- [x] Add tests for Long Term Memory (46% -> 94%)
+- [x] Add tests for Vector Store (46% -> 85%)
+- [x] Run and verify Message Queue Integration tests
+- [x] Add tests for REST API (58% -> 74%)
+- [x] Add tests for Code Sandbox (61% -> 73%)
+- [x] Add tests for WebSocket Handler (52% -> 90%)
+- [x] Add tests for Communication Protocol (63% -> 100%)
+- [x] Fix test_decompose_critical_task (import path issue)
+- [ ] Commit and push changes to GitHub
+
+## Coverage Status
+- Overall: 85% (up from 70%)
+- Tests: 694 passed, 1 skipped
+
+## Coverage Improvements Summary
+| Module | Before | After |
+|--------|--------|-------|
+| Communication Protocol | 63% | 100% |
+| Orchestrator | 70% | 96% |
+| WebSocket Handler | 52% | 90% |
+| Long Term Memory | 46% | 94% |
+| CAD Integration | 49% | 94% |
+| Vector Store | 46% | 85% |
+| REST API | 58% | 74% |
+| Message Queue Integration | 43% | 73% |
+| Code Sandbox | 61% | 73% |
+| **Overall** | **70%** | **85%** |

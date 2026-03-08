@@ -1,0 +1,4 @@
+13:class AgentStatus(Enum):
+55:class AgentResponse:
+81:class AgentCapabilities:
+99:    def __init__(

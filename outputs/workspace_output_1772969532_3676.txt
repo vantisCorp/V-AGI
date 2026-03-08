@@ -1,0 +1,41 @@
+    aegis = MockAegis()
+    working_memory = MockWorkingMemory()
+    long_term_memory = MockLongTermMemory()
+    vector_store = MockVectorStore()
+    
+    app = create_app(
+        orchestrator=orchestrator,
+        aegis=aegis,
+        working_memory=working_memory,
+        long_term_memory=long_term_memory,
+        vector_store=vector_store
+    )
+    
+    app.config['TESTING'] = True
+    return app
+
+
+@pytest.fixture
+def client(app):
+    """Create test client."""
+    return app.test_client()
+
+
+@pytest.fixture
+def client_with_ltm():
+    """Create a test client with long-term memory."""
+    orchestrator = MockOrchestrator()
+    ltm = MockLongTermMemory()
+    
+    app = create_app(
+        orchestrator=orchestrator,
+        long_term_memory=ltm
+    )
+    app.config['TESTING'] = True
+    
+    return app.test_client()
+
+
+@pytest.fixture
+def client_with_vs():
+    """Create a test client with vector store."""

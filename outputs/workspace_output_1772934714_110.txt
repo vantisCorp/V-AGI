@@ -1,0 +1,26 @@
+    )
+    
+    app.config['TESTING'] = True
+    return app
+
+
+@pytest.fixture
+def client(app):
+    """Create test client."""
+    return app.test_client()
+
+
+class TestRootEndpoints:
+    """Tests for root API endpoints."""
+    
+    def test_index(self, client):
+        """Test root endpoint returns API info."""
+        response = client.get('/')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['name'] == 'OMNI-AI REST API'
+        assert data['version'] == '1.0.0'
+        assert data['status'] == 'operational'
+        assert 'endpoints' in data
+    

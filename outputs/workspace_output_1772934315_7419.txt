@@ -1,0 +1,31 @@
+12:class MessageType(Enum):
+13-    """Message type enumeration."""
+14-    
+15-    # Connection Management
+16-    WELCOME = "welcome"
+17-    PING = "ping"
+18-    PONG = "pong"
+19-    GOODBYE = "goodbye"
+20-    
+21-    # Task Management
+22-    TASK_SUBMIT = "task_submit"
+23-    TACK = "task_ack"  # Task acknowledgment
+24-    TASK_RESULT = "task_result"
+25-    TASK_CANCEL = "task_cancel"
+26-    TASK_STATUS = "task_status"
+27-    
+28-    # Agent Management
+29-    AGENT_LIST = "agent_list"
+30-    AGENT_STATUS = "agent_status"
+31-    
+32-    # Streaming
+33-    STREAM_START = "stream_start"
+34-    STREAM_STARTED = "stream_started"
+35-    STREAM_DATA = "stream_data"
+36-    STREAM_STOP = "stream_stop"
+37-    STREAM_STOPPED = "stream_stopped"
+38-    
+39-    # Subscriptions
+40-    SUBSCRIBE = "subscribe"
+41-    SUBSCRIPTION_CONFIRMED = "subscription_confirmed"
+42-    UNSUBSCRIBE = "unsubscribe"

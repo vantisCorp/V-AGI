@@ -1,0 +1,2 @@
+origin	https://x-access-token:ghs_JZFWlY7JNqFVUrdYZBybsNSJ8SiVbc02u9vJ@github.com/vantisCorp/V-AGI.git (fetch)
+origin	https://x-access-token:ghs_JZFWlY7JNqFVUrdYZBybsNSJ8SiVbc02u9vJ@github.com/vantisCorp/V-AGI.git (push)

@@ -1,0 +1,30 @@
+src/agents/forge.py                      209     28    87%   56, 218-230, 325-328, 339, 381, 447-468, 491, 498-516, 751
+src/agents/lex_core.py                   179     20    89%   337, 584-640, 760, 819, 1066-1104, 1175, 1178-1181
+src/agents/ludus.py                      214     11    95%   297-298, 333, 379, 554-559, 888
+src/agents/muse.py                       220     22    90%   54, 217-234, 289, 493-495, 612, 615-626, 684-685, 756-758
+src/agents/veritas.py                    170     22    87%   169-186, 307-308, 334, 351-361, 464, 514, 519
+src/agents/vita.py                       282     28    90%   55, 279-296, 369, 373, 423, 451-455, 524-525, 533, 541, 560-561, 565-567, 573, 593-594, 632
+src/api/__init__.py                        4      0   100%
+src/api/communication_protocol.py        139      0   100%
+src/api/message_queue_integration.py     161     23    86%   185-193, 225-230, 236-257, 382-383
+src/api/rest_api.py                      232      4    98%   131, 195, 215, 543
+src/api/websocket_handler.py             192     22    89%   15, 96-104, 156-161, 196-223, 514-515, 541-542, 575-581
+src/config.py                             47      1    98%   82
+src/main.py                               42     42     0%   5-93
+src/memory/__init__.py                     3      0   100%
+src/memory/long_term_memory.py           124      8    94%   18, 98, 102-107
+src/memory/vector_store.py               107     16    85%   18, 26, 91, 95-116
+src/memory/working_memory.py              73      9    88%   66, 125, 140-149
+src/nexus/__init__.py                      2      0   100%
+src/nexus/orchestrator.py                179      7    96%   225, 227, 250-256
+src/security/__init__.py                   2      0   100%
+src/security/aegis.py                    148     15    90%   23, 135, 141-149, 182-187, 344, 350
+src/tools/__init__.py                      5      0   100%
+src/tools/cad_integration.py             206     12    94%   349, 383, 523-543, 547
+src/tools/code_sandbox.py                237     21    91%   306-307, 347, 355, 446-448, 497-498, 525-526, 531-554, 558
+src/tools/digital_twin.py                251     34    86%   255-258, 290-293, 334-337, 376, 396-397, 450, 469-472, 577, 586, 600-601, 603-604, 625-650, 654
+src/tools/physics_engine.py              237     30    87%   196, 386, 421, 425, 453-455, 479, 507-511, 524-535, 540-570, 574
+--------------------------------------------------------------------
+TOTAL                                   4399    442    90%
+Coverage HTML written to dir htmlcov
+================= 840 passed, 4 skipped, 2 warnings in 23.56s ==================

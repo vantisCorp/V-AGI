@@ -1,0 +1,58 @@
+    def test_submit_batch_tasks(self, client):
+        """Test submitting multiple tasks in batch."""
+        batch_data = {
+            "tasks": [
+                {
+                    "description": "Task 1",
+                    "parameters": {"param": "value1"},
+                    "priority": "high"
+                },
+                {
+                    "description": "Task 2",
+                    "parameters": {"param": "value2"},
+                    "priority": "medium"
+                }
+            ]
+        }
+        
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps(batch_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'results' in data
+        assert data['total_tasks'] == 2
+    
+    def test_submit_batch_tasks_missing_tasks_field(self, client):
+        """Test batch submit without tasks field."""
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps({"description": "test"}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 400
+        data = json.loads(response.data)
+        assert 'error' in data
+    
+    def test_submit_batch_tasks_invalid_priority(self, client):
+        """Test batch submit with invalid priority."""
+        batch_data = {
+            "tasks": [
+                {
+                    "description": "Task 1",
+                    "parameters": {},
+                    "priority": "invalid_priority"
+                }
+            ]
+        }
+        
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps(batch_data),
+            content_type='application/json'
+        )
+        

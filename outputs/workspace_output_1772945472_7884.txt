@@ -1,0 +1,21 @@
+                future = app.orchestrator.submit_task(task)
+                result = asyncio.run(future)
+                results.append({
+                    "task_id": result.task_id,
+                    "status": result.status.value,
+                    "result": result.result
+                })
+            except Exception as e:
+                results.append({
+                    "task_id": task.id,
+                    "error": str(e)
+                })
+        
+        return jsonify({
+            "total_tasks": len(tasks),
+            "results": results,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+    
+    @app.route('/api/memory/working', methods=['GET', 'POST', 'DELETE'])
+    def working_memory_operations():

@@ -1,0 +1,30 @@
+        """Test handling unknown message type raises ValueError."""
+        websocket = MockWebSocket()
+        
+        # Create a raw message with invalid type and correct protocol version
+        import json
+        from datetime import datetime
+        message = json.dumps({
+            "type": "unknown_type_xyz",
+            "protocol_version": "1.0.0",
+            "message_id": "test-msg-123",
+            "timestamp": datetime.utcnow().isoformat(),
+            "data": {}
+        })
+        
+        # Should raise ValueError during parsing
+        with pytest.raises(ValueError, match="Unknown message type"):
+            await handler.handle_message(websocket, "client-1", message)
+    
+    @pytest.mark.asyncio
+    async def test_handle_client_connection_closed(self, handler):
+        """Test handling client disconnection gracefully."""
+        websocket = MockWebSocket()
+        
+        # Add client to connected set
+        handler.clients.add(websocket)
+        
+        # Simulate connection closed by removing
+        handler.clients.discard(websocket)
+        
+        assert websocket not in handler.clients

@@ -1,0 +1,28 @@
+5:import pytest
+6:import asyncio
+7:from unittest.mock import Mock, patch, MagicMock, AsyncMock
+8:from datetime import datetime
+10:from src.nexus.orchestrator import NexusOrchestrator, OrchestratedTask, AgentAssignment, TaskStatus
+11:from src.agents.base_agent import BaseAgent, AgentCapabilities, AgentResponse, Task, TaskPriority
+40:        assert assignment.priority.value == TaskPriority.MEDIUM.value
+111:            priority=TaskPriority.MEDIUM
+125:            priority=TaskPriority.MEDIUM
+145:        task1 = Task(id="task-1", description="Task 1", priority=TaskPriority.LOW)
+146:        task2 = Task(id="task-2", description="Task 2", priority=TaskPriority.HIGH)
+192:            priority=TaskPriority.MEDIUM
+232:            priority=TaskPriority.HIGH
+301:        """Test that worker processes tasks from queue."""
+308:            priority=TaskPriority.MEDIUM
+344:            priority=TaskPriority.MEDIUM
+360:            priority=TaskPriority.MEDIUM
+377:            priority=TaskPriority.MEDIUM
+395:            priority=TaskPriority.MEDIUM
+419:            priority=TaskPriority.CRITICAL
+427:            assert subtask.priority == TaskPriority.HIGH
+432:        for priority in [TaskPriority.LOW, TaskPriority.MEDIUM, TaskPriority.HIGH]:
+528:        task = Task(id="test-task", description="Test", parameters={}, priority=TaskPriority.MEDIUM)
+553:        task = Task(id="test-task", description="Test", parameters={}, priority=TaskPriority.MEDIUM)
+574:            task=Task(id="t1", description="Task 1", parameters={}, priority=TaskPriority.LOW),
+578:            task=Task(id="t2", description="Task 2", parameters={}, priority=TaskPriority.MEDIUM),
+582:            task=Task(id="t3", description="Task 3", parameters={}, priority=TaskPriority.HIGH),
+667:            priority=TaskPriority.HIGH,

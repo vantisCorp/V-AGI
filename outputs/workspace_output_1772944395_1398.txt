@@ -1,0 +1,3 @@
+894:    async def test_handle_message_none_message_type(self):
+908:    async def test_publish_rabbitmq_direct(self):
+933:    async def test_subscribe_rabbitmq_direct(self):

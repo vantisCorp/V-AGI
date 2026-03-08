@@ -1,0 +1,50 @@
+        response = json.loads(websocket.messages_sent[0])
+        assert response["type"] == "subscription_cancelled"
+
+
+class TestWebSocketHandlerPingPong:
+    """Tests for ping/pong handling."""
+    
+    @pytest.mark.asyncio
+    async def test_handle_ping(self, handler):
+        """Test handling ping message."""
+        websocket = MockWebSocket()
+        
+        await handler.handle_ping(websocket, "client-1", "msg-123")
+        
+        # Should send pong response
+        assert len(websocket.messages_sent) == 1
+        response = json.loads(websocket.messages_sent[0])
+        assert response["type"] == "pong"
+        assert "timestamp" in response["data"]
+
+
+class TestWebSocketHandlerClientManagement:
+    """Tests for client connection management."""
+    
+    @pytest.mark.asyncio
+    async def test_client_add_remove(self, handler):
+        """Test adding and removing clients."""
+        client = MockWebSocket()
+        
+        handler.clients.add(client)
+        assert client in handler.clients
+        
+        handler.clients.discard(client)
+        assert client not in handler.clients
+    
+    @pytest.mark.asyncio
+    async def test_multiple_clients(self, handler):
+        """Test handling multiple clients."""
+        clients = [MockWebSocket() for _ in range(5)]
+        
+        for client in clients:
+            handler.clients.add(client)
+        
+        assert len(handler.clients) == 5
+        
+        # Broadcast to all
+        await handler.broadcast_message(MessageType.EVENT, {"test": "data"})
+        
+        for client in clients:
+            assert len(client.messages_sent) == 1

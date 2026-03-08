@@ -12,7 +12,7 @@ A comprehensive AI system featuring:
 __version__ = "0.1.0"
 __author__ = "OMNI-AI Team"
 
-from .config import settings, get_settings
+from .config import get_settings, settings
 
 __all__ = [
     "settings",

@@ -1,0 +1,14 @@
+89:    def __init__(self, config: Optional[SandboxConfig] = None):
+140:    async def execute_code(self,
+219:    async def _run_code(self,
+327:    async def _compile_code(self,
+365:    async def _check_python_security(self, code: str, config: SandboxConfig) -> Dict[str, Any]:
+407:    def _create_temp_file(self, code: str, language: CodeLanguage) -> str:
+422:    async def validate_code(self, code: str, language: CodeLanguage) -> Dict[str, Any]:
+465:    async def analyze_code(self, code: str, language: CodeLanguage) -> Dict[str, Any]:
+493:                    if line.strip().startswith('def '):
+515:    async def get_execution(self, execution_id: str) -> Optional[ExecutionResult]:
+527:    def list_executions(self) -> List[str]:
+531:    def cleanup(self):
+541:async def main():
+547:def fibonacci(n):

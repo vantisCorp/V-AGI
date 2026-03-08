@@ -1,0 +1,16 @@
+18:from ..memory.vector_store import VectorStore
+25:               vector_store: VectorStore = None) -> Flask:
+34:        vector_store: Vector store instance
+47:    app.vector_store = vector_store
+82:                "vector_store": "operational" if app.vector_store else "not configured"
+399:    @app.route('/api/memory/vector/search', methods=['POST'])
+400:    def search_vector_store():
+401:        """Search vector store for similar documents."""
+402:        if not app.vector_store:
+410:            results = asyncio.run(app.vector_store.search(
+422:    @app.route('/api/memory/vector/store', methods=['POST'])
+423:    def store_vector_document():
+424:        """Store a document in vector store."""
+425:        if not app.vector_store:
+436:            asyncio.run(app.vector_store.add_document(
+500:            ("vector_store", app.vector_store)

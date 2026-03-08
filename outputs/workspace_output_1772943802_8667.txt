@@ -1,0 +1,6 @@
+14:from src.agents.vita import VitaAgent
+667:    """Test suite for VITA Agent (Healthcare)."""
+671:        """Create VITA agent instance."""
+678:        assert agent.agent_id == "vita"
+693:        assert response.agent_id == "vita"
+798:        # VITA returns success with error in result for unknown types

@@ -1,0 +1,12 @@
+199:        long_term_memory=long_term_memory,
+221:        long_term_memory=ltm
+1076:            long_term_memory=MockLongTermMemory(),
+1113:            long_term_memory=MockLongTermMemory(),
+1263:            long_term_memory=None,
+1293:            long_term_memory=None,
+1316:            long_term_memory=FailingLongTermMemory(),
+1349:            long_term_memory=FailingLongTermMemory(),
+1372:            long_term_memory=FailingLongTermMemory(),
+1399:            long_term_memory=MockLongTermMemory(),
+1426:            long_term_memory=MockLongTermMemory(),
+1455:            long_term_memory=None,

@@ -1,0 +1,51 @@
+            with patch('builtins.__import__', side_effect=ImportError("No module named 'redis'")):
+                with pytest.raises(ImportError, match="Redis library not installed"):
+                    await mqi._connect_redis()
+    
+    @pytest.mark.asyncio
+    async def test_connect_redis_connection_error(self):
+        """Test Redis connection when connection fails."""
+        mqi = MessageQueueIntegration()
+        
+        with patch('redis.asyncio.from_url', side_effect=Exception("Connection refused")):
+            with pytest.raises(ConnectionError, match="Failed to connect to Redis"):
+                await mqi._connect_redis()
+    
+    @pytest.mark.asyncio
+    async def test_connect_rabbitmq_import_error(self):
+        """Test RabbitMQ connection when aio_pika library is not installed."""
+        mqi = MessageQueueIntegration(provider=QueueProvider.RABBITMQ)
+        
+        with patch('builtins.__import__', side_effect=ImportError("No module named 'aio_pika'")):
+            with pytest.raises(ImportError, match="aio_pika library not installed"):
+                await mqi._connect_rabbitmq()
+    
+    @pytest.mark.asyncio
+    async def test_connect_rabbitmq_connection_error(self):
+        """Test RabbitMQ connection when connection fails."""
+        mqi = MessageQueueIntegration(provider=QueueProvider.RABBITMQ)
+        
+        with patch('aio_pika.connect_robust', side_effect=Exception("Connection refused")):
+            with pytest.raises(ConnectionError, match="Failed to connect to RabbitMQ"):
+                await mqi._connect_rabbitmq()
+    
+    @pytest.mark.asyncio
+    async def test_publish_rabbitmq(self):
+        """Test publishing to RabbitMQ."""
+        mqi = MessageQueueIntegration(provider=QueueProvider.RABBITMQ)
+        
+        # Create mock RabbitMQ connection
+        mock_conn = AsyncMock()
+        mock_channel = AsyncMock()
+        mock_exchange = AsyncMock()
+        
+        mock_conn.channel = AsyncMock(return_value=mock_channel)
+        mock_channel.declare_exchange = AsyncMock(return_value=mock_exchange)
+        mock_exchange.publish = AsyncMock()
+        
+        mqi.connection = mock_conn
+        mqi.channel = mock_channel
+        mqi.is_connected = True
+        
+        # Mock _publish_rabbitmq
+        mqi._publish_rabbitmq = AsyncMock()

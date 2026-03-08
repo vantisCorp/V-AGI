@@ -1,0 +1,88 @@
+   119	            return jsonify({"error": "Orchestrator not configured"}), 503
+   179	            return jsonify({"error": "Orchestrator not configured"}), 503
+   197	            return jsonify({"error": "Orchestrator not configured"}), 503
+   224	        except ValueError as e:
+   225	            return jsonify({"error": f"Invalid task data: {str(e)}"}), 400
+   226	        
+   239	        except Exception as e:
+   240	            return jsonify({"error": f"Task execution failed: {str(e)}"}), 500
+   241	    
+   281	            except Exception as e:
+   282	                results.append({
+   283	                    "task_id": task.id,
+   351	        try:
+   352	            asyncio.run(app.long_term_memory.store_node(
+   353	                node_id=data['node_id'],
+   354	                node_type=data['node_type'],
+   355	                properties=data['properties']
+   356	            ))
+   357	            return jsonify({"status": "stored", "node_id": data['node_id']})
+   358	        except Exception as e:
+   359	            return jsonify({"error": str(e)}), 500
+   360	    
+   367	        try:
+   368	            node = asyncio.run(app.long_term_memory.get_node(node_id))
+   369	            if node:
+   370	                return jsonify({"node": node})
+   371	            else:
+   372	                return jsonify({"error": "Node not found"}), 404
+   373	        except Exception as e:
+   374	            return jsonify({"error": str(e)}), 500
+   375	    
+   376	    @app.route('/api/memory/long-term/search', methods=['POST'])
+   382	        data = request.get_json()
+   383	        query = data.get('query', '')
+   384	        node_type = data.get('node_type')
+   385	        
+   386	        try:
+   387	            results = asyncio.run(app.long_term_memory.search_nodes(
+   388	                query=query,
+   389	                node_type=node_type
+   390	            ))
+   391	            return jsonify({
+   392	                "query": query,
+   393	                "results": results,
+   394	                "count": len(results)
+   395	            })
+   396	        except Exception as e:
+   397	            return jsonify({"error": str(e)}), 500
+   398	    
+   405	        data = request.get_json()
+   406	        query = data.get('query', '')
+   407	        top_k = data.get('top_k', 5)
+   408	        
+   409	        try:
+   410	            results = asyncio.run(app.vector_store.search(
+   411	                query=query,
+   412	                top_k=top_k
+   413	            ))
+   414	            return jsonify({
+   415	                "query": query,
+   416	                "results": results,
+   417	                "count": len(results)
+   418	            })
+   419	        except Exception as e:
+   420	            return jsonify({"error": str(e)}), 500
+   421	    
+   435	        try:
+   436	            asyncio.run(app.vector_store.add_document(
+   437	                text=data['text'],
+   438	                metadata=data['metadata']
+   439	            ))
+   440	            return jsonify({"status": "stored"})
+   441	        except Exception as e:
+   442	            return jsonify({"error": str(e)}), 500
+   443	    
+   486	                orchestrator_status = "degraded"
+   487	            health["components"]["orchestrator"] = {
+   488	                "status": orchestrator_status,
+   493	            health["components"]["orchestrator"] = {"status": "not_configured"}
+   494	            health["overall_status"] = "degraded"
+   495	        
+   507	                health["components"][name] = {"status": "not_configured"}
+   508	                if health["overall_status"] == "healthy":
+   509	                    health["overall_status"] = "degraded"
+   510	        
+   519	        return jsonify({"error": "Internal server error"}), 500
+   520	    
+   521	    return app

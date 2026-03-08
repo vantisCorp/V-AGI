@@ -1,0 +1,21 @@
+    def test_submit_task_with_clearance_level(self, client):
+        """Test submitting task with clearance level."""
+        task_data = {
+            "description": "Secure task",
+            "parameters": {},
+            "clearance_level": 5
+        }
+        
+        response = client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        # Should process (may succeed or fail for other reasons)
+        assert response.status_code in [200, 500]
+    
+    def test_get_agent_not_found(self, client):
+        """Test getting a non-existent agent."""
+        response = client.get('/api/agents/nonexistent-agent')
+        

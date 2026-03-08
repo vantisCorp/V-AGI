@@ -1,0 +1,16 @@
+        """Publish message to Redis."""
+        await self.connection.publish(topic, message)
+
+    async def _publish_rabbitmq(self, topic: str, message: str):
+        """Publish message to RabbitMQ."""
+        exchange = await self.channel.declare_exchange(
+            topic, aio_pika.ExchangeType.FANOUT, durable=True
+        )
+
+        message_obj = aio_pika.Message(
+            body=message.encode(), delivery_mode=aio_pika.DeliveryMode.PERSISTENT
+        )
+
+        await exchange.publish(message_obj, routing_key="")
+
+    async def subscribe(self, topic: str, handler: Callable[[Dict[str, Any]], None]):

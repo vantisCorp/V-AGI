@@ -1,0 +1,31 @@
+            
+            # Submit task
+            future = self.orchestrator.submit_task(task)
+            
+            # Send acknowledgment
+            ack_msg = self.protocol.create_message(
+                message_type=MessageType.TACK,
+                data={
+                    "task_id": task.task_id,
+                    "status": "submitted",
+                    "timestamp": datetime.utcnow().isoformat()
+                },
+                reply_to=message_id
+            )
+            await websocket.send(ack_msg)
+            
+            # Execute task and send result
+            result = await future
+            
+            result_msg = self.protocol.create_message(
+                message_type=MessageType.TASK_RESULT,
+                data={
+                    "task_id": result.task_id,
+                    "agent_id": result.agent_id,
+                    "status": result.status.value,
+                    "result": result.result,
+                    "timestamp": result.timestamp.isoformat()
+                }
+            )
+            await websocket.send(result_msg)
+        

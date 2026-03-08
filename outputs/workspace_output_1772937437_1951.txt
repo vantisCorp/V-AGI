@@ -1,0 +1,40 @@
+
+class TestNexusOrchestrator:
+    """Test suite for NEXUS Orchestrator."""
+    
+    @pytest.fixture
+    def orchestrator(self):
+        """Create orchestrator instance."""
+        return NexusOrchestrator(max_concurrent_agents=5)
+    
+    @pytest.fixture
+    def mock_agent(self):
+        """Create mock agent."""
+        agent = AsyncMock(spec=BaseAgent)
+        agent.agent_id = "test-agent"
+        agent.execute_task = AsyncMock(return_value=AgentResponse(
+            agent_id="test-agent",
+            task_id="test-task",
+            status="idle",
+            result={"success": True}
+        ))
+        return agent
+    
+    @pytest.fixture
+    def mock_capabilities(self):
+        """Create mock capabilities."""
+        return AgentCapabilities(
+--
+
+class TestOrchestratorWorkerProcessing:
+    """Tests for worker task processing."""
+    
+    @pytest.fixture
+    def orchestrator(self):
+        """Create orchestrator instance."""
+        return NexusOrchestrator(max_concurrent_agents=2)
+    
+    @pytest.fixture
+    def mock_agent(self):
+        """Create mock agent."""
+        agent = AsyncMock(spec=BaseAgent)

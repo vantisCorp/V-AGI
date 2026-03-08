@@ -1,0 +1,6 @@
+459:    def test_submit_batch_tasks(self, client):
+488:    def test_submit_batch_tasks_missing_tasks(self, client):
+498:    def test_submit_batch_tasks_invalid_priority(self, client):
+773:    def test_submit_batch_tasks(self, client):
+801:    def test_submit_batch_tasks_missing_tasks_field(self, client):
+813:    def test_submit_batch_tasks_invalid_priority(self, client):

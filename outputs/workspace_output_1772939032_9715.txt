@@ -1,0 +1,50 @@
+    from src.agents.veritas import VeritasAgent
+src/agents/veritas.py:16: in <module>
+    from loguru import logger
+E   ModuleNotFoundError: No module named 'loguru'
+_________________ ERROR collecting tests/test_vector_store.py __________________
+ImportError while importing test module '/workspace/tests/test_vector_store.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/local/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_vector_store.py:6: in <module>
+    import numpy as np
+E   ModuleNotFoundError: No module named 'numpy'
+_______________ ERROR collecting tests/test_websocket_handler.py _______________
+ImportError while importing test module '/workspace/tests/test_websocket_handler.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/local/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_websocket_handler.py:11: in <module>
+    from src.api.websocket_handler import WebSocketHandler
+src/api/__init__.py:5: in <module>
+    from .rest_api import create_app
+src/api/rest_api.py:5: in <module>
+    from flask import Flask, request, jsonify, send_from_directory
+E   ModuleNotFoundError: No module named 'flask'
+=========================== short test summary info ============================
+ERROR tests/test_aegis.py
+ERROR tests/test_basic.py
+ERROR tests/test_cad_integration.py
+ERROR tests/test_code_sandbox.py
+ERROR tests/test_communication_protocol.py
+ERROR tests/test_core_components.py
+ERROR tests/test_digital_twin.py
+ERROR tests/test_integration.py
+ERROR tests/test_long_term_memory.py
+ERROR tests/test_memory.py
+ERROR tests/test_message_queue.py
+ERROR tests/test_message_queue_integration.py
+ERROR tests/test_orchestrator.py
+ERROR tests/test_performance.py
+ERROR tests/test_physics_engine.py
+ERROR tests/test_rest_api.py
+ERROR tests/test_specialized_agents.py
+ERROR tests/test_vector_store.py
+ERROR tests/test_websocket_handler.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 19 errors during collection !!!!!!!!!!!!!!!!!!!
+============================== 19 errors in 1.83s ==============================

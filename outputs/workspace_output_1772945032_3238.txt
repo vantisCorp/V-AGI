@@ -1,0 +1,19 @@
+    async def test_reset_simulation(self, engine):
+        """Test resetting the simulation."""
+        await engine.create_body(
+            name="Test Body",
+            mass=1.0,
+            position=[0.0, 0.0, 0.0],
+            shape="sphere",
+            dimensions={"radius": 0.5}
+        )
+        
+        await engine.simulate_step()
+        
+        await engine.reset()
+        
+        assert len(engine.bodies) == 0
+        assert len(engine.constraints) == 0
+        assert engine.simulation_time == 0.0
+    
+    @pytest.mark.asyncio
