@@ -1810,6 +1810,97 @@ class TestVitaAgentExtended:
         assert "conditions_database_size" in stats
 
 
+class TestCerberusAgentExtended:
+    """Extended tests for CERBERUS Agent to improve coverage."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create CERBERUS agent instance."""
+        return CerberusAgent()
+    
+    @pytest.mark.asyncio
+    async def test_monitor_threats_with_malware(self, agent):
+        """Test threat monitoring with malware detection."""
+        task = Task(
+            id="test_malware",
+            description="Monitor threats",
+            parameters={
+                "task_type": "monitor_threats",
+                "log_source": "security_logs"
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_respond_incident_contain(self, agent):
+        """Test incident response with contain action."""
+        task = Task(
+            id="test_contain",
+            description="Respond to incident",
+            parameters={
+                "task_type": "respond_incident",
+                "incident_type": "breach",
+                "action": "contain"
+            },
+            priority=TaskPriority.CRITICAL
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_respond_incident_mitigate(self, agent):
+        """Test incident response with mitigate action."""
+        task = Task(
+            id="test_mitigate",
+            description="Respond to incident",
+            parameters={
+                "task_type": "respond_incident",
+                "incident_type": "intrusion",
+                "action": "mitigate"
+            },
+            priority=TaskPriority.CRITICAL
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_generate_security_report(self, agent):
+        """Test security report generation."""
+        task = Task(
+            id="test_report",
+            description="Generate security report",
+            parameters={
+                "task_type": "generate_report",
+                "report_type": "executive",
+                "time_period": "30d"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_monitor_threats_no_source(self, agent):
+        """Test threat monitoring without log source."""
+        task = Task(
+            id="test_no_source",
+            description="Monitor threats",
+            parameters={
+                "task_type": "monitor_threats"
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+
 class TestVeritasAgentExtended:
     """Extended tests for VERITAS Agent to improve coverage."""
     
