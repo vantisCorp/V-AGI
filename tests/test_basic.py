@@ -6,7 +6,7 @@ import pytest
 import asyncio
 from datetime import datetime, timedelta
 
-from src.agents.base_agent import BaseAgent, Task, AgentResponse, TaskPriority, AgentCapabilities
+from src.agents.base_agent import BaseAgent, Task, AgentResponse, TaskPriority, AgentCapabilities, AgentStatus
 from src.agents.veritas import VeritasAgent
 from src.security.aegis import AegisGuardian, SecurityLevel, ThreatType
 from src.memory.working_memory import WorkingMemory
@@ -299,6 +299,166 @@ class TestBaseAgentComponents:
         result = response.to_dict()
         
         assert result["metadata"] == {"custom": "data"}
+
+
+class TestBaseAgentAsyncMethods:
+    """Tests for BaseAgent async methods that need a concrete implementation."""
+    
+    @pytest.fixture
+    def concrete_agent(self):
+        """Create a concrete agent for testing."""
+        from src.agents.base_agent import BaseAgent, AgentCapabilities
+        from src.agents.base_agent import AgentStatus
+        
+        class ConcreteAgent(BaseAgent):
+            """Concrete implementation of BaseAgent for testing."""
+            
+            async def execute_task(self, task):
+                from src.agents.base_agent import AgentResponse
+                return AgentResponse(
+                    task_id=task.id,
+                    agent_id=self.agent_id,
+                    status="success",
+                    result={"output": "done"}
+                )
+            
+            async def validate_task(self, task):
+                return True
+        
+        return ConcreteAgent(
+            agent_id="test-agent",
+            capabilities=AgentCapabilities(
+                name="test",
+                description="Test agent",
+                skills=["test"],
+                tools=[]
+            ),
+            clearance_level=1
+        )
+    
+    @pytest.mark.asyncio
+    async def test_initialize(self, concrete_agent):
+        """Test agent initialization."""
+        await concrete_agent.initialize()
+        # Should complete without error
+        assert True
+    
+    @pytest.mark.asyncio
+    async def test_shutdown(self, concrete_agent):
+        """Test agent shutdown."""
+        await concrete_agent.shutdown()
+        # Should complete without error
+        assert True
+    
+    @pytest.mark.asyncio
+    async def test_get_status(self, concrete_agent):
+        """Test getting agent status."""
+        status = await concrete_agent.get_status()
+        assert status == AgentStatus.IDLE
+    
+    @pytest.mark.asyncio
+    async def test_set_status(self, concrete_agent):
+        """Test setting agent status."""
+        await concrete_agent.set_status(AgentStatus.PROCESSING)
+        status = await concrete_agent.get_status()
+        assert status == AgentStatus.PROCESSING
+    
+    @pytest.mark.asyncio
+    async def test_add_task(self, concrete_agent):
+        """Test adding task to agent."""
+        await concrete_agent.add_task("task-1")
+        assert "task-1" in concrete_agent.current_tasks
+    
+    @pytest.mark.asyncio
+    async def test_remove_task(self, concrete_agent):
+        """Test removing task from agent."""
+        await concrete_agent.add_task("task-1")
+        await concrete_agent.remove_task("task-1")
+        assert "task-1" not in concrete_agent.current_tasks
+    
+    @pytest.mark.asyncio
+    async def test_remove_task_not_present(self, concrete_agent):
+        """Test removing task that doesn't exist."""
+        # Should not raise error
+        await concrete_agent.remove_task("non-existent-task")
+        assert True
+    
+    @pytest.mark.asyncio
+    async def test_get_task_count(self, concrete_agent):
+        """Test getting task count."""
+        await concrete_agent.add_task("task-1")
+        await concrete_agent.add_task("task-2")
+        count = await concrete_agent.get_task_count()
+        assert count == 2
+    
+    def test_record_response(self, concrete_agent):
+        """Test recording response to history."""
+        from src.agents.base_agent import AgentResponse
+        
+        response = AgentResponse(
+            task_id="task-1",
+            agent_id="test-agent",
+            status="success",
+            result={}
+        )
+        
+        concrete_agent.record_response(response)
+        assert len(concrete_agent.task_history) == 1
+    
+    def test_record_response_truncates_history(self, concrete_agent):
+        """Test that recording responses truncates history to 1000 items."""
+        from src.agents.base_agent import AgentResponse
+        
+        # Add 1001 responses
+        for i in range(1001):
+            response = AgentResponse(
+                task_id=f"task-{i}",
+                agent_id="test-agent",
+                status="success",
+                result={}
+            )
+            concrete_agent.record_response(response)
+        
+        # Should be truncated to 1000
+        assert len(concrete_agent.task_history) == 1000
+    
+    def test_get_metrics_empty_history(self, concrete_agent):
+        """Test getting metrics with empty history."""
+        metrics = concrete_agent.get_metrics()
+        
+        assert metrics["agent_id"] == "test-agent"
+        assert metrics["status"] == "idle"
+        assert metrics["total_tasks_completed"] == 0
+        assert metrics["success_rate"] == 0.0
+        assert metrics["average_execution_time"] == 0.0
+    
+    def test_get_metrics_with_history(self, concrete_agent):
+        """Test getting metrics with task history."""
+        from src.agents.base_agent import AgentResponse
+        
+        # Add some responses
+        for i in range(5):
+            response = AgentResponse(
+                task_id=f"task-{i}",
+                agent_id="test-agent",
+                status="success" if i < 3 else "error",
+                result={},
+                execution_time=1.0 + i * 0.5
+            )
+            concrete_agent.record_response(response)
+        
+        metrics = concrete_agent.get_metrics()
+        
+        assert metrics["total_tasks_completed"] == 5
+        assert metrics["successful_tasks"] == 3
+        assert metrics["failed_tasks"] == 2
+        assert metrics["success_rate"] == 3 / 5
+    
+    def test_repr(self, concrete_agent):
+        """Test agent string representation."""
+        repr_str = repr(concrete_agent)
+        assert "test-agent" in repr_str
+        assert "idle" in repr_str
 
 
 if __name__ == "__main__":
