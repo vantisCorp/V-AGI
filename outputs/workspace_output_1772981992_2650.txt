@@ -1,0 +1,20 @@
+completed	failure	CI	CI	main	workflow_dispatch	22823542125	5s	2026-03-08T14:58:34Z
+completed	cancelled	docs: Add CI/CD section and self-hosted runner documentation link to …	CI (Self-Hosted)	main	push	22822789993	44m16s	2026-03-08T14:12:52Z
+completed	failure	docs: Add CI/CD section and self-hosted runner documentation link to …	CI	main	push	22822789992	4s	2026-03-08T14:12:52Z
+completed	cancelled	docs: Add self-hosted runner setup guide and alternative CI workflow	CI (Self-Hosted)	main	push	22822771576	45m21s	2026-03-08T14:11:51Z
+completed	failure	docs: Add self-hosted runner setup guide and alternative CI workflow	CI	main	push	22822771573	4s	2026-03-08T14:11:51Z
+completed	failure	Simplify CI workflow configuration	CI	main	push	22822716038	4s	2026-03-08T14:08:34Z
+completed	failure	Fix code formatting and linting issues	CI	main	push	22822490008	5s	2026-03-08T14:06:38Z
+completed	failure	Restore CI workflow - add GitHub Actions configuration for testing, l…	CI	main	push	22822403596	4s	2026-03-08T13:49:46Z
+completed	failure	fix: Fix deprecation warnings and improve test coverage	CI	main	push	22803318131	4s	2026-03-07T17:05:12Z
+completed	failure	test: Add comprehensive tests for REST API	CI	main	push	22801058878	4s	2026-03-07T14:43:40Z
+completed	failure	docs: Update todo with test improvements	CI	main	push	22800939834	4s	2026-03-07T14:35:53Z
+completed	failure	test: Add comprehensive tests for Message Queue Integration	CI	main	push	22800934579	4s	2026-03-07T14:35:29Z
+completed	failure	docs: Update todo with recent improvements	CI	main	push	22800649703	4s	2026-03-07T14:16:44Z
+completed	failure	feat: Add comprehensive CI workflow with multi-Python testing	CI	main	push	22800645709	4s	2026-03-07T14:16:25Z
+completed	failure	fix: Resolve deprecation warnings for websockets and pydantic	CI	main	push	22800632131	4s	2026-03-07T14:15:36Z
+completed	failure	docs: Update CI/CD troubleshooting with billing issue findings	CI	main	push	22800591033	4s	2026-03-07T14:12:50Z
+completed	failure	CI	CI	main	workflow_dispatch	22800478259	5s	2026-03-07T14:05:31Z
+completed	failure	test: Minimal CI workflow for debugging	CI	main	push	22800064337	4s	2026-03-07T13:38:02Z
+completed	success	github_actions in / for actions/setup-python - Update #1271748728	Dependabot Updates	main	dynamic	22800056757	37s	2026-03-07T13:37:33Z
+completed	failure	fix: Simplify CI workflow with compact step format	CI	main	push	22800052345	4s	2026-03-07T13:37:12Z

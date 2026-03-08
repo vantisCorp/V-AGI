@@ -1,0 +1,5 @@
+total 16
+drwxr-xr-x 2 root root 4096 Mar  8 14:11 .
+drwxr-xr-x 3 root root 4096 Mar  8 13:45 ..
+-rw-r--r-- 1 root root 2384 Mar  8 14:11 ci-self-hosted.yml
+-rw-r--r-- 1 root root 2251 Mar  8 14:08 ci.yml

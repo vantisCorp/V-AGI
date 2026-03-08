@@ -1,0 +1,5 @@
+queued		docs: Add CI/CD section and self-hosted runner documentation link to …	CI (Self-Hosted)	main	push	22822789993	43m8s	2026-03-08T14:12:52Z
+completed	failure	docs: Add CI/CD section and self-hosted runner documentation link to …	CI	main	push	22822789992	4s	2026-03-08T14:12:52Z
+queued		docs: Add self-hosted runner setup guide and alternative CI workflow	CI (Self-Hosted)	main	push	22822771576	44m9s	2026-03-08T14:11:51Z
+completed	failure	docs: Add self-hosted runner setup guide and alternative CI workflow	CI	main	push	22822771573	4s	2026-03-08T14:11:51Z
+completed	failure	Simplify CI workflow configuration	CI	main	push	22822716038	4s	2026-03-08T14:08:34Z

@@ -1,0 +1,5 @@
+{
+  "message": "docs: Add CI/CD section and self-hosted runner documentation link to README",
+  "status": "completed",
+  "conclusion": "failure"
+}

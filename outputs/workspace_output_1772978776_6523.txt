@@ -1,0 +1,3 @@
+parse error: Invalid numeric literal at line 1, column 160
+null
+null
