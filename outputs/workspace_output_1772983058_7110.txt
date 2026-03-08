@@ -1,0 +1,3 @@
+completed	failure	style: Fix code formatting after CI configuration changes	CI	main	push	22823864680	4s	2026-03-08T15:17:16Z
+completed	failure	fix: Restore ubuntu-latest runner and finalize CI configuration	CI	main	push	22823834581	4s	2026-03-08T15:15:24Z
+completed	failure	test: Try ubuntu-22.04 runner	CI	main	push	22823826144	4s	2026-03-08T15:14:57Z

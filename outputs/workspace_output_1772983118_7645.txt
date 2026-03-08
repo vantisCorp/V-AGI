@@ -1,0 +1,19 @@
+{"message":"Invalid request.\n\nNo subschema in \"anyOf\" matched.\nNo subschema in \"anyOf\" matched.\nNo subschema in \"anyOf\" matched.\nNo subschema in \"anyOf\" matched.\nFor 'allOf/0', \"{\\\"strict\\\":true,\\\"contexts\\\":[]}\" is not an object.\nNot all subschemas of \"allOf\" matched.\nFor 'anyOf/1', \"{\\\"strict\\\":true,\\\"contexts\\\":[]}\" is not a null.\nFor 'allOf/0', \"null\" is not an object.\nNot all subschemas of \"allOf\" matched.\nFor 'anyOf/1', \"null\" is not a null.\nFor 'allOf/0', \"false\" is not a boolean.\nNot all subschemas of \"allOf\" matched.\nFor 'anyOf/1', \"false\" is not a null.\nFor 'allOf/0', \"null\" is not an object.\nNot all subschemas of \"allOf\" matched.\nFor 'anyOf/1', \"null\" is not a null.","documentation_url":"https://docs.github.com/rest/branches/branch-protection#update-branch-protection","status":"422"}gh: Invalid request.
+
+No subschema in "anyOf" matched.
+No subschema in "anyOf" matched.
+No subschema in "anyOf" matched.
+No subschema in "anyOf" matched.
+For 'allOf/0', "{\"strict\":true,\"contexts\":[]}" is not an object.
+Not all subschemas of "allOf" matched.
+For 'anyOf/1', "{\"strict\":true,\"contexts\":[]}" is not a null.
+For 'allOf/0', "null" is not an object.
+Not all subschemas of "allOf" matched.
+For 'anyOf/1', "null" is not a null.
+For 'allOf/0', "false" is not a boolean.
+Not all subschemas of "allOf" matched.
+For 'anyOf/1', "false" is not a null.
+For 'allOf/0', "null" is not an object.
+Not all subschemas of "allOf" matched.
+For 'anyOf/1', "null" is not a null. (HTTP 422)
+Branch protection not available
