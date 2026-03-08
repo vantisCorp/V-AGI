@@ -1810,5 +1810,149 @@ class TestVitaAgentExtended:
         assert "conditions_database_size" in stats
 
 
+class TestVeritasAgentExtended:
+    """Extended tests for VERITAS Agent to improve coverage."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create VERITAS agent instance."""
+        return VeritasAgent()
+    
+    @pytest.mark.asyncio
+    async def test_verify_fact_no_claim(self, agent):
+        """Test fact verification with no claim provided."""
+        task = Task(
+            id="test_no_claim",
+            description="Verify a fact",
+            parameters={"task_type": "verify_fact"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "error" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_check_consistency_no_content(self, agent):
+        """Test consistency check with no content provided."""
+        task = Task(
+            id="test_no_content",
+            description="Check consistency",
+            parameters={"task_type": "check_consistency"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "error" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_validate_sources_no_sources(self, agent):
+        """Test source validation with no sources provided."""
+        task = Task(
+            id="test_no_sources",
+            description="Validate sources",
+            parameters={"task_type": "validate_sources"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "error" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_generate_citations_no_content(self, agent):
+        """Test citation generation with no content provided."""
+        task = Task(
+            id="test_no_citation_content",
+            description="Generate citations",
+            parameters={"task_type": "generate_citations"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "error" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_detect_bias_no_content(self, agent):
+        """Test bias detection with no content provided."""
+        task = Task(
+            id="test_no_bias_content",
+            description="Detect bias",
+            parameters={"task_type": "detect_bias"},
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "error" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_verify_fact_with_context(self, agent):
+        """Test fact verification with context."""
+        task = Task(
+            id="test_fact_context",
+            description="Verify a fact",
+            parameters={
+                "task_type": "verify_fact",
+                "claim": "Water boils at 100 degrees Celsius",
+                "context": "At standard atmospheric pressure"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert response.agent_id == "veritas"
+    
+    @pytest.mark.asyncio
+    async def test_check_consistency_with_contradiction(self, agent):
+        """Test consistency check with potential contradiction."""
+        task = Task(
+            id="test_contradiction",
+            description="Check consistency",
+            parameters={
+                "task_type": "check_consistency",
+                "content": "The sky is blue. The sky is not blue."
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_validate_sources_with_multiple(self, agent):
+        """Test source validation with multiple sources."""
+        task = Task(
+            id="test_multi_sources",
+            description="Validate sources",
+            parameters={
+                "task_type": "validate_sources",
+                "sources": [
+                    "https://nature.com",
+                    "https://science.org",
+                    "https://unknown-random-site.com"
+                ]
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+    
+    @pytest.mark.asyncio
+    async def test_generate_citations_with_format(self, agent):
+        """Test citation generation with specific format."""
+        task = Task(
+            id="test_citation_format",
+            description="Generate citations",
+            parameters={
+                "task_type": "generate_citations",
+                "content": "According to recent studies, AI is advancing rapidly.",
+                "format": "MLA"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert hasattr(response, 'result')
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
