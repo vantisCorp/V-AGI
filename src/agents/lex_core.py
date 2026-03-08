@@ -3,8 +3,14 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-from ..agents.base_agent import (AgentCapabilities, AgentResponse, AgentStatus,
-                                 BaseAgent, Task, TaskPriority)
+from ..agents.base_agent import (
+    AgentCapabilities,
+    AgentResponse,
+    AgentStatus,
+    BaseAgent,
+    Task,
+    TaskPriority,
+)
 
 
 class ComplianceStatus(Enum):

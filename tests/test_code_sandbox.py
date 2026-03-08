@@ -8,8 +8,13 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from src.tools.code_sandbox import (CodeLanguage, CodeSandbox, ExecutionResult,
-                                    ExecutionStatus, SandboxConfig)
+from src.tools.code_sandbox import (
+    CodeLanguage,
+    CodeSandbox,
+    ExecutionResult,
+    ExecutionStatus,
+    SandboxConfig,
+)
 
 
 class TestCodeLanguage:

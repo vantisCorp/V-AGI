@@ -14,10 +14,10 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     environment: str = "development"
 
-    # Security
-    secret_key: str
-    encryption_key: str
-    jwt_secret_key: str
+    # Security (defaults provided for CI/testing environments)
+    secret_key: str = "dev-secret-key-change-in-production"
+    encryption_key: str = "dev-encryption-key-32-chars-change!"
+    jwt_secret_key: str = "dev-jwt-secret-key-change-in-production"
     jwt_algorithm: str = "HS256"
     jwt_expiration_minutes: int = 60
 
@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     neo4j_uri: str = "bolt://localhost:7687"
     neo4j_user: str = "neo4j"
-    neo4j_password: str
+    neo4j_password: str = "dev-password-change-in-production"
 
     # Vector Database
     pinecone_api_key: Optional[str] = None

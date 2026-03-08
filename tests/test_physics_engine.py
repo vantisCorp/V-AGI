@@ -9,9 +9,14 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import numpy as np
 import pytest
 
-from src.tools.physics_engine import (ConstraintType, PhysicsBody,
-                                      PhysicsConstraint, PhysicsEngine,
-                                      PhysicsType, SimulationState)
+from src.tools.physics_engine import (
+    ConstraintType,
+    PhysicsBody,
+    PhysicsConstraint,
+    PhysicsEngine,
+    PhysicsType,
+    SimulationState,
+)
 
 
 class TestPhysicsType:

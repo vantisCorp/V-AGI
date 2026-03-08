@@ -16,8 +16,14 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from loguru import logger
 
-from agents.base_agent import (AgentCapabilities, AgentResponse, AgentStatus,
-                               BaseAgent, Task, TaskPriority)
+from agents.base_agent import (
+    AgentCapabilities,
+    AgentResponse,
+    AgentStatus,
+    BaseAgent,
+    Task,
+    TaskPriority,
+)
 
 
 @dataclass

@@ -8,8 +8,7 @@ from unittest.mock import AsyncMock, Mock, patch
 import pytest
 
 from src.agents.base_agent import AgentCapabilities, Task, TaskPriority
-from src.api.communication_protocol import (MessagePriority, MessageProtocol,
-                                            MessageType)
+from src.api.communication_protocol import MessagePriority, MessageProtocol, MessageType
 from src.memory.working_memory import WorkingMemory
 from src.nexus.orchestrator import NexusOrchestrator
 from src.tools.cad_integration import CADIntegration, CADOperation

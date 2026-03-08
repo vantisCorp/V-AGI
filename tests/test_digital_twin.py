@@ -8,9 +8,16 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from src.tools.digital_twin import (DataSyncMode, DigitalTwin, TwinAlert,
-                                    TwinEvent, TwinMetric, TwinModel,
-                                    TwinState, TwinType)
+from src.tools.digital_twin import (
+    DataSyncMode,
+    DigitalTwin,
+    TwinAlert,
+    TwinEvent,
+    TwinMetric,
+    TwinModel,
+    TwinState,
+    TwinType,
+)
 
 
 class TestTwinType:

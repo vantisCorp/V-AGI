@@ -9,8 +9,12 @@ from unittest.mock import patch
 
 import pytest
 
-from src.api.communication_protocol import (MessagePriority, MessageProtocol,
-                                            MessageQueue, MessageType)
+from src.api.communication_protocol import (
+    MessagePriority,
+    MessageProtocol,
+    MessageQueue,
+    MessageType,
+)
 
 
 class TestMessageType:

@@ -3,6 +3,7 @@ aiohttp>=3.9.0
 pydantic>=2.5.0
 pydantic-settings>=2.1.0
 asyncio>=3.4.3
+loguru>=0.7.0
 
 # Machine Learning & AI
 torch>=2.1.0
@@ -13,7 +14,7 @@ sentence-transformers>=2.2.0
 pandas>=2.1.0
 numpy>=1.26.0
 neo4j>=5.14.0
-pinecone-client>=2.2.0
+pinecone>=3.0.0
 redis>=5.0.0
 
 # Security

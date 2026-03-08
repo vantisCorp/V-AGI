@@ -3,6 +3,7 @@ Tests for NEXUS Orchestrator.
 """
 
 import asyncio
+
 # Import Task and TaskPriority from the same module the orchestrator uses
 import sys
 from datetime import datetime
@@ -10,12 +11,10 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from src.nexus.orchestrator import (AgentAssignment, NexusOrchestrator,
-                                    OrchestratedTask, TaskStatus)
+from src.nexus.orchestrator import AgentAssignment, NexusOrchestrator, OrchestratedTask, TaskStatus
 
 sys.path.insert(0, "src")
-from agents.base_agent import (AgentCapabilities, AgentResponse, BaseAgent,
-                               Task, TaskPriority)
+from agents.base_agent import AgentCapabilities, AgentResponse, BaseAgent, Task, TaskPriority
 
 
 class TestOrchestratedTask:

@@ -7,8 +7,14 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from src.agents.base_agent import (AgentCapabilities, AgentResponse,
-                                   AgentStatus, BaseAgent, Task, TaskPriority)
+from src.agents.base_agent import (
+    AgentCapabilities,
+    AgentResponse,
+    AgentStatus,
+    BaseAgent,
+    Task,
+    TaskPriority,
+)
 from src.agents.veritas import VeritasAgent
 from src.memory.working_memory import WorkingMemory
 from src.nexus.orchestrator import NexusOrchestrator
