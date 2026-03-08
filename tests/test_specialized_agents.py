@@ -1542,5 +1542,273 @@ class TestARGUSAgent:
         assert "test_history_1" in agent.task_history
 
 
+class TestVitaAgentExtended:
+    """Extended test suite for VITA Agent to improve coverage."""
+    
+    @pytest.fixture
+    def agent(self):
+        """Create VITA agent instance."""
+        return VitaAgent()
+    
+    @pytest.mark.asyncio
+    async def test_validate_task_valid(self, agent):
+        """Test task validation with valid task types."""
+        task = Task(
+            id="test_validate_1",
+            description="Valid task",
+            parameters={"task_type": "analyze_symptoms"},
+            priority=TaskPriority.MEDIUM
+        )
+        result = await agent.validate_task(task)
+        assert result is True
+    
+    @pytest.mark.asyncio
+    async def test_validate_task_invalid(self, agent):
+        """Test task validation with invalid task type."""
+        task = Task(
+            id="test_validate_2",
+            description="Invalid task",
+            parameters={"task_type": "invalid_type"},
+            priority=TaskPriority.MEDIUM
+        )
+        result = await agent.validate_task(task)
+        assert result is False
+    
+    @pytest.mark.asyncio
+    async def test_analyze_symptoms_with_medical_history(self, agent):
+        """Test symptom analysis with patient medical history."""
+        task = Task(
+            id="test_symptoms_history",
+            description="Analyze symptoms with history",
+            parameters={
+                "task_type": "analyze_symptoms",
+                "symptoms": ["headache", "dizziness", "blurred vision"],
+                "age": 55,
+                "gender": "male",
+                "medical_history": ["hypertension", "diabetes"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "symptoms_analyzed" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_analyze_symptoms_no_match(self, agent):
+        """Test symptom analysis with no matching conditions."""
+        task = Task(
+            id="test_symptoms_nomatch",
+            description="Analyze unknown symptoms",
+            parameters={
+                "task_type": "analyze_symptoms",
+                "symptoms": ["rare_symptom_xyz", "uncommon_symptom_abc"]
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert response.status == "success"
+    
+    @pytest.mark.asyncio
+    async def test_drug_interactions_multiple(self, agent):
+        """Test drug interaction check with multiple medications."""
+        task = Task(
+            id="test_drug_multi",
+            description="Check multiple drug interactions",
+            parameters={
+                "task_type": "check_drug_interactions",
+                "medications": ["warfarin", "aspirin", "ibuprofen", "metformin"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "interactions_found" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_drug_interactions_empty(self, agent):
+        """Test drug interaction check with no medications."""
+        task = Task(
+            id="test_drug_empty",
+            description="Check empty drug list",
+            parameters={
+                "task_type": "check_drug_interactions",
+                "medications": []
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert response.status == "success"
+    
+    @pytest.mark.asyncio
+    async def test_patient_data_with_vitals(self, agent):
+        """Test patient data analysis with vital signs."""
+        task = Task(
+            id="test_patient_vitals",
+            description="Analyze patient with vitals",
+            parameters={
+                "task_type": "analyze_patient_data",
+                "patient_id": "P001",
+                "vitals": {
+                    "blood_pressure_systolic": 150,
+                    "blood_pressure_diastolic": 95,
+                    "heart_rate": 85,
+                    "temperature": 37.0,
+                    "oxygen_saturation": 98
+                }
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "patient_id" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_patient_data_with_lab_results(self, agent):
+        """Test patient data analysis with lab results."""
+        task = Task(
+            id="test_patient_labs",
+            description="Analyze patient with labs",
+            parameters={
+                "task_type": "analyze_patient_data",
+                "patient_id": "P002",
+                "lab_results": {
+                    "glucose": 150,
+                    "cholesterol": 240,
+                    "hemoglobin": 12.5
+                }
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert response.status == "success"
+    
+    @pytest.mark.asyncio
+    async def test_patient_data_abnormal_vitals(self, agent):
+        """Test patient data with abnormal vital signs."""
+        task = Task(
+            id="test_patient_abnormal",
+            description="Analyze patient with abnormal vitals",
+            parameters={
+                "task_type": "analyze_patient_data",
+                "patient_id": "P003",
+                "vitals": {
+                    "blood_pressure_systolic": 180,
+                    "blood_pressure_diastolic": 110,
+                    "heart_rate": 120,
+                    "temperature": 38.5,
+                    "oxygen_saturation": 92
+                }
+            },
+            priority=TaskPriority.CRITICAL
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert response.status == "success"
+    
+    @pytest.mark.asyncio
+    async def test_medical_research_with_params(self, agent):
+        """Test medical research with parameters."""
+        task = Task(
+            id="test_research_params",
+            description="Medical research with params",
+            parameters={
+                "task_type": "medical_research",
+                "query": "diabetes treatment",
+                "domain": "pharmacology",
+                "keywords": ["insulin", "metformin"]
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "findings" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_clinical_trial_with_data(self, agent):
+        """Test clinical trial analysis with trial data."""
+        task = Task(
+            id="test_trial_data",
+            description="Clinical trial with data",
+            parameters={
+                "task_type": "clinical_trial_analysis",
+                "trial_data": {
+                    "trial_id": "CT-2024-001",
+                    "phase": 3,
+                    "participants": 500,
+                    "treatment_group": 250,
+                    "control_group": 250
+                }
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "trial_id" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_epidemiology_with_params(self, agent):
+        """Test epidemiology study with parameters."""
+        task = Task(
+            id="test_epi_params",
+            description="Epidemiology with params",
+            parameters={
+                "task_type": "epidemiology_study",
+                "study_type": "cohort",
+                "population_size": 10000,
+                "disease": "diabetes"
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert response.status == "success"
+    
+    @pytest.mark.asyncio
+    async def test_personalized_medicine_with_genetics(self, agent):
+        """Test personalized medicine with genetic markers."""
+        task = Task(
+            id="test_personal_genetics",
+            description="Personalized medicine with genetics",
+            parameters={
+                "task_type": "personalized_medicine",
+                "patient_id": "P004",
+                "genetic_markers": ["CYP2D6*4", "CYP2C19*2"],
+                "conditions": ["hypertension", "depression"]
+            },
+            priority=TaskPriority.HIGH
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "patient_id" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_health_monitoring_with_history(self, agent):
+        """Test health monitoring with patient history."""
+        task = Task(
+            id="test_monitor_history",
+            description="Health monitoring with history",
+            parameters={
+                "task_type": "health_monitoring",
+                "patient_id": "P005",
+                "time_range": "90_days",
+                "metrics": ["blood_pressure", "glucose", "weight"]
+            },
+            priority=TaskPriority.MEDIUM
+        )
+        response = await agent.execute_task(task)
+        assert response is not None
+        assert "patient_id" in response.result
+    
+    @pytest.mark.asyncio
+    async def test_get_stats(self, agent):
+        """Test getting agent statistics."""
+        stats = await agent.get_stats()
+        assert stats is not None
+        assert "conditions_database_size" in stats
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

@@ -8,6 +8,7 @@ from typing import Dict, Any, List
 import asyncio
 from datetime import datetime
 import os
+import uuid
 
 from ..nexus.orchestrator import NexusOrchestrator
 from ..agents.base_agent import Task, TaskPriority, AgentStatus
@@ -164,7 +165,6 @@ def create_app(orchestrator: NexusOrchestrator = None,
                     "description": t.description,
                     "status": t.status.value,
                     "priority": t.priority.value,
-                    "agent_id": t.agent_id,
                     "created_at": t.created_at.isoformat() if t.created_at else None
                 }
                 for t in tasks
@@ -183,16 +183,11 @@ def create_app(orchestrator: NexusOrchestrator = None,
             return jsonify({"error": f"Task not found: {task_id}"}), 404
         
         return jsonify({
-            "task_id": task.task_id,
+            "task_id": task.id,
             "description": task.description,
             "parameters": task.parameters,
-            "status": task.status.value,
             "priority": task.priority.value,
-            "agent_id": task.agent_id,
-            "clearance_level": task.clearance_level,
-            "created_at": task.created_at.isoformat() if task.created_at else None,
-            "updated_at": task.updated_at.isoformat() if task.updated_at else None,
-            "result": task.result if task.result else None
+            "created_at": task.created_at.isoformat() if task.created_at else None
         })
     
     @app.route('/api/tasks/submit', methods=['POST'])
@@ -221,12 +216,10 @@ def create_app(orchestrator: NexusOrchestrator = None,
         # Create task
         try:
             task = Task(
-                task_id=data.get('task_id'),
+                id=data.get('id', f"task-{uuid.uuid4().hex[:8]}"),
                 description=data['description'],
-                parameters=data['parameters'],
-                priority=TaskPriority(data.get('priority', 'medium').lower()),
-                agent_id=data.get('agent_id'),
-                clearance_level=data.get('clearance_level', 1)
+                parameters=data.get('parameters', {}),
+                priority=TaskPriority[data.get('priority', 'medium').upper()]
             )
         except ValueError as e:
             return jsonify({"error": f"Invalid task data: {str(e)}"}), 400
@@ -239,7 +232,7 @@ def create_app(orchestrator: NexusOrchestrator = None,
             return jsonify({
                 "task_id": result.task_id,
                 "agent_id": result.agent_id,
-                "status": result.status.value,
+                "status": result.status if isinstance(result.status, str) else result.status.value,
                 "result": result.result,
                 "timestamp": result.timestamp.isoformat()
             })
@@ -264,15 +257,13 @@ def create_app(orchestrator: NexusOrchestrator = None,
         for task_data in data['tasks']:
             try:
                 task = Task(
-                    task_id=task_data.get('task_id'),
+                    id=task_data.get('id', str(uuid.uuid4())),
                     description=task_data['description'],
-                    parameters=task_data['parameters'],
-                    priority=TaskPriority(task_data.get('priority', 'medium').lower()),
-                    agent_id=task_data.get('agent_id'),
-                    clearance_level=task_data.get('clearance_level', 1)
+                    parameters=task_data.get('parameters', {}),
+                    priority=TaskPriority[task_data.get('priority', 'medium').upper()]
                 )
                 tasks.append(task)
-            except ValueError as e:
+            except (ValueError, KeyError) as e:
                 results.append({
                     "error": f"Invalid task data: {str(e)}"
                 })
@@ -284,12 +275,12 @@ def create_app(orchestrator: NexusOrchestrator = None,
                 result = asyncio.run(future)
                 results.append({
                     "task_id": result.task_id,
-                    "status": result.status.value,
+                    "status": result.status if isinstance(result.status, str) else result.status.value,
                     "result": result.result
                 })
             except Exception as e:
                 results.append({
-                    "task_id": task.task_id,
+                    "task_id": task.id,
                     "error": str(e)
                 })
         

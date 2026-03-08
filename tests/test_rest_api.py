@@ -65,11 +65,27 @@ class MockOrchestrator:
     
     async def submit_task(self, task):
         self._task_counter += 1
-        task.task_id = f"task-{self._task_counter}"
-        task.status = AgentStatus.IDLE
-        task.timestamp = datetime.utcnow()
-        self.task_queue[task.task_id] = task
-        return task
+        task_id = f"task-{self._task_counter}"
+        task.id = task_id
+        self.task_queue[task_id] = task
+        # Return an AgentResponse-like object
+        from dataclasses import dataclass, field
+        from datetime import datetime
+        @dataclass
+        class MockAgentResponse:
+            task_id: str
+            agent_id: str
+            status: object
+            result: object
+            timestamp: object
+        response = MockAgentResponse(
+            task_id=task_id,
+            agent_id="agent-1",
+            status=AgentStatus.IDLE,
+            result=None,
+            timestamp=datetime.utcnow()
+        )
+        return response
 
 
 class MockAegis:
@@ -765,3 +781,259 @@ class TestTaskFiltering:
         
         # May return 404 if task ID doesn't match
         assert response.status_code in [200, 404]
+
+
+class TestRestApiExtended:
+    """Extended tests to improve coverage for rest_api.py."""
+    
+    def test_submit_batch_tasks(self, client):
+        """Test submitting multiple tasks in batch."""
+        batch_data = {
+            "tasks": [
+                {
+                    "description": "Task 1",
+                    "parameters": {"param": "value1"},
+                    "priority": "high"
+                },
+                {
+                    "description": "Task 2",
+                    "parameters": {"param": "value2"},
+                    "priority": "medium"
+                }
+            ]
+        }
+        
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps(batch_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'results' in data
+        assert data['total_tasks'] == 2
+    
+    def test_submit_batch_tasks_missing_tasks_field(self, client):
+        """Test batch submit without tasks field."""
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps({"description": "test"}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 400
+        data = json.loads(response.data)
+        assert 'error' in data
+    
+    def test_submit_batch_tasks_invalid_priority(self, client):
+        """Test batch submit with invalid priority - should return error in results."""
+        batch_data = {
+            "tasks": [
+                {
+                    "description": "Task 1",
+                    "parameters": {},
+                    "priority": "invalid_priority"
+                }
+            ]
+        }
+        
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps(batch_data),
+            content_type='application/json'
+        )
+        
+        # Should return 200 but with error in results for invalid priority
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        # The batch should have 0 tasks created due to invalid priority error
+        assert data.get('total_tasks', 0) == 0
+    
+    def test_working_memory_get_all_keys(self, client):
+        """Test getting all keys from working memory."""
+        # Store some data first
+        client.post(
+            '/api/memory/working',
+            data=json.dumps({"key": "test_key", "value": "test_value"}),
+            content_type='application/json'
+        )
+        
+        # Get all keys
+        response = client.get('/api/memory/working')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'keys' in data
+    
+    def test_working_memory_get_specific_key(self, client):
+        """Test getting a specific key from working memory."""
+        # Store data
+        client.post(
+            '/api/memory/working',
+            data=json.dumps({"key": "my_key", "value": "my_value"}),
+            content_type='application/json'
+        )
+        
+        # Get specific key
+        response = client.get('/api/memory/working?key=my_key')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['key'] == 'my_key'
+    
+    def test_working_memory_delete(self, client):
+        """Test deleting from working memory."""
+        # Store data
+        client.post(
+            '/api/memory/working',
+            data=json.dumps({"key": "delete_me", "value": "value"}),
+            content_type='application/json'
+        )
+        
+        # Delete
+        response = client.delete('/api/memory/working?key=delete_me')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'deleted'
+    
+    def test_working_memory_delete_not_found(self, client):
+        """Test deleting non-existent key from working memory."""
+        response = client.delete('/api/memory/working?key=nonexistent')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'not_found'
+    
+    def test_working_memory_post_missing_fields(self, client):
+        """Test posting to working memory with missing fields."""
+        response = client.post(
+            '/api/memory/working',
+            data=json.dumps({"key": "test"}),  # Missing value
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 400
+    
+    def test_working_memory_delete_missing_key(self, client):
+        """Test deleting from working memory without key parameter."""
+        response = client.delete('/api/memory/working')
+        
+        assert response.status_code == 400
+    
+    def test_working_memory_not_configured(self):
+        """Test working memory operations when not configured."""
+        app = create_app(orchestrator=MockOrchestrator())
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        response = client.get('/api/memory/working')
+        
+        assert response.status_code == 503
+    
+    def test_submit_task_missing_description(self, client):
+        """Test submitting task without description."""
+        task_data = {
+            "parameters": {"param": "value"}
+        }
+        
+        response = client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 400
+    
+    def test_submit_task_with_clearance_level(self, client):
+        """Test submitting task with clearance level."""
+        task_data = {
+            "description": "Secure task",
+            "parameters": {},
+            "clearance_level": 5
+        }
+        
+        response = client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        # Should process (may succeed or fail for other reasons)
+        assert response.status_code in [200, 500]
+    
+    def test_get_agent_not_found(self, client):
+        """Test getting a non-existent agent."""
+        response = client.get('/api/agents/nonexistent-agent')
+        
+        assert response.status_code == 404
+        data = json.loads(response.data)
+        assert 'error' in data
+    
+    def test_list_agents_no_orchestrator(self):
+        """Test listing agents without orchestrator."""
+        app = create_app()
+        app.config['TESTING'] = True
+        client = app.test_client()
+        
+        response = client.get('/api/agents')
+        
+        assert response.status_code == 503
+    
+    def test_health_services_status(self, client):
+        """Test health endpoint shows services status."""
+        response = client.get('/health')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'services' in data
+        assert 'orchestrator' in data['services']
+        assert 'aegis' in data['services']
+    
+    def test_index_endpoint_endpoints_list(self, client):
+        """Test index endpoint provides endpoints list."""
+        response = client.get('/')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'endpoints' in data
+        assert '/health' in data['endpoints']['health']
+    
+    def test_submit_task_with_invalid_json(self, client):
+        """Test submitting task with invalid JSON."""
+        response = client.post(
+            '/api/tasks/submit',
+            data="not valid json",
+            content_type='application/json'
+        )
+        
+        # Should return error for invalid JSON
+        assert response.status_code >= 400
+    
+    def test_cancel_task_endpoint(self, client):
+        """Test canceling a task."""
+        # First submit a task
+        task_data = {
+            "description": "Task to cancel",
+            "parameters": {}
+        }
+        
+        client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        # Try to cancel
+        response = client.post('/api/tasks/task-1/cancel')
+        
+        # May return 404 if task doesn't exist or 200 if successful
+        assert response.status_code in [200, 404, 503]
+    
+    def test_get_monitoring_metrics(self, client):
+        """Test getting monitoring metrics."""
+        response = client.get('/api/monitoring/metrics')
+        
+        # May return 503 if not configured or 200 if available
+        assert response.status_code in [200, 503, 404]

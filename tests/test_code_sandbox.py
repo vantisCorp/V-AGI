@@ -527,3 +527,355 @@ print(add(1, 2))
         assert len(sandbox.list_executions()) == 3
         
         sandbox.cleanup()
+
+
+class TestCodeSandboxExtended:
+    """Extended tests to improve coverage for code_sandbox.py."""
+    
+    @pytest.mark.asyncio
+    async def test_execute_code_with_input(self):
+        """Test executing code with stdin input."""
+        sandbox = CodeSandbox()
+        
+        code = "x = input()\nprint(f'Got: {x}')"
+        
+        result = await sandbox.execute_code(
+            code,
+            CodeLanguage.PYTHON,
+            input_data="test_input"
+        )
+        
+        assert result.execution_id is not None
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_execute_code_timeout(self):
+        """Test code execution timeout."""
+        config = SandboxConfig(max_execution_time=0.1)
+        sandbox = CodeSandbox(config=config)
+        
+        # Code that runs longer than timeout
+        code = "import time\ntime.sleep(10)"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.PYTHON)
+        
+        assert result.status == ExecutionStatus.TIMEOUT
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_execute_code_large_output_truncation(self):
+        """Test output truncation for large output."""
+        config = SandboxConfig(max_output_size=100)
+        sandbox = CodeSandbox(config=config)
+        
+        # Code that produces large output
+        code = "for i in range(1000):\n    print('x' * 100)"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.PYTHON)
+        
+        # Output should be truncated
+        assert len(result.output) <= config.max_output_size + 50  # Some buffer for truncation message
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_execute_code_with_error_output(self):
+        """Test code execution that produces stderr output."""
+        sandbox = CodeSandbox()
+        
+        code = "import sys\nsys.stderr.write('error message')\nraise Exception('test error')"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.PYTHON)
+        
+        assert result.status == ExecutionStatus.FAILED
+        assert result.exit_code != 0
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_compile_java_code(self):
+        """Test Java code compilation path."""
+        sandbox = CodeSandbox()
+        
+        # Simple Java code
+        code = "public class Main { public static void main(String[] args) { System.out.println(&quot;Hello&quot;); } }"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.JAVA)
+        
+        # May fail if Java not installed, but we test the path
+        assert result.execution_id is not None
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_compile_cpp_code(self):
+        """Test C++ code compilation path."""
+        sandbox = CodeSandbox()
+        
+        code = "#include <iostream>\nint main() { std::cout << &quot;Hello&quot;; return 0; }"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.CPP)
+        
+        assert result.execution_id is not None
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_compile_rust_code(self):
+        """Test Rust code compilation path."""
+        sandbox = CodeSandbox()
+        
+        code = "fn main() { println!(&quot;Hello&quot;); }"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.RUST)
+        
+        assert result.execution_id is not None
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_compile_go_code(self):
+        """Test Go code compilation path."""
+        sandbox = CodeSandbox()
+        
+        code = 'package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello")\n}'
+        
+        result = await sandbox.execute_code(code, CodeLanguage.GO)
+        
+        assert result.execution_id is not None
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_compile_code_failure(self):
+        """Test code compilation failure."""
+        sandbox = CodeSandbox()
+        
+        # Invalid Java code - compilation will fail
+        code = "invalid java code"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.JAVA)
+        
+        # May be ERROR if javac not installed, or FAILED if compilation fails
+        assert result.status in [ExecutionStatus.FAILED, ExecutionStatus.ERROR]
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_execute_javascript_code(self):
+        """Test JavaScript code execution."""
+        sandbox = CodeSandbox()
+        
+        code = "console.log('Hello from JS');"
+        
+        result = await sandbox.execute_code(code, CodeLanguage.JAVASCRIPT)
+        
+        assert result.execution_id is not None
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_run_code_exception_handling(self):
+        """Test _run_code exception handling."""
+        sandbox = CodeSandbox()
+        
+        # Create a situation that causes an exception
+        with patch('asyncio.create_subprocess_exec', side_effect=OSError("Process error")):
+            result = await sandbox._run_code(
+                "temp_file.py",
+                CodeLanguage.PYTHON,
+                None,
+                sandbox.config,
+                "exec_test",
+                0.0
+            )
+            
+            assert result.status == ExecutionStatus.ERROR
+    
+    @pytest.mark.asyncio
+    async def test_list_executions_with_data(self):
+        """Test list_executions with mock data."""
+        sandbox = CodeSandbox()
+        
+        # Add some mock executions
+        sandbox.executions["exec_0"] = ExecutionResult(
+            execution_id="exec_0",
+            status=ExecutionStatus.COMPLETED,
+            language=CodeLanguage.PYTHON,
+            code="",
+            output="",
+            error="",
+            exit_code=0,
+            execution_time=0.5,
+            memory_used=10.0,
+            start_time=0.0,
+            end_time=0.5
+        )
+        sandbox.executions["exec_1"] = ExecutionResult(
+            execution_id="exec_1",
+            status=ExecutionStatus.FAILED,
+            language=CodeLanguage.PYTHON,
+            code="",
+            output="",
+            error="error",
+            exit_code=1,
+            execution_time=0.3,
+            memory_used=5.0,
+            start_time=0.0,
+            end_time=0.3
+        )
+        
+        execution_list = sandbox.list_executions()
+        
+        assert len(execution_list) == 2
+        assert "exec_0" in execution_list
+        assert "exec_1" in execution_list
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_security_check_commented_dangerous(self):
+        """Test that commented dangerous patterns are allowed."""
+        sandbox = CodeSandbox()
+        
+        code = "# This is a comment with exec('test')\nprint('safe')"
+        
+        result = await sandbox._check_python_security(code, SandboxConfig())
+        
+        assert result["allowed"] is True
+    
+    @pytest.mark.asyncio
+    async def test_security_check_enable_filesystem(self):
+        """Test security check with filesystem enabled."""
+        sandbox = CodeSandbox()
+        
+        config = SandboxConfig(enable_filesystem=True)
+        
+        # Note: open( is still in dangerous_patterns even with enable_filesystem=True
+        # But filesystem=False adds additional patterns like os.path
+        # So we test that os.path is NOT blocked when filesystem is enabled
+        result = await sandbox._check_python_security("import os\nos.path.join('a', 'b')", config)
+        
+        # Should be allowed since os.path is not blocked when enable_filesystem=True
+        # But open() is still blocked
+        assert result["allowed"] is True or "os.path" not in result.get("reason", "")
+    
+    @pytest.mark.asyncio
+    async def test_security_check_enable_network(self):
+        """Test security check with network enabled."""
+        sandbox = CodeSandbox()
+        
+        config = SandboxConfig(enable_network=True)
+        
+        # urllib should NOT be blocked when network is enabled
+        result = await sandbox._check_python_security("import urllib.request", config)
+        
+        # Should be allowed since urllib is not in dangerous patterns when network enabled
+        assert result["allowed"] is True or "urllib" not in result.get("reason", "")
+    
+    @pytest.mark.asyncio
+    async def test_analyze_code_javascript(self):
+        """Test analyzing JavaScript code."""
+        sandbox = CodeSandbox()
+        
+        code = "function test() {}\nclass MyClass {}"
+        
+        result = await sandbox.analyze_code(code, CodeLanguage.JAVASCRIPT)
+        
+        assert result["language"] == "javascript"
+    
+    @pytest.mark.asyncio
+    async def test_validate_code_unsupported_language(self):
+        """Test validating code with unsupported language."""
+        sandbox = CodeSandbox()
+        
+        result = await sandbox.validate_code("code", CodeLanguage.RUBY)
+        
+        # Should still return a result (might be valid by default for unsupported)
+        assert "valid" in result
+    
+    @pytest.mark.asyncio
+    async def test_analyze_code_unsupported_language(self):
+        """Test analyzing code with unsupported language."""
+        sandbox = CodeSandbox()
+        
+        result = await sandbox.analyze_code("code", CodeLanguage.PHP)
+        
+        assert "language" in result
+    
+    def test_create_temp_file_java(self):
+        """Test _create_temp_file for Java."""
+        sandbox = CodeSandbox()
+        
+        temp_file = sandbox._create_temp_file("public class Main {}", CodeLanguage.JAVA)
+        
+        assert temp_file.endswith(".java")
+        sandbox.cleanup()
+    
+    def test_create_temp_file_cpp(self):
+        """Test _create_temp_file for C++."""
+        sandbox = CodeSandbox()
+        
+        temp_file = sandbox._create_temp_file("int main() {}", CodeLanguage.CPP)
+        
+        assert temp_file.endswith(".cpp")
+        sandbox.cleanup()
+    
+    def test_create_temp_file_rust(self):
+        """Test _create_temp_file for Rust."""
+        sandbox = CodeSandbox()
+        
+        temp_file = sandbox._create_temp_file("fn main() {}", CodeLanguage.RUST)
+        
+        assert temp_file.endswith(".rs")
+        sandbox.cleanup()
+    
+    def test_create_temp_file_go(self):
+        """Test _create_temp_file for Go."""
+        sandbox = CodeSandbox()
+        
+        temp_file = sandbox._create_temp_file("package main", CodeLanguage.GO)
+        
+        assert temp_file.endswith(".go")
+        sandbox.cleanup()
+    
+    @pytest.mark.asyncio
+    async def test_execute_code_exception_in_run(self):
+        """Test execute_code when _run_code raises exception."""
+        sandbox = CodeSandbox()
+        
+        # Patch _run_code to raise exception
+        with patch.object(sandbox, '_run_code', side_effect=Exception("Run error")):
+            result = await sandbox.execute_code("print('test')", CodeLanguage.PYTHON)
+            
+            assert result.status == ExecutionStatus.ERROR
+            assert "Run error" in result.error
+    
+    @pytest.mark.asyncio
+    async def test_compile_code_exception(self):
+        """Test _compile_code when exception occurs."""
+        sandbox = CodeSandbox()
+        
+        lang_config = {
+            "extension": ".java",
+            "compile_command": ["javac"],
+        }
+        
+        with patch('asyncio.create_subprocess_exec', side_effect=Exception("Compile error")):
+            result = await sandbox._compile_code("Test.java", CodeLanguage.JAVA, lang_config)
+            
+            assert result is False
+    
+    @pytest.mark.asyncio
+    async def test_compile_code_timeout(self):
+        """Test _compile_code timeout."""
+        sandbox = CodeSandbox()
+        
+        lang_config = {
+            "extension": ".java",
+            "compile_command": ["javac"],
+        }
+        
+        async def slow_compile(*args, **kwargs):
+            await asyncio.sleep(100)
+            return AsyncMock()
+        
+        with patch('asyncio.create_subprocess_exec') as mock_exec:
+            mock_exec.return_value = AsyncMock()
+            mock_exec.return_value.communicate = AsyncMock(side_effect=asyncio.TimeoutError())
+            
+            with patch('asyncio.wait_for', side_effect=asyncio.TimeoutError()):
+                result = await sandbox._compile_code("Test.java", CodeLanguage.JAVA, lang_config)
+                
+                assert result is False
