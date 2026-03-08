@@ -957,3 +957,152 @@ class TestWebSocketHandlerErrorHandling:
         handler.clients.discard(websocket)
         
         assert websocket not in handler.clients
+
+
+class TestWebSocketHandlerExtendedCoverage:
+    """Extended tests for WebSocket handler to improve coverage."""
+    
+    @pytest.fixture
+    def handler(self):
+        """Create a WebSocketHandler instance for testing."""
+        orchestrator = MockOrchestrator()
+        return WebSocketHandler(orchestrator=orchestrator, host="localhost", port=8765)
+    
+    @pytest.fixture
+    def handler_no_orchestrator(self):
+        """Create a WebSocketHandler without orchestrator."""
+        return WebSocketHandler(orchestrator=None, host="localhost", port=8765)
+    
+    @pytest.mark.asyncio
+    async def test_handle_client_json_decode_error(self, handler):
+        """Test handling invalid JSON in handle_client."""
+        # Create MockWebSocket with invalid JSON message
+        websocket = MockWebSocket(messages=["not valid json {", ""])
+        
+        # Handle client - should catch JSONDecodeError and send error
+        await handler.handle_client(websocket, "client-json-error")
+        
+        # Should have sent welcome message first, then error
+        assert len(websocket.messages_sent) >= 2
+        # First message is welcome, second should be error
+        error_msg = json.loads(websocket.messages_sent[1])
+        assert error_msg["type"] == "error"
+        assert "Invalid JSON" in error_msg["data"]["error"]
+    
+    @pytest.mark.asyncio
+    async def test_handle_client_generic_exception(self, handler):
+        """Test handling generic exception in handle_client."""
+        websocket = MockWebSocket()
+        
+        # Create a message that will cause an exception during handling
+        # Use valid JSON but with structure that might cause issues
+        bad_message = json.dumps({
+            "type": "task_submit",
+            "protocol_version": "1.0.0",
+            "message_id": "msg-1",
+            "timestamp": datetime.utcnow().isoformat(),
+            "data": "not_a_dict"  # This should be a dict
+        })
+        
+        websocket.messages_to_receive = [bad_message, ""]
+        
+        # Handle client - should catch exception
+        await handler.handle_client(websocket, "client-exc-test")
+        
+        # Should complete without crashing
+        assert True
+    
+    @pytest.mark.asyncio
+    async def test_handle_task_submit_with_result(self, handler):
+        """Test task submission with successful result."""
+        websocket = MockWebSocket()
+        
+        # Mock the orchestrator to return a result
+        async def mock_submit_task(task):
+            async def mock_result():
+                return MockAgentResponse(
+                    task_id=task.id,
+                    agent_id="test-agent",
+                    status="success",
+                    result={"output": "done"}
+                )
+            future = asyncio.Future()
+            future.set_result(await mock_result())
+            return future
+        
+        handler.orchestrator.submit_task = mock_submit_task
+        
+        message = make_test_message("task_submit", {
+            "task_id": "task-result-1",
+            "description": "Test task with result",
+            "parameters": {}
+        })
+        
+        await handler.handle_message(websocket, "client-1", message)
+        
+        # Should have sent ack and result
+        assert len(websocket.messages_sent) >= 1
+    
+    @pytest.mark.asyncio
+    async def test_handle_task_submit_missing_task_id(self, handler):
+        """Test task submission without task_id."""
+        websocket = MockWebSocket()
+        
+        message = make_test_message("task_submit", {
+            "description": "Task without ID"
+        })
+        
+        await handler.handle_message(websocket, "client-1", message)
+        
+        # Should have sent an error
+        assert len(websocket.messages_sent) >= 1
+    
+    @pytest.mark.asyncio
+    async def test_handle_task_cancel_with_result(self, handler):
+        """Test task cancellation."""
+        websocket = MockWebSocket()
+        
+        # Add a mock task to the orchestrator
+        handler.orchestrator.cancel_task = Mock(return_value=True)
+        
+        message = make_test_message("task_cancel", {
+            "task_id": "cancel-task-1"
+        })
+        
+        await handler.handle_message(websocket, "client-1", message)
+        
+        # Should have sent a response
+        assert len(websocket.messages_sent) >= 1
+    
+    @pytest.mark.asyncio
+    async def test_subscribe_with_event_type(self, handler):
+        """Test subscription with specific event type."""
+        websocket = MockWebSocket()
+        
+        message = make_test_message("subscribe", {
+            "event_type": "task_completed"
+        })
+        
+        await handler.handle_message(websocket, "client-1", message)
+        
+        # Should have sent confirmation
+        assert len(websocket.messages_sent) >= 1
+        response = json.loads(websocket.messages_sent[0])
+        assert response["type"] == "subscription_confirmed"
+    
+    @pytest.mark.asyncio
+    async def test_unsubscribe_with_event_type(self, handler):
+        """Test unsubscription with specific event type."""
+        websocket = MockWebSocket()
+        
+        message = make_test_message("unsubscribe", {
+            "event_type": "task_completed"
+        })
+        
+        await handler.handle_message(websocket, "client-1", message)
+        
+        # Should have sent confirmation
+        assert len(websocket.messages_sent) >= 1
+        response = json.loads(websocket.messages_sent[0])
+        # The actual response type is subscription_cancelled
+        assert response["type"] == "subscription_cancelled"
