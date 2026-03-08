@@ -150,37 +150,7 @@ class MockVectorStore:
         return self.documents[:top_k]
 
 
-class MockLongTermMemory:
-    def __init__(self):
-        self.nodes = {}
-    
-    async def create_node(self, node_id, node_type, properties, relationships=None):
-        self.nodes[node_id] = {
-            "id": node_id,
-            "type": node_type,
-            "properties": properties,
-            "relationships": relationships or []
-        }
-        return node_id
-    
-    async def get_node(self, node_id):
-        return self.nodes.get(node_id)
-    
-    async def search_nodes(self, query, limit=10):
-        return [n for n in self.nodes.values() if query in str(n)]
 
-
-class MockVectorStore:
-    def __init__(self):
-        self.vectors = {}
-    
-    async def store_vector(self, text, metadata=None):
-        vector_id = f"vec-{len(self.vectors) + 1}"
-        self.vectors[vector_id] = {"text": text, "metadata": metadata}
-        return vector_id
-    
-    async def search_vectors(self, query, k=5):
-        return [(v, 0.9) for v in self.vectors.values() if query in v["text"]]
 
 
 @pytest.fixture
@@ -1037,3 +1007,435 @@ class TestRestApiExtended:
         
         # May return 503 if not configured or 200 if available
         assert response.status_code in [200, 503, 404]
+
+    def test_submit_task_value_error(self, client):
+        """Test submitting task with invalid priority raises ValueError."""
+        task_data = {
+            "description": "Test task",
+            "parameters": {},
+            "priority": "invalid_priority_value"
+        }
+        
+        response = client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        # Should return 400 for invalid priority
+        assert response.status_code == 400
+        data = json.loads(response.data)
+        assert 'error' in data
+
+    def test_submit_task_execution_error(self, client):
+        """Test task execution failure."""
+        # Create a mock orchestrator that raises an exception
+        class FailingOrchestrator:
+            def __init__(self):
+                self.agents = {}
+                self.task_queue = {}
+            
+            async def submit_task(self, task):
+                raise RuntimeError("Task execution failed")
+        
+        from src.api.rest_api import create_app
+        failing_app = create_app(
+            orchestrator=FailingOrchestrator(),
+            aegis=MockAegis(),
+            working_memory=MockWorkingMemory(),
+            long_term_memory=MockLongTermMemory(),
+            vector_store=MockVectorStore()
+        )
+        failing_app.testing = True
+        client = failing_app.test_client()
+        
+        task_data = {
+            "description": "Test task",
+            "parameters": {}
+        }
+        
+        response = client.post(
+            '/api/tasks/submit',
+            data=json.dumps(task_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 500
+        data = json.loads(response.data)
+        assert 'error' in data
+
+    def test_batch_task_execution_error(self, client):
+        """Test batch task execution failure."""
+        # Create a mock orchestrator that raises an exception
+        class FailingOrchestrator:
+            def __init__(self):
+                self.agents = {}
+                self.task_queue = {}
+            
+            async def submit_task(self, task):
+                raise RuntimeError("Batch task execution failed")
+        
+        from src.api.rest_api import create_app
+        failing_app = create_app(
+            orchestrator=FailingOrchestrator(),
+            aegis=MockAegis(),
+            working_memory=MockWorkingMemory(),
+            long_term_memory=MockLongTermMemory(),
+            vector_store=MockVectorStore()
+        )
+        failing_app.testing = True
+        client = failing_app.test_client()
+        
+        tasks_data = {
+            "tasks": [
+                {"description": "Task 1", "parameters": {}},
+                {"description": "Task 2", "parameters": {}}
+            ]
+        }
+        
+        response = client.post(
+            '/api/tasks/submit/batch',
+            data=json.dumps(tasks_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'results' in data
+        # Each task should have an error
+        for result in data['results']:
+            assert 'error' in result
+
+    def test_store_knowledge_node_success(self, client):
+        """Test storing a knowledge node successfully."""
+        node_data = {
+            "node_id": "node-1",
+            "node_type": "concept",
+            "properties": {"name": "Test Node", "value": 42}
+        }
+        
+        response = client.post(
+            '/api/memory/long-term/nodes',
+            data=json.dumps(node_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'stored'
+        assert data['node_id'] == 'node-1'
+
+    def test_get_knowledge_node_success(self, client):
+        """Test getting a knowledge node successfully."""
+        # First store a node
+        node_data = {
+            "node_id": "node-test",
+            "node_type": "concept",
+            "properties": {"name": "Test"}
+        }
+        client.post(
+            '/api/memory/long-term/nodes',
+            data=json.dumps(node_data),
+            content_type='application/json'
+        )
+        
+        # Then retrieve it
+        response = client.get('/api/memory/long-term/nodes/node-test')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'node' in data
+
+    def test_get_knowledge_node_not_found(self, client):
+        """Test getting a non-existent knowledge node."""
+        response = client.get('/api/memory/long-term/nodes/nonexistent-node')
+        
+        assert response.status_code == 404
+        data = json.loads(response.data)
+        assert 'error' in data
+
+    def test_search_knowledge_graph_success(self, client):
+        """Test searching the knowledge graph successfully."""
+        # First store a node
+        node_data = {
+            "node_id": "search-node",
+            "node_type": "concept",
+            "properties": {"name": "Searchable Node"}
+        }
+        client.post(
+            '/api/memory/long-term/nodes',
+            data=json.dumps(node_data),
+            content_type='application/json'
+        )
+        
+        # Search for it
+        search_data = {"query": "searchable"}
+        response = client.post(
+            '/api/memory/long-term/search',
+            data=json.dumps(search_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'results' in data
+        assert 'count' in data
+
+    def test_search_vector_store_success(self, client):
+        """Test searching the vector store successfully."""
+        # First store a document
+        doc_data = {
+            "text": "This is a test document for vector search",
+            "metadata": {"source": "test"}
+        }
+        client.post(
+            '/api/memory/vector/store',
+            data=json.dumps(doc_data),
+            content_type='application/json'
+        )
+        
+        # Search for it
+        search_data = {"query": "test document", "top_k": 5}
+        response = client.post(
+            '/api/memory/vector/search',
+            data=json.dumps(search_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert 'results' in data
+
+    def test_store_vector_document_success(self, client):
+        """Test storing a vector document successfully."""
+        doc_data = {
+            "text": "This is a test document",
+            "metadata": {"source": "test"}
+        }
+        
+        response = client.post(
+            '/api/memory/vector/store',
+            data=json.dumps(doc_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'stored'
+
+    def test_health_degraded_no_orchestrator(self):
+        """Test health endpoint returns degraded when orchestrator not configured."""
+        from src.api.rest_api import create_app
+        app = create_app(
+            orchestrator=None,
+            aegis=MockAegis(),
+            working_memory=None,
+            long_term_memory=None,
+            vector_store=None
+        )
+        app.testing = True
+        client = app.test_client()
+        
+        # Test the /health endpoint (simple health check)
+        response = client.get('/health')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'healthy'
+        assert data['services']['orchestrator'] == 'not configured'
+        
+        # Test the /api/monitoring/health endpoint (detailed health check)
+        response = client.get('/api/monitoring/health')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['overall_status'] == 'degraded'
+        assert data['components']['orchestrator']['status'] == 'not_configured'
+
+    def test_health_degraded_with_failed_agents(self):
+        """Test health endpoint returns degraded when agents have failed status."""
+        class FailedAgent:
+            def __init__(self):
+                self.agent_id = "failed-agent"
+                self.status = type('obj', (object,), {'value': 'failed'})()
+        
+        class DegradedOrchestrator:
+            def __init__(self):
+                self.agents = {"failed-agent": FailedAgent()}
+                self.task_queue = {}
+        
+        from src.api.rest_api import create_app
+        app = create_app(
+            orchestrator=DegradedOrchestrator(),
+            aegis=MockAegis(),
+            working_memory=None,
+            long_term_memory=None,
+            vector_store=None
+        )
+        app.testing = True
+        client = app.test_client()
+        
+        response = client.get('/api/monitoring/health')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['components']['orchestrator']['status'] == 'degraded'
+
+    def test_long_term_memory_store_error(self, client):
+        """Test long-term memory store error handling."""
+        class FailingLongTermMemory:
+            async def store_node(self, node_id, node_type, properties):
+                raise RuntimeError("Database connection failed")
+        
+        from src.api.rest_api import create_app
+        app = create_app(
+            orchestrator=MockOrchestrator(),
+            aegis=MockAegis(),
+            working_memory=MockWorkingMemory(),
+            long_term_memory=FailingLongTermMemory(),
+            vector_store=MockVectorStore()
+        )
+        app.testing = True
+        client = app.test_client()
+        
+        node_data = {
+            "node_id": "error-node",
+            "node_type": "test",
+            "properties": {}
+        }
+        
+        response = client.post(
+            '/api/memory/long-term/nodes',
+            data=json.dumps(node_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 500
+        data = json.loads(response.data)
+        assert 'error' in data
+
+    def test_long_term_memory_get_error(self, client):
+        """Test long-term memory get error handling."""
+        class FailingLongTermMemory:
+            async def get_node(self, node_id):
+                raise RuntimeError("Database connection failed")
+        
+        from src.api.rest_api import create_app
+        app = create_app(
+            orchestrator=MockOrchestrator(),
+            aegis=MockAegis(),
+            working_memory=MockWorkingMemory(),
+            long_term_memory=FailingLongTermMemory(),
+            vector_store=MockVectorStore()
+        )
+        app.testing = True
+        client = app.test_client()
+        
+        response = client.get('/api/memory/long-term/nodes/test-node')
+        
+        assert response.status_code == 500
+        data = json.loads(response.data)
+        assert 'error' in data
+
+    def test_long_term_memory_search_error(self, client):
+        """Test long-term memory search error handling."""
+        class FailingLongTermMemory:
+            async def search_nodes(self, query, node_type=None):
+                raise RuntimeError("Search failed")
+        
+        from src.api.rest_api import create_app
+        app = create_app(
+            orchestrator=MockOrchestrator(),
+            aegis=MockAegis(),
+            working_memory=MockWorkingMemory(),
+            long_term_memory=FailingLongTermMemory(),
+            vector_store=MockVectorStore()
+        )
+        app.testing = True
+        client = app.test_client()
+        
+        response = client.post(
+            '/api/memory/long-term/search',
+            data=json.dumps({"query": "test"}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 500
+        data = json.loads(response.data)
+        assert 'error' in data
+
+    def test_vector_store_search_error(self, client):
+        """Test vector store search error handling."""
+        class FailingVectorStore:
+            async def search(self, query, top_k=5):
+                raise RuntimeError("Search failed")
+        
+        from src.api.rest_api import create_app
+        app = create_app(
+            orchestrator=MockOrchestrator(),
+            aegis=MockAegis(),
+            working_memory=MockWorkingMemory(),
+            long_term_memory=MockLongTermMemory(),
+            vector_store=FailingVectorStore()
+        )
+        app.testing = True
+        client = app.test_client()
+        
+        response = client.post(
+            '/api/memory/vector/search',
+            data=json.dumps({"query": "test"}),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 500
+        data = json.loads(response.data)
+        assert 'error' in data
+
+    def test_vector_store_add_document_error(self, client):
+        """Test vector store add document error handling."""
+        class FailingVectorStore:
+            async def add_document(self, text, metadata):
+                raise RuntimeError("Storage failed")
+        
+        from src.api.rest_api import create_app
+        app = create_app(
+            orchestrator=MockOrchestrator(),
+            aegis=MockAegis(),
+            working_memory=MockWorkingMemory(),
+            long_term_memory=MockLongTermMemory(),
+            vector_store=FailingVectorStore()
+        )
+        app.testing = True
+        client = app.test_client()
+        
+        doc_data = {
+            "text": "Test document",
+            "metadata": {"source": "test"}
+        }
+        
+        response = client.post(
+            '/api/memory/vector/store',
+            data=json.dumps(doc_data),
+            content_type='application/json'
+        )
+        
+        assert response.status_code == 500
+        data = json.loads(response.data)
+        assert 'error' in data
+
+    def test_internal_server_error_handler(self, client):
+        """Test 500 error handler."""
+        # This tests the errorhandler(500) decorator
+        from src.api.rest_api import create_app
+        app = create_app(
+            orchestrator=None,
+            aegis=None,
+            working_memory=None,
+            long_term_memory=None,
+            vector_store=None
+        )
+        app.testing = True
+        
+        # The error handlers are registered, we can verify they exist
+        # by checking the app's error handler spec
+        assert 500 in app.error_handler_spec[None] or '500' in str(app.error_handler_spec)

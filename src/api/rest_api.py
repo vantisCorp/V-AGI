@@ -221,7 +221,7 @@ def create_app(orchestrator: NexusOrchestrator = None,
                 parameters=data.get('parameters', {}),
                 priority=TaskPriority[data.get('priority', 'medium').upper()]
             )
-        except ValueError as e:
+        except (ValueError, KeyError) as e:
             return jsonify({"error": f"Invalid task data: {str(e)}"}), 400
         
         # Submit task to orchestrator
