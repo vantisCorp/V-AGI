@@ -1,0 +1,10 @@
+=== Checking README links ===
+[Version](https://img.shields.io/badge/version-0.1.0-blue)
+[Python](https://img.shields.io/badge/python-3.11+-green)
+[License](https://img.shields.io/badge/license-MIT-orange)
+[Architecture Overview](docs/architecture-overview.md)
+[Agents Implementation](docs/agents-implementation.md)
+[Security Implementation](docs/security-implementation.md)
+[Simulation Tools](docs/simulation-tools-implementation.md)
+[Self-Hosted Runner Setup](docs/self-hosted-runner-setup.md)
+[Self-Hosted Runner Setup Guide](docs/self-hosted-runner-setup.md)

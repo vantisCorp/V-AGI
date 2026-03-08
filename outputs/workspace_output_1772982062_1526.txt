@@ -1,0 +1,3 @@
+completed	failure	fix: Simplify CI workflow and add explicit permissions	CI	main	push	22823584981	5s	2026-03-08T15:01:01Z
+completed	failure	CI	CI	main	workflow_dispatch	22823542125	5s	2026-03-08T14:58:34Z
+completed	cancelled	docs: Add CI/CD section and self-hosted runner documentation link to …	CI (Self-Hosted)	main	push	22822789993	44m16s	2026-03-08T14:12:52Z
