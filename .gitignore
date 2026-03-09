@@ -90,6 +90,9 @@ summarized_conversations/
 # Old clones
 v-agi/
 
+# Sandbox artifacts
+.agent_hooks/
+
 # Build artifacts
 dist/
 *.egg-info/
