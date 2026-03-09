@@ -1,3 +1,0 @@
-123:            ContentType.STORY: self._story_template,
-124:            ContentType.POEM: self._poem_template,
-125:            ContentType.ARTICLE: self._article_template,

@@ -1,8 +1,0 @@
-97:            "protocol_version": self.PROTOCOL_VERSION,
-110:    def parse_message(self, raw_message: str) -> Dict[str, Any]:
-127:        required_fields = ["protocol_version", "message_id", "type", "timestamp"]
-128:        for field in required_fields:
-133:        if message["protocol_version"] != self.PROTOCOL_VERSION:
-134:            raise ValueError(f"Unsupported protocol version: {message['protocol_version']}")
-156:            if not all(field in message for field in ["protocol_version", "message_id", "type"]):
-160:            if message["protocol_version"] != self.PROTOCOL_VERSION:

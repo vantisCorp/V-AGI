@@ -1,3 +1,0 @@
-1be1eb4 fix: Fix deprecation warnings and improve test coverage
-9d181f2 test: Add comprehensive tests for REST API
-bae2aa5 docs: Update todo with test improvements

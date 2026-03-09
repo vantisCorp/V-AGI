@@ -1,1 +1,0 @@
-517:    def get_component(self, component_id: str) -> Optional[CADComponent]:

@@ -1,2 +1,0 @@
-[main 0f3c806] test: Try macos-latest runner to check if ubuntu runners are unavailable
- 1 file changed, 4 insertions(+), 4 deletions(-)

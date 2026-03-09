@@ -1,1 +1,0 @@
-failed to get variables: HTTP 403: Resource not accessible by integration (https://api.github.com/repos/vantisCorp/V-AGI/actions/variables?per_page=100)

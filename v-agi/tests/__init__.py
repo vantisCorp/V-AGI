@@ -1,3 +1,0 @@
-"""
-OMNI-AI Test Suite
-"""

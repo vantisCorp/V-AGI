@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "visibility": "private",
-  "has_wiki": false,
-  "has_pages": false
-}

@@ -1,6 +1,0 @@
-remote: 
-remote: Create a pull request for 'feature/ci-cd-setup' on GitHub by visiting:        
-remote:      https://github.com/vantisCorp/V-AGI/pull/new/feature/ci-cd-setup        
-remote: 
-To https://github.com/vantisCorp/V-AGI.git
- * [new branch]      feature/ci-cd-setup -> feature/ci-cd-setup

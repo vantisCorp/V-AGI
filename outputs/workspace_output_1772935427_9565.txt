@@ -1,4 +1,0 @@
-71:    PROTOCOL_VERSION = "1.0.0"
-97:            "protocol_version": self.PROTOCOL_VERSION,
-133:        if message["protocol_version"] != self.PROTOCOL_VERSION:
-160:            if message["protocol_version"] != self.PROTOCOL_VERSION:

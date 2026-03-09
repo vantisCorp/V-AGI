@@ -1,6 +1,0 @@
-17:from src.agents.ludus import LUDUSAgent
-241:class TestLUDUSAgent:
-242:    """Test suite for LUDUS Agent (Simulation & Gaming)."""
-246:        """Create LUDUS agent instance."""
-247:        return LUDUSAgent()
-253:        assert agent.agent_id == "ludus"

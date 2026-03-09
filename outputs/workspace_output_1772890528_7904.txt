@@ -1,3 +1,0 @@
-completed	failure	fix: Simplify CI workflow and remove test workflow	CI Pipeline	main	push	22800025534	4s	2026-03-07T13:35:25Z
-completed	failure	Simple Test	Simple Test	main	workflow_dispatch	22800003282	4s	2026-03-07T13:33:59Z
-completed	failure	test: Update simple workflow with checkout and explicit steps	CI Pipeline	main	push	22800000808	4s	2026-03-07T13:33:49Z

@@ -1,3 +1,0 @@
-344:    @app.route('/api/memory/long-term/nodes', methods=['POST'])
-367:    @app.route('/api/memory/long-term/nodes/<node_id>', methods=['GET'])
-405:    @app.route('/api/memory/vector/search', methods=['POST'])

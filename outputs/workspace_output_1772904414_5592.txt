@@ -1,2 +1,0 @@
-324:    async def handle_agent_list(self, websocket: Any,
-470:    async def handle_ping(self, websocket: Any,

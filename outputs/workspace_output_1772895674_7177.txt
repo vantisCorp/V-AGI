@@ -1,9 +1,0 @@
-111:            import aio_pika
-120:            self.connection = await aio_pika.connect_robust(connection_url)
-126:            raise ImportError("aio_pika library not installed. Install with: pip install aio-pika")
-183:            aio_pika.ExchangeType.FANOUT,
-187:        message_obj = aio_pika.Message(
-189:            delivery_mode=aio_pika.DeliveryMode.PERSISTENT
-237:        import aio_pika
-242:            aio_pika.ExchangeType.FANOUT,
-253:        async def process_message(message: aio_pika.IncomingMessage):

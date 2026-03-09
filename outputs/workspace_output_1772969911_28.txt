@@ -1,2 +1,0 @@
-..................../usr/local/lib/python3.11/site-packages/coverage/inorout.py:561: CoverageWarning: Module src/agents/veritas was never imported. (module-not-imported); see https://coverage.readthedocs.io/en/7.13.4/messages.html#warning-module-not-imported
-src/agents/veritas.py                    170     22    87%   175-192, 312-313, 341, 358-368, 473, 523, 528

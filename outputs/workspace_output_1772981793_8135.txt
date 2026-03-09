@@ -1,5 +1,0 @@
-{
-  "name": "lint",
-  "conclusion": "failure",
-  "steps": []
-}

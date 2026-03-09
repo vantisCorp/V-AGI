@@ -1,6 +1,0 @@
-13:from src.agents.forge import ForgeAgent
-197:class TestForgeAgent:
-198:    """Test suite for FORGE Agent (Design & Engineering)."""
-202:        """Create FORGE agent instance."""
-203:        return ForgeAgent()
-209:        assert agent.agent_id == "forge"

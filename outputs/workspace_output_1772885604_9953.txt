@@ -1,8 +1,0 @@
-234:            if task_type == "real_time_monitoring":
-236:            elif task_type == "performance_analytics":
-238:            elif task_type == "log_analysis":
-240:            elif task_type == "alert_management":
-242:            elif task_type == "trend_analysis":
-244:            elif task_type == "anomaly_detection":
-246:            elif task_type == "dashboard_generation":
-248:            elif task_type == "report_generation":

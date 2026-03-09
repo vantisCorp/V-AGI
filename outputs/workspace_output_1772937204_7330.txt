@@ -1,4 +1,0 @@
-Task priority: TaskPriority.CRITICAL
-TaskPriority.CRITICAL: TaskPriority.CRITICAL
-Equal: True
-Type: <enum 'TaskPriority'>

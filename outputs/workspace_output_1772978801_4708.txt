@@ -1,3 +1,0 @@
-completed	failure	Fix code formatting and linting issues	CI	main	push	22822490008	5s	2026-03-08T14:06:38Z
-completed	failure	Restore CI workflow - add GitHub Actions configuration for testing, l…	CI	main	push	22822403596	4s	2026-03-08T13:49:46Z
-completed	failure	fix: Fix deprecation warnings and improve test coverage	CI	main	push	22803318131	4s	2026-03-07T17:05:12Z

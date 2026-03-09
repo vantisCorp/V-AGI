@@ -1,2 +1,0 @@
-/workspace/src/tools/digital_twin.py:20:class TwinType(Enum):
-/workspace/src/tools/cad_integration.py:30:class CADOperation(Enum):

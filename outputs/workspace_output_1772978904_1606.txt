@@ -1,2 +1,0 @@
-[main 8f2855d] Simplify CI workflow configuration
- 1 file changed, 3 insertions(+), 13 deletions(-)

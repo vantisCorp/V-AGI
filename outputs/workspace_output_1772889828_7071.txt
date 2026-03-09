@@ -1,2 +1,0 @@
-.github/workflows/ci.yml: ASCII text
-0000000   n   a   m   e   :       C   I   /   C   D       P   i   p   e

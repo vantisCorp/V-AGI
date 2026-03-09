@@ -1,3 +1,0 @@
-tests/test_integration.py:265:    async def test_code_validation(self, sandbox):
-tests/test_integration.py:271:        result = await sandbox.validate_code(code, CodeLanguage.PYTHON)
-src/tools/code_sandbox.py:422:    async def validate_code(self, code: str, language: CodeLanguage) -> Dict[str, Any]:

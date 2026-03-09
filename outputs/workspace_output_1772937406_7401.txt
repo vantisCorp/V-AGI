@@ -1,6 +1,0 @@
-22:class TaskPriority(Enum):
-24:    CRITICAL = 1
-25:    HIGH = 2
-26:    MEDIUM = 3
-27:    LOW = 4
-36:    priority: TaskPriority = TaskPriority.MEDIUM

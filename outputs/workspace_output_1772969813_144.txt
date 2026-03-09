@@ -1,7 +1,0 @@
-tests/test_basic.py
-tests/test_specialized_agents.py
-10:from src.agents.veritas import VeritasAgent
-21:class TestVeritasAgent:
-27:        return VeritasAgent()
-33:        assert agent.agent_id == "veritas"
-59:        assert response.agent_id == "veritas"
