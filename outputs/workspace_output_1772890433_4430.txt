@@ -1,3 +1,0 @@
-completed	failure	Simple Test	Simple Test	main	workflow_dispatch	22800003282	4s	2026-03-07T13:33:59Z
-completed	failure	test: Update simple workflow with checkout and explicit steps	CI/CD Pipeline	main	push	22800000808	4s	2026-03-07T13:33:49Z
-completed	failure	CI/CD Pipeline	CI/CD Pipeline	main	workflow_dispatch	22799981760	6s	2026-03-07T13:32:31Z

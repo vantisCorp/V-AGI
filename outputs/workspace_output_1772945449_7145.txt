@@ -1,4 +1,0 @@
-234:                "task_id": result.task_id,
-237:                "result": result.result,
-278:                    "task_id": result.task_id,
-280:                    "result": result.result

@@ -1,1 +1,0 @@
-249:    @app.route('/api/tasks/submit/batch', methods=['POST'])

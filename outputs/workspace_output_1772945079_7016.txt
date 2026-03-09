@@ -1,3 +1,0 @@
-249:    @app.route('/api/tasks/submit/batch', methods=['POST'])
-250:    def submit_tasks_batch():
-251:        """Submit multiple tasks for batch execution."""

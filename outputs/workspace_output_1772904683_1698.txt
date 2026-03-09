@@ -1,6 +1,0 @@
-13:    WEBSOCKETS_AVAILABLE = True
-15:    WEBSOCKETS_AVAILABLE = False
-269:    async def handle_task_status(self, websocket: Any,
-422:    async def handle_subscribe(self, websocket: Any,
-447:    async def handle_unsubscribe(self, websocket: Any,
-588:        if not WEBSOCKETS_AVAILABLE:

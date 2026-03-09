@@ -1,3 +1,0 @@
-2a64b80 fix: Add minimal CI requirements and update workflow
-c83ea4e Merge pull request #9 from vantisCorp/fix/ci-workflow
-a80c6ac fix: Correct CI workflow syntax - remove escaped dollar signs

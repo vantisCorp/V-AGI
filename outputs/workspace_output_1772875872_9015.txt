@@ -1,2 +1,0 @@
-12:class MessageType(Enum):
-57:class MessagePriority(Enum):

@@ -1,3 +1,0 @@
-141:    async def publish(self,
-194:    async def subscribe(self,
-334:    async def register_handler(self, message_type: MessageType, handler: Callable):

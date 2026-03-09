@@ -1,3 +1,0 @@
-189:    def get_metrics(self) -> Dict[str, Any]:
-191:        Get agent metrics.
-194:            Dictionary containing agent metrics

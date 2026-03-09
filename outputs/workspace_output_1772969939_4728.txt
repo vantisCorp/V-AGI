@@ -1,2 +1,0 @@
-To https://github.com/vantisCorp/V-AGI.git
-   970dd10..787754c  main -> main

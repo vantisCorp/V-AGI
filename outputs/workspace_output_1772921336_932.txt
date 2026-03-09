@@ -1,4 +1,0 @@
-15:from src.agents.ares import AresAgent
-485:    """Test suite for ARES Agent (Strategic Planning)."""
-489:        """Create ARES agent instance."""
-496:        assert agent.agent_id == "ares"

@@ -1,3 +1,0 @@
-completed	failure	test: Try macos-latest runner to check if ubuntu runners are unavailable	CI	main	push	22823647829	5s	2026-03-08T15:04:36Z
-completed	failure	style: Fix code formatting with black and isort	CI	main	push	22823632712	4s	2026-03-08T15:03:44Z
-completed	failure	fix: Simplify CI workflow and add explicit permissions	CI	main	push	22823584981	5s	2026-03-08T15:01:01Z

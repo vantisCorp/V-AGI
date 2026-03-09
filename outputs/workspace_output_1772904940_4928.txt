@@ -1,3 +1,0 @@
-/workspace
--rw-r--r-- 1 user user 23 Mar  7 17:35 .git/HEAD
-ref: refs/heads/master

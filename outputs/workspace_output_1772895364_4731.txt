@@ -1,4 +1,0 @@
-83:            import redis.asyncio as aioredis
-111:            import aio_pika
-237:        import aio_pika
-334:    async def register_handler(self, message_type: MessageType, handler: Callable):

@@ -1,3 +1,0 @@
-res: <MagicMock name='mock.run()' id='140218352599504'>
-res.data(): [{'n': {'id': '1'}}]
-list comprehension result: []

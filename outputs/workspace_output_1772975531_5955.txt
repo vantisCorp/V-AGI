@@ -1,7 +1,0 @@
-3:Provides real-time communication and streaming capabilities
-31:    Supports bidirectional messaging, streaming, and event notifications.
-81:                    "capabilities": ["task_submission", "streaming", "notifications"]
-381:                "status": "streaming",
-388:        # Start streaming (example implementation)
-528:                logger.error(f"Error streaming metrics: {str(e)}")
-555:                logger.error(f"Error streaming events: {str(e)}")

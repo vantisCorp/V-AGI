@@ -1,4 +1,0 @@
-14:from src.agents.vita import VitaAgent
-158:    """Test suite for VITA Agent (Healthcare)."""
-162:        """Create VITA agent instance."""
-169:        assert agent.agent_id == "vita"

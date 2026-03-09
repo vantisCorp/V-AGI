@@ -1,4 +1,0 @@
-[main bd6bb14] docs: Add self-hosted runner setup guide and alternative CI workflow
- 2 files changed, 205 insertions(+)
- create mode 100644 .github/workflows/ci-self-hosted.yml
- create mode 100644 docs/self-hosted-runner-setup.md

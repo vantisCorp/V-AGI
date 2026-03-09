@@ -1,3 +1,0 @@
-Private: True
-Owner: vantisCorp
-Permissions: {'admin': False, 'maintain': False, 'push': False, 'triage': False, 'pull': False}

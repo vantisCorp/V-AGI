@@ -91,18 +91,23 @@ python src/main.py
 ## 📁 Project Structure
 
 ```
-OMNI-AI/
+V-AGI/
+├── .github/workflows/   # CI/CD pipelines
 ├── src/
+│   ├── agents/          # 9 Specialized agents + base
+│   ├── api/             # REST API, WebSocket, messaging
+│   ├── memory/          # Working, long-term, vector store
 │   ├── nexus/           # NEXUS orchestrator
-│   ├── agents/          # Specialized agents
-│   ├── security/        # Security layer (AEGIS)
-│   ├── memory/          # Memory systems
-│   ├── tools/           # Advanced tools
-│   └── neuro_symbolic/  # Neuro-symbolic layer
-├── tests/               # Test suite
+│   ├── security/        # AEGIS Guardian layer
+│   ├── tools/           # CAD, physics, digital twin, sandbox
+│   ├── config.py        # Application configuration
+│   └── main.py          # Entry point
+├── tests/               # Test suite (840+ tests, 90% coverage)
 ├── docs/                # Documentation
-├── configs/             # Configuration files
-└── data/                # Data storage
+├── examples/            # Usage examples
+├── scripts/             # Setup and utility scripts
+├── Dockerfile           # Container configuration
+└── docker-compose.yml   # Multi-service orchestration
 ```
 
 ## 🔧 Configuration
@@ -189,11 +194,28 @@ pytest tests/ --cov=src --cov-report=html
 
 ## 📚 Documentation
 
+### Architecture & Design
 - [Architecture Overview](docs/architecture-overview.md)
+- [Project Structure](docs/project-structure.md)
+- [Implementation Summary](docs/IMPLEMENTATION_SUMMARY.md)
+- [Implementation Status](docs/IMPLEMENTATION_STATUS.md)
+
+### Components
 - [Agents Implementation](docs/agents-implementation.md)
+- [Specialized Agents Summary](docs/SPECIALIZED_AGENTS_SUMMARY.md)
 - [Security Implementation](docs/security-implementation.md)
 - [Simulation Tools](docs/simulation-tools-implementation.md)
+- [Advanced Tools Summary](docs/ADVANCED_TOOLS_SUMMARY.md)
+- [API Integration Summary](docs/API_INTEGRATION_SUMMARY.md)
+
+### Guides
+- [Quick Start Guide](docs/QUICK_START_GUIDE.md)
+- [Testing Guide](docs/TESTING_GUIDE.md)
 - [Self-Hosted Runner Setup](docs/self-hosted-runner-setup.md)
+
+### Reports
+- [Advanced Tools Completion Report](docs/ADVANCED_TOOLS_COMPLETION_REPORT.md)
+- [Testing Suite Completion Report](docs/TESTING_SUITE_COMPLETION_REPORT.md)
 
 ## 🔄 CI/CD
 

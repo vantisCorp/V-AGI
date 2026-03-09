@@ -1,5 +1,0 @@
-{"completed_at":"2026-03-07T13:20:05Z","conclusion":"cancelled","name":"test (3.11)","started_at":"2026-03-07T13:20:02Z","steps_count":0}
-{"completed_at":"2026-03-07T13:20:05Z","conclusion":"failure","name":"test (3.12)","started_at":"2026-03-07T13:20:02Z","steps_count":0}
-{"completed_at":"2026-03-07T13:20:06Z","conclusion":"failure","name":"lint","started_at":"2026-03-07T13:20:02Z","steps_count":0}
-{"completed_at":"2026-03-07T13:20:05Z","conclusion":"failure","name":"security","started_at":"2026-03-07T13:20:02Z","steps_count":0}
-{"completed_at":"2026-03-07T13:20:06Z","conclusion":"skipped","name":"build","started_at":"2026-03-07T13:20:06Z","steps_count":0}

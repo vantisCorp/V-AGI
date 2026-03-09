@@ -1,6 +1,0 @@
-remote: 
-remote: Create a pull request for 'feature/omni-ai-implementation' on GitHub by visiting:        
-remote:      https://github.com/vantisCorp/V-AGI/pull/new/feature/omni-ai-implementation        
-remote: 
-To https://github.com/vantisCorp/V-AGI.git
- * [new branch]      feature/omni-ai-implementation -> feature/omni-ai-implementation

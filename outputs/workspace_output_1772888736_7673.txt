@@ -1,5 +1,0 @@
-total 16
-drwxr-xr-x  4 root root 4096 Mar  7 13:05 .
-drwxr-xr-x 11 root root 4096 Mar  7 13:05 ..
-drwxr-xr-x  2 root root 4096 Mar  7 13:05 ISSUE_TEMPLATE
-drwxr-xr-x  2 root root 4096 Mar  7 13:05 workflows

@@ -1,5 +1,0 @@
-lint: failure
-test (3.12): failure
-security: failure
-test (3.11): failure
-build: skipped

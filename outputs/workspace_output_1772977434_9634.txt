@@ -1,4 +1,0 @@
-{"conclusion":"failure","name":"security","steps":[]}
-{"conclusion":"failure","name":"lint","steps":[]}
-{"conclusion":"failure","name":"test (3.11)","steps":[]}
-{"conclusion":"failure","name":"test (3.12)","steps":[]}

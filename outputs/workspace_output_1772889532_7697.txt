@@ -1,9 +1,0 @@
-From https://github.com/vantisCorp/V-AGI
- * branch            main       -> FETCH_HEAD
-   c83ea4e..067e937  main       -> origin/main
-Updating c83ea4e..067e937
-Fast-forward
- .github/workflows/ci.yml |  6 +++---
- requirements-ci.txt      | 26 ++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+), 3 deletions(-)
- create mode 100644 requirements-ci.txt

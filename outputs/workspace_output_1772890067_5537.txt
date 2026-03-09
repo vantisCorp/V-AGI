@@ -1,7 +1,0 @@
-Status: completed
-Conclusion: failure
-Run attempt: 2
-Message: Merge pull request #10 from vantisCorp/fix/ci-requirements
-
-fix: Add minimal CI requirements for faster builds
-Event: push

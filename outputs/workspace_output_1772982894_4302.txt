@@ -1,4 +1,0 @@
-[main 7be5e1c] test: Try ubuntu-22.04 runner
- 1 file changed, 4 insertions(+), 4 deletions(-)
-To https://github.com/vantisCorp/V-AGI.git
-   27696dc..7be5e1c  main -> main

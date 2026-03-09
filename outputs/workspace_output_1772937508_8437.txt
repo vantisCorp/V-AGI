@@ -1,5 +1,0 @@
-Task priority: TaskPriority.CRITICAL
-TaskPriority.CRITICAL: TaskPriority.CRITICAL
-Equal: True
-ENTERED CRITICAL BRANCH
-Subtasks: 3

@@ -1,6 +1,0 @@
-8	build(deps): Bump python from 3.11-slim to 3.14-slim	dependabot/docker/python-3.14-slim	OPEN	2026-03-07T13:10:02Z
-7	build(deps): Bump actions/cache from 4 to 5	dependabot/github_actions/actions/cache-5	OPEN	2026-03-07T13:09:55Z
-6	build(deps): Bump codecov/codecov-action from 4 to 5	dependabot/github_actions/codecov/codecov-action-5	OPEN	2026-03-07T13:09:52Z
-5	build(deps): Bump actions/setup-python from 5 to 6	dependabot/github_actions/actions/setup-python-6	OPEN	2026-03-07T13:09:49Z
-4	build(deps): Bump docker/build-push-action from 5 to 7	dependabot/github_actions/docker/build-push-action-7	OPEN	2026-03-07T13:09:46Z
-3	build(deps): Bump docker/setup-buildx-action from 3 to 4	dependabot/github_actions/docker/setup-buildx-action-4	OPEN	2026-03-07T13:09:43Z

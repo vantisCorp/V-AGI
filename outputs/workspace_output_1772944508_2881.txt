@@ -1,2 +1,0 @@
-72:    enable_filesystem: bool = False
-389:        if not config.enable_filesystem:

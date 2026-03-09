@@ -1,2 +1,0 @@
-[main 27696dc] fix: Restore ubuntu-latest runner configuration
- 1 file changed, 4 insertions(+), 4 deletions(-)

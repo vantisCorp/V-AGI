@@ -1,8 +1,0 @@
-__init__.py
-__pycache__
-conftest.py
-test_basic.py
-test_core_components.py
-test_integration.py
-test_performance.py
-test_specialized_agents.py

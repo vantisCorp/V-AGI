@@ -52,6 +52,7 @@ logs/
 .coverage
 htmlcov/
 .tox/
+coverage.xml
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -79,5 +80,16 @@ secrets/
 tmp/
 temp/
 *.tmp
-# Output files
+
+# Output files (workspace artifacts)
 outputs/
+
+# Summarized conversations (workspace artifacts)
+summarized_conversations/
+
+# Old clones
+v-agi/
+
+# Build artifacts
+dist/
+*.egg-info/

@@ -1,3 +1,0 @@
-To https://github.com/vantisCorp/V-AGI.git
- + 1be1eb4...30f9bef main -> main (forced update)
-branch 'main' set up to track 'origin/main'.
